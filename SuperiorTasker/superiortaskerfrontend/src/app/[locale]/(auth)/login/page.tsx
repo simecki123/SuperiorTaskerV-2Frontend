@@ -33,7 +33,7 @@ export default function Login() {
           mx="auto"
         />
         <Heading fontSize="2xl" color="xblue.300" mb={6}>
-          {t('appname')} {/* Changed from 'app-name' to 'appname' */}
+          {t('appname')} 
         </Heading>
 
         <LoginForm />

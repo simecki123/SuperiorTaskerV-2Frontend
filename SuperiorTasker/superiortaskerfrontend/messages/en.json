@@ -8,5 +8,22 @@
         "password": "Password",
         "enter-your-password": "Enter your password",
         "login": "Login"
+    },
+
+    "registerpage": {
+        "registerOnSuperiorTasker": "Register OnSuperiorTasker",
+        "already-have-acc-message": "Already have an account?",
+        "go-to-login-page": "Go to login page",
+        "email": "Email",
+        "enter-your-email": "Enter your email",
+        "password": "Password",
+        "enter-your-password": "Enter your password",
+        "confirm-password": "Confirm your password",
+        "enter-your-first-name": "Enter your first name",
+        "your-first-name": "Your first name",
+        "enter-your-last-name": "Enter your last name",
+        "your-last-name": "Your last name",
+        "register": "Register"
+
     }
 }

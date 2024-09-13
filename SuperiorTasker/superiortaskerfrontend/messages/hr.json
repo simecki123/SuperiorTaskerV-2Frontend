@@ -8,5 +8,21 @@
         "password": "Lozinka",
         "enter-your-password": "Unesite lozinku",
         "login": "Prijava"
+    },
+
+    "registerpage": {
+        "registerOnSuperiorTasker": "Registrirajte se na Superior Tasker-u",
+        "already-have-acc-message": "Već imate račun?",
+        "go-to-login-page": "Idite na Stranicu za prijavu",
+        "email": "E-adresa",
+        "enter-your-email": "Unesite E-adresu",
+        "password": "Lozinka",
+        "enter-your-password": "Unesite lozinku",
+        "confirm-password": "Potvrdite vašu lozinku",
+        "enter-your-first-name": "Unesite vaše ime",
+        "your-first-name": "Vaše ime",
+        "enter-your-last-name": "Unesite vaše prezime",
+        "your-last-name": "Vaše prezime",
+        "register": "Registracija"
     }
 }
