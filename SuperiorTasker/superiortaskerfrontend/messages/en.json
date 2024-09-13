@@ -1,0 +1,12 @@
+{
+    "loginpage": {
+        "appname": "Superior Tasker",
+        "dont-have-acc-message": "Don't have an account?",
+        "create-account": "Create an account",
+        "email": "Email",
+        "enter-your-email": "Enter your email",
+        "password": "Password",
+        "enter-your-password": "Enter your password",
+        "login": "Login"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "loginpage": {
+        "appname": "Superior Tasker",
+        "dont-have-acc-message": "Nemate račun?",
+        "create-account": "Napravite račun",
+        "email": "E-adresa",
+        "enter-your-email": "Unesite E-adresu",
+        "password": "Lozinka",
+        "enter-your-password": "Unesite lozinku",
+        "login": "Prijava"
+    }
+}
