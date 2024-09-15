@@ -2,6 +2,7 @@ import '@/app/global.css'
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import Providers from '../components/Providers';
+import Footer from '../components/fotter-components/Fotter';
 
 
 export default async function RootLayout({
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers>
             {children}
+            <Footer />
           </Providers>
         </NextIntlClientProvider>
       </body>
