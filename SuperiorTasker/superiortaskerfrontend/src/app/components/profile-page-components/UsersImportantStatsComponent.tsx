@@ -15,18 +15,20 @@ const menuItems = [
   { name: "My Groups", component: MyGroupsComponent },
 ];
 
-export default function UsersImportantStatsComponent({ mockTasks }: any) {
+export default function UsersImportantStatsComponent({ mockTasks, mockMessages }: any) {
   const [selectedComponent, setSelectedComponent] = useState("All Tasks");
 
   const renderSelectedComponent = () => {
     if (selectedComponent === "All Tasks") {
       return <AllTasksComponent tasks={mockTasks} />;
     }
+    if (selectedComponent === "Messages") {
+      return <UserMessagesComponent messages={mockMessages} />;
+    }
 
-    const Component = menuItems.find((item) => item.name === selectedComponent)
-      ?.component;
+    const Component = menuItems.find((item) => item.name === selectedComponent)?.component;
     if (Component) {
-      return <Component />;
+      return <Component messages={[]} />;
     }
 
     return <Text>No component selected</Text>;
@@ -34,10 +36,7 @@ export default function UsersImportantStatsComponent({ mockTasks }: any) {
 
   return (
     <VStack spacing={8} align="stretch">
-      <Grid
-        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
-        gap={4}
-      >
+      <Grid templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }} gap={4}>
         {menuItems.map((item) => (
           <MenuCard
             key={item.name}
@@ -47,13 +46,7 @@ export default function UsersImportantStatsComponent({ mockTasks }: any) {
           />
         ))}
       </Grid>
-
-      <Box
-        p={6}
-        borderWidth={1}
-        borderRadius="lg"
-        bg={useColorModeValue("white", "gray.800")}
-      >
+      <Box p={6} borderWidth={1} borderRadius="lg" bg={useColorModeValue("white", "gray.800")}>
         {renderSelectedComponent()}
       </Box>
     </VStack>

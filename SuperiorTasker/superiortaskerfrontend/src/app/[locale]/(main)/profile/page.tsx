@@ -18,14 +18,21 @@ const mockTasks = [
   { id: 5, title: "Implement payment gateway", description: "Integrate Stripe for payments", projectName: "E-commerce Platform", status: "in_progress" },
   { id: 6, title: "Create user dashboard", description: "Design and implement user dashboard", projectName: "User Portal", status: "done" },
   { id: 7, title: "Refactor legacy code", description: "Modernize old codebase", projectName: "Tech Debt", status: "in_progress" },
-  // Add more mock tasks as needed
+];
+
+const mockMessages = [
+  { id: 1, sender: "Alice Smith", content: "Hey, can you review my pull request when you get a chance?", timestamp: "2023-09-17T10:30:00Z", read: false },
+  { id: 2, sender: "Bob Johnson", content: "Team meeting at 2 PM today. Don't forget to prepare your weekly update.", timestamp: "2023-09-17T09:15:00Z", read: true },
+  { id: 3, sender: "Charlie Brown", content: "The client loved our presentation! Great job everyone!", timestamp: "2023-09-16T16:45:00Z", read: true },
+  { id: 4, sender: "Diana Prince", content: "There's an issue with the latest deployment. Can we hop on a quick call?", timestamp: "2023-09-16T14:20:00Z", read: false },
+  { id: 5, sender: "Ethan Hunt", content: "New project kick-off meeting scheduled for tomorrow at 11 AM. Be there!", timestamp: "2023-09-15T17:00:00Z", read: true },
 ];
 
 export default function ProfilePage() {
   return (
     <Box maxW="container.xl" mx="auto" px={4} py={8}>
       <ProfileDataComponent user={user} />
-      <UsersImportantStatsComponent mockTasks={mockTasks} />
+      <UsersImportantStatsComponent mockTasks={mockTasks} mockMessages={mockMessages} />
     </Box>
   );
 }

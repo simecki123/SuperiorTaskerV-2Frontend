@@ -5,7 +5,7 @@ import { Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
 
 export default function TaskTable({ tasks }: any) {
   return (
-    <Table height="50%" variant="simple">
+    <Table variant="simple">
       <Thead>
         <Tr>
           <Th>Title</Th>
