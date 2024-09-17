@@ -15,7 +15,7 @@ const menuItems = [
   { name: "My Groups", component: MyGroupsComponent },
 ];
 
-export default function UsersImportantStatsComponent({ mockTasks, mockMessages }: any) {
+export default function UsersImportantStatsComponent({ mockTasks, mockMessages, mockGroups }: any) {
   const [selectedComponent, setSelectedComponent] = useState("All Tasks");
 
   const renderSelectedComponent = () => {
@@ -24,6 +24,9 @@ export default function UsersImportantStatsComponent({ mockTasks, mockMessages }
     }
     if (selectedComponent === "Messages") {
       return <UserMessagesComponent messages={mockMessages} />;
+    }
+    if (selectedComponent === "My Groups") {
+        return <MyGroupsComponent groups={mockGroups} />;
     }
 
     const Component = menuItems.find((item) => item.name === selectedComponent)?.component;

@@ -28,11 +28,57 @@ const mockMessages = [
   { id: 5, sender: "Ethan Hunt", content: "New project kick-off meeting scheduled for tomorrow at 11 AM. Be there!", timestamp: "2023-09-15T17:00:00Z", read: true },
 ];
 
+const mockGroups = [
+  {
+    id: 1,
+    title: "Frontend Development",
+    description: "Group focused on frontend tech like React, CSS, and more.",
+    projectsCount: 12,
+    usersCount: 8,
+  },
+  {
+    id: 2,
+    title: "Backend Development",
+    description: "Working on server-side technologies like Node.js and databases.",
+    projectsCount: 15,
+    usersCount: 5,
+  },
+  {
+    id: 3,
+    title: "DevOps Team",
+    description: "Automating deployments and maintaining infrastructure.",
+    projectsCount: 9,
+    usersCount: 6,
+  },
+  {
+    id: 4,
+    title: "UI/UX Design",
+    description: "Designing intuitive and beautiful user interfaces.",
+    projectsCount: 7,
+    usersCount: 4,
+  },
+  {
+    id: 5,
+    title: "Project Management",
+    description: "Coordinating tasks and managing timelines for the project.",
+    projectsCount: 5,
+    usersCount: 3,
+  },
+  {
+    id: 6,
+    title: "Quality Assurance",
+    description: "Ensuring product quality through tests and reviews.",
+    projectsCount: 11,
+    usersCount: 5,
+  },
+];
+
+
 export default function ProfilePage() {
   return (
     <Box maxW="container.xl" mx="auto" px={4} py={8}>
       <ProfileDataComponent user={user} />
-      <UsersImportantStatsComponent mockTasks={mockTasks} mockMessages={mockMessages} />
+      <UsersImportantStatsComponent mockTasks={mockTasks} mockMessages={mockMessages} mockGroups={mockGroups} />
     </Box>
   );
 }
