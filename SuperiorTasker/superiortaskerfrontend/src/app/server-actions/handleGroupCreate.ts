@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { auth } from "@/commons/auth";
@@ -9,14 +10,16 @@ export async function handleGroupCreate(prevState: any, formData: FormData) {
   const activeUser: any = session?.user;
 
   const schema = z.object({
+    groupImage: z.string(),
     name: z.string().min(3),
-    description: z.string(),
-    password: z.string().min(3),
+    description: z.string()
+    
   });
   const validatedFields = schema.safeParse({
+    groupImage: z.string(),
     name: formData.get("name"),
-    description: formData.get("description"),
-    password: formData.get("password"),
+    description: formData.get("description")
+    
   });
   if (!validatedFields.success) {
     return {
@@ -24,33 +27,11 @@ export async function handleGroupCreate(prevState: any, formData: FormData) {
       message: "Invalid group data",
     };
   }
-  try {
-    await fetch("http://localhost:8080/api/groups/create", {
-      headers: {
-        authorization: `Bearer ${activeUser.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(validatedFields.data),
-    });
 
-    await fetch("http://localhost:8080/api/groups/join", {
-      headers: {
-        authorization: `Bearer ${activeUser.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        name: validatedFields.data.name,
-        password: validatedFields.data.password,
-      }),
-    });
-  } catch (e: any) {
-    return {
-      message: "Something went wrong",
-    };
+  try {
+    console.log("GroupSaved...")
+
+  }catch(error: any) {
+    console.log("Some error")
   }
-  return {
-    message: "Group created",
-  };
 }

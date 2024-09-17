@@ -8,6 +8,7 @@ import { Box, useDisclosure, Image, IconButton, Button } from "@chakra-ui/react"
 import React, { useState } from "react"
 import { useFormState } from "react-dom";
 import SideBarGroupDrawer from "./SideBarGroupDrawer";
+import CreateGroupModal from "../modals/CreateGroupModal";
 
 const initialState: any = {
     message: null,
@@ -18,6 +19,10 @@ export default function SideBarGroups({ accessToken }: any) {
     const [state, formAction] = useFormState(handleGroupCreate, initialState);
     const { groups, error } = useGroups(accessToken, state);
     const [activeGroup, setActiveGroup] = useState(null);
+    const [joinState, joinFormAction] = useFormState(
+      handleGroupCreate,
+      initialState,
+    );
 
     const {
         isOpen: isDrawerOpen,
@@ -56,6 +61,14 @@ export default function SideBarGroups({ accessToken }: any) {
         boxSize={14}
         onClick={onGroupModalOpen}
       />
+
+      <CreateGroupModal state={state}
+        formAction={formAction}
+        joinState={joinState}
+        joinFormAction={joinFormAction}
+        isOpen={isGroupModalOpen}
+        onClose={onGroupModalClose} />
+
       <SideBarGroupDrawer
         group={activeGroup}
         isOpen={isDrawerOpen}

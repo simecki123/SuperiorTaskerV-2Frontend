@@ -1,37 +1,17 @@
 "use client";
 import { Box, Collapse, Flex, IconButton, ScaleFade, useColorModeValue } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import SignOutButton from "./SignOutButton";
 import FooterLanguageButtons from "./FooterLanguageButtons";
 import SwitchColorThemeButton from "./SwitchColorThemeButton";
 import { SettingsIcon, CloseIcon } from "@chakra-ui/icons";
+import { useRef, useState } from "react";
 
-interface ExpandableFooterProps {
-  isSignOutButtonVisible: boolean;
-}
 
-const ExpandableFooter: React.FC<ExpandableFooterProps> = ({ isSignOutButtonVisible }) => {
+
+export default function ExpandableFooter() {
   const [isExpanded, setIsExpanded] = useState(false);
   const footerRef = useRef<HTMLDivElement>(null);
 
-  // Handle closing the footer when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (footerRef.current && !footerRef.current.contains(event.target as Node)) {
-        setIsExpanded(false);
-      }
-    };
-
-    if (isExpanded) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isExpanded]);
+  
 
   // Define background color for different modes
   const bgColor = useColorModeValue("whiteAlpha.900", "gray.800");
@@ -56,9 +36,7 @@ const ExpandableFooter: React.FC<ExpandableFooterProps> = ({ isSignOutButtonVisi
           transition="all 0.3s ease-in-out"
         >
           <Flex justify="space-between" align="center">
-            <ScaleFade initialScale={0.9} in={isSignOutButtonVisible}>
-              {isSignOutButtonVisible && <SignOutButton />}
-            </ScaleFade>
+            
             <FooterLanguageButtons />
             <SwitchColorThemeButton />
             <IconButton
@@ -99,4 +77,4 @@ const ExpandableFooter: React.FC<ExpandableFooterProps> = ({ isSignOutButtonVisi
   );
 };
 
-export default ExpandableFooter;
+

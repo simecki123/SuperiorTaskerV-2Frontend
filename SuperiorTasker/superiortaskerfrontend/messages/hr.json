@@ -24,9 +24,7 @@
         "enter-your-last-name": "Unesite vaše prezime",
         "your-last-name": "Vaše prezime",
         "register": "Registracija"
-    },
-
-    "Footer": {
-        "sign-out-btn": "Odjavi se"
     }
+
+    
 }
