@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Box, Grid, VStack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Grid, VStack, useColorModeValue, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import AllTasksComponent from "./user-data-options/AllTasksComponent";
 import UserMessagesComponent from "./user-data-options/UserMessagesComponent";
@@ -11,11 +12,25 @@ const menuItems = [
   { name: "All Tasks", component: AllTasksComponent },
   { name: "Messages", component: UserMessagesComponent },
   { name: "Stats", component: UserStatistics },
-  { name: "My Groups" , component: MyGroupsComponent },
+  { name: "My Groups", component: MyGroupsComponent },
 ];
 
-export default function UsersImportantStatsComponent() {
+export default function UsersImportantStatsComponent({ mockTasks }: any) {
   const [selectedComponent, setSelectedComponent] = useState("All Tasks");
+
+  const renderSelectedComponent = () => {
+    if (selectedComponent === "All Tasks") {
+      return <AllTasksComponent tasks={mockTasks} />;
+    }
+
+    const Component = menuItems.find((item) => item.name === selectedComponent)
+      ?.component;
+    if (Component) {
+      return <Component />;
+    }
+
+    return <Text>No component selected</Text>;
+  };
 
   return (
     <VStack spacing={8} align="stretch">
@@ -33,8 +48,13 @@ export default function UsersImportantStatsComponent() {
         ))}
       </Grid>
 
-      <Box p={6} borderWidth={1} borderRadius="lg" bg={useColorModeValue("white", "gray.800")}>
-        {menuItems.find((item) => item.name === selectedComponent)?.component()}
+      <Box
+        p={6}
+        borderWidth={1}
+        borderRadius="lg"
+        bg={useColorModeValue("white", "gray.800")}
+      >
+        {renderSelectedComponent()}
       </Box>
     </VStack>
   );
