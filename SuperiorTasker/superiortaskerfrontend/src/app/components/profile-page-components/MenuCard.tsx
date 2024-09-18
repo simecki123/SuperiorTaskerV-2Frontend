@@ -10,7 +10,7 @@ interface MenuCardProps {
   onClick: () => void;
 }
 
-export default function MenuCard({ name, title, isSelected, onClick }: MenuCardProps) {
+export default function MenuCard({  title, isSelected, onClick }: MenuCardProps) {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const selectedBg = useColorModeValue("blue.50", "blue.900");

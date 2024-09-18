@@ -65,6 +65,16 @@
         "status":"Status",
         "number-of-projects": "Broj projekata",
         "number-of-members": "Broj članova"
+    },
+
+    "projects-page": {
+        "group-projects": "Grupni Projekti",
+        "search-projects": "Pretraži projekte...",
+        "title":"Naslov",
+        "description":"Opis",
+        "start-date": "Početni Datum",
+        "end-date": "Završni datum",
+        "completion": "Postotak završenosti"
     }
 
     

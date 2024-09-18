@@ -66,6 +66,16 @@
         "status":"Status",
         "number-of-projects": "Number of projects",
         "number-of-members": "Number of members"
+    },
+
+    "projects-page": {
+        "group-projects": "Group Projects",
+        "search-projects": "Search projects...",
+        "title":"Title",
+        "description":"Description",
+        "start-date": "Start Date",
+        "end-date": "End Date",
+        "completion": "Completion"
     }
 
     
