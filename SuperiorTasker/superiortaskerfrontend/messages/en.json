@@ -25,6 +25,17 @@
         "your-last-name": "Your last name",
         "register": "Register"
 
+    },
+
+    "create-group-modal": {
+        "create-group-title": "Create a New Group",
+        "group-image": "Group image",
+        "click-to-upload-picture": "Click to upload picture",
+        "or-drag-and-drop": "or drag and drop",
+        "group-name": "Group name",
+        "group-description": "Group description",
+        "a-short-description-for-group": "Short description for the group",
+        "create-group": "Create group"
     }
 
     

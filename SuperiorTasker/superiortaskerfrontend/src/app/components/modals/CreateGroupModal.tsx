@@ -3,6 +3,7 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import React from "react";
 import CreateGroupForm from "../create-group-form/CreateGroupForm";
+import { useTranslations } from "next-intl";
 
 export default function CreateGroupModal({
   isOpen,
@@ -12,11 +13,14 @@ export default function CreateGroupModal({
   joinState,
   joinFormAction,
 }: any) {
+
+  const t = useTranslations('create-group-modal');
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg"> {/* Large size for better spacing */}
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create a New Group</ModalHeader>
+        <ModalHeader>{t('create-group-title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <CreateGroupForm

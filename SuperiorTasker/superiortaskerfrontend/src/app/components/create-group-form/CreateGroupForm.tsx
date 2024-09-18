@@ -15,8 +15,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import  FiUpload  from "@/../public/fallback-group.png";
+import { useTranslations } from "next-intl";
 
 export default function CreateGroupForm({ onClose, state, formAction }: any) {
+  const t = useTranslations('create-group-modal');
   const [groupName, setGroupName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -38,7 +40,7 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
       <VStack spacing={6} align="stretch">
         {/* Image Upload */}
         <FormControl>
-          <FormLabel>Group Image</FormLabel>
+          <FormLabel>{t('group-image')}</FormLabel>
           <Box
             borderWidth={2}
             borderStyle="dashed"
@@ -66,9 +68,9 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
             ) : (
               <VStack spacing={2}>
                 
-                <Text fontWeight="medium">Click to upload image</Text>
+                <Text fontWeight="medium">{t('click-to-upload-picture')}</Text>
                 <Text fontSize="sm" color="gray.500">
-                  or drag and drop
+                  {t('or-drag-and-drop')}
                 </Text>
               </VStack>
             )}
@@ -77,9 +79,9 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
 
         {/* Group Name Input */}
         <FormControl isRequired>
-          <FormLabel>Group Name</FormLabel>
+          <FormLabel>{t('group-name')}</FormLabel>
           <Input
-            placeholder="Enter group name"
+            placeholder={t('group-name')}
             value={groupName}
             onChange={(e) => setGroupName(e.target.value)}
           />
@@ -87,10 +89,10 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
 
         {/* Group Description Input */}
         <FormControl>
-          <FormLabel>Group Description</FormLabel>
+          <FormLabel>{t('group-description')}</FormLabel>
           <Textarea
             resize="none"
-            placeholder="Add a short description for the group"
+            placeholder={t('a-short-description-for-group')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -105,7 +107,7 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
           size="lg"
           width="full"
         >
-          Create Group
+          {t('create-group')}
         </Button>
       </VStack>
     </form>

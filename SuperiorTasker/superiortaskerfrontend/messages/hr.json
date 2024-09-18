@@ -24,6 +24,17 @@
         "enter-your-last-name": "Unesite vaše prezime",
         "your-last-name": "Vaše prezime",
         "register": "Registracija"
+    },
+
+    "create-group-modal": {
+        "create-group-title": "Stvori novu grupu",
+        "group-image": "Slika grupe",
+        "click-to-upload-picture": "Klikni za dodavanje slike",
+        "or-drag-and-drop": "ili povucite mišem",
+        "group-name": "Ime grupe",
+        "group-description": "Opis grupe",
+        "a-short-description-for-group": "Kratak opis grupe",
+        "create-group": "Stvori grupu"
     }
 
     
