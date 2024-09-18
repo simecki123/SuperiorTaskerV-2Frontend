@@ -20,7 +20,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
     return null;
   }
 
-  const { name, groupId, description } = group;
+  const { name, id, description } = group;
 
   return (
     <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="xs">
@@ -46,7 +46,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
         <DrawerBody>
           <VStack align="start" spacing={4} mt={4}>
             <Link
-              href={`projects?groupId=${groupId}`}
+              href={`projects?groupId=${id}`}
               _hover={{ textDecoration: "none", color: "xblue.400" }}
               display="flex"
               alignItems="center"
@@ -56,7 +56,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
             </Link>
             <Divider />
             <Link
-              href={`mytasks?groupId=${groupId}`}
+              href={`mytasks?groupId=${id}`}
               _hover={{ textDecoration: "none", color: "xblue.400" }}
               display="flex"
               alignItems="center"
@@ -66,7 +66,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
             </Link>
             <Divider />
             <Link
-              href={`group-info?groupId=${groupId}`}
+              href={`group-info?groupId=${id}`}
               _hover={{ textDecoration: "none", color: "xblue.400" }}
               display="flex"
               alignItems="center"

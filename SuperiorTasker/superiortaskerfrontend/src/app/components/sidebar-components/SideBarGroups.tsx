@@ -9,6 +9,7 @@ import React, { useState } from "react"
 import { useFormState } from "react-dom";
 import SideBarGroupDrawer from "./SideBarGroupDrawer";
 import CreateGroupModal from "../modals/CreateGroupModal";
+import ProfileButton from "../profile-page-components/ProfileButton";
 
 const initialState: any = {
     message: null,
@@ -61,6 +62,8 @@ export default function SideBarGroups({ accessToken }: any) {
         boxSize={14}
         onClick={onGroupModalOpen}
       />
+
+      <ProfileButton />
 
       <CreateGroupModal state={state}
         formAction={formAction}

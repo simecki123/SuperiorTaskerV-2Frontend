@@ -37,6 +37,7 @@ export default async function Layout({
         </Box>
         <Box className="grow">{children}</Box>
       </Box>
+      
       <Box className="fixed top-4 right-4 flex items-center space-x-6">
         <SignOutButton />
       </Box>
