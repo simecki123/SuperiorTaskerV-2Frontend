@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react"
 import { VStack, Box, Heading, Text } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 
 
 export default function GroupCard({ groups }: any) {
+  const t = useTranslations('my-groups-table')
   return (
     <VStack spacing={4} align="stretch">
       {groups.map((group: any) => (
@@ -11,10 +13,10 @@ export default function GroupCard({ groups }: any) {
           <Heading fontSize="xl">{group.title}</Heading>
           <Text mt={2}>{group.description}</Text>
           <Text mt={2} fontWeight="bold">
-            Number of projects: {group.projectsCount}
+            {t('number-of-projects')}: {group.projectsCount}
           </Text>
           <Text mt={2} fontWeight="bold">
-            Number of members: {group.usersCount}
+            {t('number-of-members')}: {group.usersCount}
           </Text>
         </Box>
       ))}

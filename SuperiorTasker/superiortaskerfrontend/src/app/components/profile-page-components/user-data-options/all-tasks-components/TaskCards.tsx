@@ -2,8 +2,10 @@
 "use client";
 import React from "react";
 import { VStack, Box, Heading, Text, Badge } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 
 export default function TaskCards({ tasks }: any) {
+  const t = useTranslations('all-tasks-table');
   return (
     <VStack spacing={4} align="stretch">
       {tasks.map((task: any) => (
@@ -14,7 +16,7 @@ export default function TaskCards({ tasks }: any) {
             Project: {task.projectName}
           </Text>
           <Badge mt={2} colorScheme={task.status === "done" ? "green" : "red"}>
-            {task.status === "done" ? "Done" : "In Progress"}
+            {task.status === "done" ? `${t('done')}` : `${t('in-progress')}`}
           </Badge>
         </Box>
       ))}

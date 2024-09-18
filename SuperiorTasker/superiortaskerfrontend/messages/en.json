@@ -43,6 +43,29 @@
         "messages": "Messages",
         "stats": "Stats",
         "my-groups": "My groups"
+    },
+
+    "all-tasks-table": {
+        "title": "Title",
+        "description": "Description",
+        "project": "Project",
+        "status": "Status",
+        "done": "Done",
+        "in-progress": "In Progress"
+    },
+
+    "user-messages": {
+        "read": "Read",
+        "unread": "Unread"
+    },
+
+    "my-groups-table": {
+        "title": "Title",
+        "description": "Description",
+        "project":"Project",
+        "status":"Status",
+        "number-of-projects": "Number of projects",
+        "number-of-members": "Number of members"
     }
 
     

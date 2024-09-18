@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { VStack, Box, Text, Badge, useBreakpointValue, Flex } from "@chakra-ui/react";
 import Pagination from "./all-tasks-components/Pagination";
+import { useTranslations } from "next-intl";
 
 interface Message {
   id: number;
@@ -14,6 +15,7 @@ interface Message {
 const ITEMS_PER_PAGE = 2; // Number of messages per page
 
 export default function UserMessagesComponent({ messages }: { messages: Message[] }) {
+  const t = useTranslations('user-messages');
   const [currentPage, setCurrentPage] = useState(1);
   const cardSize = useBreakpointValue({ base: "sm", md: "lg" });
 
@@ -42,7 +44,7 @@ export default function UserMessagesComponent({ messages }: { messages: Message[
               {message.sender}
             </Text>
             <Badge colorScheme={message.read ? "green" : "red"}>
-              {message.read ? "Read" : "Unread"}
+              {message.read ? `${t('read')}` : `${t('unread')}`}
             </Badge>
           </Flex>
           <Text fontSize={cardSize === "lg" ? "md" : "sm"} mb={2}>

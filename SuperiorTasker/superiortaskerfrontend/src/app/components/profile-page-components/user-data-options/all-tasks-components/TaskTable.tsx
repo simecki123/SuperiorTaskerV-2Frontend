@@ -2,16 +2,18 @@
 "use client";
 import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 
 export default function TaskTable({ tasks }: any) {
+  const t = useTranslations('all-tasks-table')
   return (
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Title</Th>
-          <Th>Description</Th>
-          <Th>Project</Th>
-          <Th>Status</Th>
+          <Th>{t('title')}</Th>
+          <Th>{t('description')}</Th>
+          <Th>{t('project')}</Th>
+          <Th>{t('status')}</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -22,7 +24,7 @@ export default function TaskTable({ tasks }: any) {
             <Td>{task.projectName}</Td>
             <Td>
               <Badge colorScheme={task.status === "done" ? "green" : "red"}>
-                {task.status === "done" ? "Done" : "In Progress"}
+                {task.status === "done" ? `${t('done')}` : `${t('in-progress')}` }
               </Badge>
             </Td>
           </Tr>
