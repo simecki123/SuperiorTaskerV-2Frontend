@@ -6,10 +6,11 @@ import { Box, VStack, Text, useColorModeValue } from "@chakra-ui/react";
 interface MenuCardProps {
   name: string;
   isSelected: boolean;
+  title: string;
   onClick: () => void;
 }
 
-export default function MenuCard({ name, isSelected, onClick }: MenuCardProps) {
+export default function MenuCard({ name, title, isSelected, onClick }: MenuCardProps) {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const selectedBg = useColorModeValue("blue.50", "blue.900");
@@ -33,7 +34,7 @@ export default function MenuCard({ name, isSelected, onClick }: MenuCardProps) {
       height="100%"
     >
       <VStack spacing={2}>
-        <Text fontWeight="medium">{name}</Text>
+        <Text fontWeight="medium">{title}</Text>
       </VStack>
     </Box>
   );

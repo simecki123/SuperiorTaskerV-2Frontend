@@ -2,20 +2,23 @@
 "use client";
 import { Box, Grid, VStack, useColorModeValue, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import AllTasksComponent from "./user-data-options/AllTasksComponent";
-import UserMessagesComponent from "./user-data-options/UserMessagesComponent";
-import UserStatistics from "./user-data-options/UserStatistics";
-import MyGroupsComponent from "./user-data-options/MyGroupsComponent";
-import MenuCard from "./MenuCard";
+import { useTranslations } from "next-intl";
+import AllTasksComponent from "./AllTasksComponent";
+import UserMessagesComponent from "./UserMessagesComponent";
+import MyGroupsComponent from "./MyGroupsComponent";
+import MenuCard from "../MenuCard";
+import UserStatistics from "./UserStatistics";
 
-const menuItems = [
-  { name: "All Tasks", component: AllTasksComponent },
-  { name: "Messages", component: UserMessagesComponent },
-  { name: "Stats", component: UserStatistics },
-  { name: "My Groups", component: MyGroupsComponent },
-];
+
 
 export default function UsersImportantStatsComponent({ mockTasks, mockMessages, mockGroups }: any) {
+  const t = useTranslations('menu-items');
+  const menuItems = [
+    { name: "All Tasks", title: `${t('all-tasks')}`, component: AllTasksComponent },
+    { name: "Messages", title: `${t('messages')}`,  component: UserMessagesComponent },
+    { name: "Stats", title: `${t('stats')}`, component: UserStatistics },
+    { name: "My Groups", title: `${t('my-groups')}`, component: MyGroupsComponent },
+  ];
   const [selectedComponent, setSelectedComponent] = useState("All Tasks");
 
   const renderSelectedComponent = () => {
@@ -44,6 +47,7 @@ export default function UsersImportantStatsComponent({ mockTasks, mockMessages, 
           <MenuCard
             key={item.name}
             name={item.name}
+            title={item.title}
             isSelected={selectedComponent === item.name}
             onClick={() => setSelectedComponent(item.name)}
           />

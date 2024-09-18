@@ -36,6 +36,13 @@
         "group-description": "Group description",
         "a-short-description-for-group": "Short description for the group",
         "create-group": "Create group"
+    },
+
+    "menu-items": {
+        "all-tasks": "All Tasks",
+        "messages": "Messages",
+        "stats": "Stats",
+        "my-groups": "My groups"
     }
 
     

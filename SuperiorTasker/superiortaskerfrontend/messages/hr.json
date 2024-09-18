@@ -35,6 +35,13 @@
         "group-description": "Opis grupe",
         "a-short-description-for-group": "Kratak opis grupe",
         "create-group": "Stvori grupu"
+    }, 
+    
+    "menu-items": {
+        "all-tasks": "Svi zadaci",
+        "messages": "Poruke",
+        "stats": "Statistika",
+        "my-groups": "Moje grupe"
     }
 
     

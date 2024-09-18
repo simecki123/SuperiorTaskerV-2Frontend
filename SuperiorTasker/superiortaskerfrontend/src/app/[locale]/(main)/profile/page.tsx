@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import ProfileDataComponent from "@/app/components/profile-page-components/ProfileDataComponent";
-import UsersImportantStatsComponent from "@/app/components/profile-page-components/UsersImportantStatsComponent";
+import UsersImportantStatsComponent from "@/app/components/profile-page-components/user-data-options/UsersImportantStatsComponent";
 
 const user = {
   id: "123",
