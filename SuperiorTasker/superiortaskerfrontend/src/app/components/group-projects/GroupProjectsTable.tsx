@@ -3,10 +3,15 @@
 import React, { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import { useRouter, useSearchParams } from "next/navigation";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 
-export default function GroupProjectsTable({ projects }: any) {
+export default function GroupProjectsTable({ projects }: any) { 
   const t = useTranslations('projects-page');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const groupId = searchParams.get("groupId");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -23,6 +28,10 @@ export default function GroupProjectsTable({ projects }: any) {
   const indexOfFirstProject = indexOfLastProject - itemsPerPage;
   const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
 
+  const handleRowClick = (projectId: number) => {
+    router.push(`/project-tasks?groupId=${groupId}&projectId=${projectId}`);
+  };
+
   return (
     <Box>
       <Box overflowX="auto">
@@ -38,7 +47,12 @@ export default function GroupProjectsTable({ projects }: any) {
           </Thead>
           <Tbody>
             {currentProjects.map((project: any) => (
-              <Tr key={project.id} >
+              <Tr 
+                key={project.id} 
+                cursor="pointer" 
+                onClick={() => handleRowClick(project.id)} // Make the row clickable
+                _hover={{ bg: "xblue.100" }} // Add hover effect
+              >
                 <Td fontWeight="bold">{project.title}</Td>
                 <Td>{project.description}</Td>
                 <Td>{project.startDate}</Td>

@@ -76,6 +76,22 @@
         "start-date": "Start Date",
         "end-date": "End Date",
         "completion": "Completion"
+    },
+
+    "project-tasks": {
+        "group-tasks": "Group Tasks",
+        "title": "Title",
+        "description": "Description",
+        "project": "Project",
+        "status": "Status",
+        "done": "Done",
+        "in-progress": "In Progress",
+        "actions": "Actions",
+        "change-status": "Change status",
+        "change-task-status": "Change Task Status",
+        "save": "Save",
+        "cancel": "Cancel"
+
     }
 
     

@@ -75,6 +75,22 @@
         "start-date": "Početni Datum",
         "end-date": "Završni datum",
         "completion": "Postotak završenosti"
+    },
+
+    "project-tasks": {
+        "group-tasks": "Zadaci grupe",
+        "title": "Naslov",
+        "description": "Opis",
+        "project": "Projekt",
+        "status": "Status",
+        "done": "Završen",
+        "in-progress": "U tijeku",
+        "actions": "Akcije",
+        "change-status": "Promjena statusa",
+        "change-task-status": "Promijeni status zadatka",
+        "save": "Spremi",
+        "cancel": "Odustani"
+
     }
 
     

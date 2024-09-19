@@ -56,7 +56,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
             </Link>
             <Divider />
             <Link
-              href={`mytasks?groupId=${id}`}
+              href={`project-tasks?groupId=${id}`}
               _hover={{ textDecoration: "none", color: "xblue.400" }}
               display="flex"
               alignItems="center"
