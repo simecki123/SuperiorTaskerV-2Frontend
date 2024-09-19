@@ -90,7 +90,9 @@
         "change-status": "Change status",
         "change-task-status": "Change Task Status",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "my-tasks": "My Tasks",
+        "all-tasks":"All Tasks"
 
     }
 

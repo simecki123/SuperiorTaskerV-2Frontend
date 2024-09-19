@@ -89,7 +89,9 @@
         "change-status": "Promjena statusa",
         "change-task-status": "Promijeni status zadatka",
         "save": "Spremi",
-        "cancel": "Odustani"
+        "cancel": "Odustani",
+        "my-tasks": "Moji Zadaci",
+        "all-tasks":"Svi zadaci"
 
     }
 
