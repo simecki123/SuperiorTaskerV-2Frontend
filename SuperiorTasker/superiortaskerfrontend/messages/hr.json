@@ -26,6 +26,12 @@
         "register": "Registracija"
     },
 
+    "side-bar-group-drawer": {
+        "projects": "Projekti",
+        "my-tasks":"Moji Zadaci",
+        "group-info": "Informacije o grupi"
+    },
+
     "create-group-modal": {
         "create-group-title": "Stvori novu grupu",
         "group-image": "Slika grupe",

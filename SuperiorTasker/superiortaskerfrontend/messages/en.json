@@ -27,6 +27,12 @@
 
     },
 
+    "side-bar-group-drawer": {
+        "projects": "Projects",
+        "my-tasks":"My Tasks",
+        "group-info": "Group Info"
+    },
+
     "create-group-modal": {
         "create-group-title": "Create a New Group",
         "group-image": "Group image",

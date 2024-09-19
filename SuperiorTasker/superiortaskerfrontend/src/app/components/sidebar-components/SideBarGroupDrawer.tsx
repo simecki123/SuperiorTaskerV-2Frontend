@@ -13,9 +13,13 @@ import {
   Box,
   Icon,
 } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
+
+  const t = useTranslations('side-bar-group-drawer');
+
   if (!group) {
     return null;
   }
@@ -52,7 +56,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
               alignItems="center"
               onClick={onClose}
             >
-              Projects
+              {t('projects')}
             </Link>
             <Divider />
             <Link
@@ -62,7 +66,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
               alignItems="center"
               onClick={onClose}
             >
-              My Tasks
+              {t('my-tasks')}
             </Link>
             <Divider />
             <Link
@@ -72,7 +76,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
               alignItems="center"
               onClick={onClose}
             >
-              Group Info
+              {t('group-info')}
             </Link>
           </VStack>
         </DrawerBody>
