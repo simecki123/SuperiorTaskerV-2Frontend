@@ -5,10 +5,12 @@ import { useBreakpointValue, Text, Box, Button } from "@chakra-ui/react";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupTasksTableComponent from "../group-tasks-components/GroupTasksTableComponent";
 import GroupTasksCardComponent from "../group-tasks-components/GroupTasksCardComponent";
+import { useTranslations } from "next-intl";
 
 const ITEMS_PER_PAGE = 4;
 
 export default function AllGroupTaskComponents({tasks}: any) {
+  const t = useTranslations('group-page')
   const [currentPage, setCurrentPage] = useState(1);
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
@@ -30,7 +32,7 @@ export default function AllGroupTaskComponents({tasks}: any) {
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
       >
-        Create new Task
+        {t('create-new-task')}
       </Button>
       {isDesktop ? (
         <GroupTasksTableComponent tasks={currentTasks} />

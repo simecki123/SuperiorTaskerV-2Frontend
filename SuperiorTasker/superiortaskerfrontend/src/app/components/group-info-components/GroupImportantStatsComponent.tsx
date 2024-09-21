@@ -7,15 +7,18 @@ import AllGroupMembersComponent from "./group-menu-components/AllGroupMembersCom
 import AllGroupProjectsComponent from "./group-menu-components/AllGroupProjectsComponent";
 import AllGroupTaskComponents from "./group-menu-components/AllGroupTaskComponents";
 import SendMessageComponent from "./group-menu-components/SendMessageComponent";
+import { useTranslations } from "next-intl";
 
 
 export default function GroupImportantStatsComponent({members, group, projects, tasks}: any) {
 
+  const t = useTranslations('group-page')
+
     const menuItems = [
-        { name: "All Members", title: `AllMembers`, component: AllGroupMembersComponent },
-        { name: "All Projects", title: `All Projects`,  component: AllGroupProjectsComponent },
-        { name: "All Tasks", title: `All Tasks`, component: AllGroupTaskComponents },
-        { name: "Send Message", title: `Send Message`, component: SendMessageComponent },
+        { name: "All Members", title: `${t('all-members')}`, component: AllGroupMembersComponent },
+        { name: "All Projects", title: `${t('all-projects')}`,  component: AllGroupProjectsComponent },
+        { name: "All Tasks", title: `${t('all-tasks')}`, component: AllGroupTaskComponents },
+        { name: "Send Message", title: `${t('send-message')}`, component: SendMessageComponent },
       ];
 
       const [selectedComponent, setSelectedComponent] = useState("All Members");

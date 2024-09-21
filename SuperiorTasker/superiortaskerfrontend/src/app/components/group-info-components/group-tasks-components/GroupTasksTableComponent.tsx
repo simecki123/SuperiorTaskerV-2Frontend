@@ -3,17 +3,20 @@
 import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Box } from "@chakra-ui/react";
 import TaskStatusModal from "../../modals/TaskStatusModal";
+import { useTranslations } from "next-intl";
 
 export default function GroupTasksTableComponent({ tasks }: any) {
+  const t = useTranslations('group-page')
+
   return (
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Title</Th>
-          <Th>Description</Th>
-          <Th>Project</Th>
-          <Th>Status</Th>
-          <Th>Actions</Th>
+          <Th>{t('title')}</Th>
+          <Th>{t('description')}</Th>
+          <Th>{t('project')}</Th>
+          <Th>{t('status')}</Th>
+          <Th>{t('actions')}</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -33,7 +36,7 @@ export default function GroupTasksTableComponent({ tasks }: any) {
                   _hover={{ bg: "red.100" }}
                   onClick={() => console.log(`Deleting task ${task.id}`)}
                 >
-                  Delete Task
+                  {t('delete-task')}
                 </Button>
               </Box>
             </Td>

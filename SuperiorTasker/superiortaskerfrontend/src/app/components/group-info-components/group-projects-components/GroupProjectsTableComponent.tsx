@@ -2,18 +2,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react"
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 
 export default function GroupProjectsTableComponent({ projects }: any) {
+  const t = useTranslations('group-page')
   return (
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Project Title</Th>
-          <Th>Description</Th>
-          <Th>Start Date</Th>
-          <Th>End Date</Th>
-          <Th>Completion</Th>
-          <Th>Delete Project</Th>
+          <Th>{t('project-title')}</Th>
+          <Th>{t('description')}</Th>
+          <Th>{t('start-date')}</Th>
+          <Th>{t('end-date')}</Th>
+          <Th>{t('completion')}</Th>
+          <Th>{t('delete-project')}</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -33,7 +35,7 @@ export default function GroupProjectsTableComponent({ projects }: any) {
                 borderRadius="md"
                 onClick={() => console.log(`Deleting project ${project.id}`)}
               >
-                Delete Project
+                {t('delete-project')}
               </Button>
             </Td>
           </Tr>

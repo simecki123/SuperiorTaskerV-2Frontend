@@ -5,10 +5,12 @@ import React, { useState } from "react"
 import MembersTableComponent from "../group-members-components/MembersTableComponent";
 import MembersCardComponent from "../group-members-components/MembersCardComponent";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
+import { useTranslations } from "next-intl";
 
 const ITEMS_PER_PAGE = 4;
 
 export default function AllGroupMembersComponent({ members }: any) {
+  const t = useTranslations('group-page');
   const [currentPage, setCurrentPage] = useState(1);
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
@@ -30,7 +32,7 @@ export default function AllGroupMembersComponent({ members }: any) {
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
       >
-        Add New Member
+        {t('add-new-member')}
       </Button>
       {isDesktop ? (
         <MembersTableComponent members={currentMembers} />

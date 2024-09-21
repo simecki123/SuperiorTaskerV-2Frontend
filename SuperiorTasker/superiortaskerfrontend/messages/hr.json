@@ -99,7 +99,37 @@
         "my-tasks": "Moji Zadaci",
         "all-tasks":"Svi zadaci"
 
+    },
+
+    "group-page": {
+        "edit-group": "Uredi grupu",
+        "all-members": "Svi članovi",
+        "all-projects": "Svi projekti",
+        "all-tasks": "Svi zadaci",
+        "send-message": "Pošalji poruku",
+        "add-new-member": "Dodaj novog člana",
+        "profile-picture": "Profilna slika",
+        "first-name": "Ime",
+        "last-name": "Prezime",
+        "remove-user-options": "Opcija za uklanjanje korisnika",
+        "remove-member": "Ukloni člana",
+        "member-id": "ID člana",
+        "create-new-project": "Kreiraj novi projekt",
+        "project-title": "Naslov projekta",
+        "description": "Opis",
+        "start-date": "Datum početka",
+        "end-date": "Datum završetka",
+        "completion": "Završetak",
+        "delete-project": "Obriši projekt",
+        "create-new-task": "Kreiraj novi zadatak",
+        "title": "Naslov",
+        "project": "Projekt",
+        "status": "Status",
+        "actions": "Akcije",
+        "delete-task": "Obriši zadatak",
+        "type-your-message-here": "Upišite vašu poruku ovdje..."
     }
+    
 
     
 }

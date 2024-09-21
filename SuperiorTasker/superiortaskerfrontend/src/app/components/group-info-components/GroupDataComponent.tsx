@@ -2,8 +2,12 @@
 "use client"
 import React from "react";
 import { Image, Text, HStack, Button, VStack } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 
 export default function GroupDataComponent({ group }: any) {
+
+  const t = useTranslations('group-page')
+
   return (
     <HStack
       spacing={{ base: 4, md: 6 }} // Responsive spacing
@@ -39,7 +43,7 @@ export default function GroupDataComponent({ group }: any) {
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
       >
-        Edit Group
+        {t('edit-group')}
       </Button>
     </HStack>
   );

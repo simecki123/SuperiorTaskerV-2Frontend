@@ -5,12 +5,14 @@ import { useBreakpointValue, Text, Box, Button } from "@chakra-ui/react";
 import GroupProjetsTableComponents from "../group-projects-components/GroupProjectsTableComponent";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupProjectsCardComponent from "../group-projects-components/GroupProjectsCardComponent";
+import { useTranslations } from "next-intl";
 
 
 const ITEMS_PER_PAGE = 4;
 
 
 export default function AllGroupProjectsComponent({projects}: any) {
+  const t = useTranslations('group-page')
   const [currentPage, setCurrentPage] = useState(1);
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
@@ -32,7 +34,7 @@ export default function AllGroupProjectsComponent({projects}: any) {
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
       >
-        Create new Project
+        {t('create-new-project')}
       </Button>
       {isDesktop ? (
         <GroupProjetsTableComponents projects={currentProjects} />
