@@ -5,7 +5,6 @@ import SearchbarForProjects from "@/app/components/group-projects/SearchBarForPr
 import { Heading, VStack, useBreakpointValue } from "@chakra-ui/react";
 import ProjectTasksTable from "./ProjectTasksTable";
 import ProjectTaskCards from "./ProjectTaskDataCard";
-import TaskViewSelector from "./TaskViewSelector"; // Import the selector component
 import { useTranslations } from "next-intl";
 
 export default function ProjectTaskData({ tasks }: any) {
@@ -18,7 +17,6 @@ export default function ProjectTaskData({ tasks }: any) {
         {t('group-tasks')}
       </Heading>
       <SearchbarForProjects />
-      <TaskViewSelector /> {/* This is for view only */}
       
       {isDesktop ? (
         <ProjectTasksTable tasks={tasks} />

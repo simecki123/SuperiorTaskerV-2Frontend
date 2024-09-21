@@ -10,7 +10,7 @@ export default function TaskStatusModal() {
 
   return (
     <>
-      <Button colorScheme="teal" onClick={onOpen}>
+      <Button size="sm" colorScheme="teal" onClick={onOpen}>
         {t('change-status')}
       </Button>
 
