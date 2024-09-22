@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Box } from "@chakra-ui/react";
 import TaskStatusModal from "../../modals/TaskStatusModal";
 import { useTranslations } from "next-intl";
+import DeleteTaskModal from "../../modals/DeleteTaskConfirmationModal";
 
 export default function GroupTasksTableComponent({ tasks }: any) {
+  const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<any>(null);
   const t = useTranslations('group-page')
 
   return (
@@ -33,11 +36,26 @@ export default function GroupTasksTableComponent({ tasks }: any) {
                   colorScheme="red" 
                   variant="outline" 
                   size="sm"
-                  _hover={{ bg: "red.100" }}
-                  onClick={() => console.log(`Deleting task ${task.id}`)}
+                  _hover={{ bg: "red.100" }} 
+                  borderRadius="md"
+                  onClick={() => {
+                    setTaskToDelete(task);
+                    setIsDeleteTaskModalOpen(true);
+                  }}
                 >
                   {t('delete-task')}
                 </Button>
+                <DeleteTaskModal
+                  isOpen={isDeleteTaskModalOpen}
+                  onClose={() => setIsDeleteTaskModalOpen(false)}
+                  onConfirm={() => {
+                    // Handle delete task logic here
+                    console.log('Deleting task:', taskToDelete);
+                    setIsDeleteTaskModalOpen(false);
+                    setTaskToDelete(null);
+                  }}
+                  taskName={taskToDelete ? taskToDelete.name : ''}
+                />
               </Box>
             </Td>
           </Tr>
