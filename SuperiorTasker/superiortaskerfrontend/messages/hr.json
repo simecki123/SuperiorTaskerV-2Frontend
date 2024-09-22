@@ -138,7 +138,12 @@
         "save-changes": "Spremi Promjene",
         "leave-group-confirmation": "Napusti Grupu",
         "leave-group-message": "Jeste li sigurni da želite napustiti grupu",
-        "confirm-leave": "Napust Grupu"
+        "confirm-leave": "Napusti Grupu",
+        "search-users": "Pretraži sve korisnike",
+        "add-selected-users": "Dodaj odabrane korisnike",
+        "remove-member-confirmation": "Potvrda za izbacivanje korisnika iz grupe",
+        "remove-member-message": "Jeste li sigurni da želite izbaciti ovog korisnika iz grupe",
+        "confirm-remove": "Izbaci korisnika"
     }
     
 

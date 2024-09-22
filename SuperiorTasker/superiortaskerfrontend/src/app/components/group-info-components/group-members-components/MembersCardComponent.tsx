@@ -2,11 +2,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Heading, VStack, Text, Avatar, HStack, Button } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useState } from "react";
+import RemoveUserModal from "../../modals/RemoveUserModal";
 
 export default function MembersCardComponent({ members }: any) {
 
   const t = useTranslations('group-page')
+  const [isRemoveUserModalOpen, setIsRemoveUserModalOpen] = useState(false);
+  const [userToRemove, setUserToRemove] = useState<any>(null);
+  
 
   return (
     <VStack spacing={4} align="stretch">
@@ -27,10 +31,24 @@ export default function MembersCardComponent({ members }: any) {
             <Button 
               colorScheme="red" 
               size="sm" 
-              onClick={() => console.log(`Removing member ${member.id}`)}
+              onClick={() => {
+                setUserToRemove(member);
+                setIsRemoveUserModalOpen(true);
+              }}
             >
               {t('remove-member')}
             </Button>
+            <RemoveUserModal
+              isOpen={isRemoveUserModalOpen}
+              onClose={() => setIsRemoveUserModalOpen(false)}
+              onConfirm={() => {
+                // Handle remove user logic here
+                console.log('Removing user:', userToRemove);
+                setIsRemoveUserModalOpen(false);
+                setUserToRemove(null);
+              }}
+              userName={userToRemove ? `${userToRemove.firstName} ${userToRemove.lastName}` : ''}
+            />
           </HStack>
         </Box>
       ))}

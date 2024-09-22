@@ -139,7 +139,12 @@
         "save-changes": "Save changes",
         "leave-group-confirmation": "Leave group",
         "leave-group-message": "Are you sure you want to leave group",
-        "confirm-leave": "Leave group"
+        "confirm-leave": "Leave group",
+        "search-users": "Search all users",
+        "add-selected-users": "Add selected users",
+        "remove-member-confirmation": "Remove member confirmation",
+        "remove-member-message": "Are you sure that you want to remove this member from the group",
+        "confirm-remove": "Remove member"
         
     }
 

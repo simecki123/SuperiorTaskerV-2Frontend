@@ -6,11 +6,13 @@ import MembersTableComponent from "../group-members-components/MembersTableCompo
 import MembersCardComponent from "../group-members-components/MembersCardComponent";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import { useTranslations } from "next-intl";
+import AddUserModal from "../../modals/AddUserToGroupModal";
 
 const ITEMS_PER_PAGE = 4;
 
 export default function AllGroupMembersComponent({ members }: any) {
   const t = useTranslations('group-page');
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const isDesktop = useBreakpointValue({ base: false, md: true });
 
@@ -31,9 +33,20 @@ export default function AllGroupMembersComponent({ members }: any) {
         mb={4} 
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
+        onClick={() => setIsAddUserModalOpen(true)}
       >
         {t('add-new-member')}
       </Button>
+      <AddUserModal
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onAddUsers={(users) => {
+          // Handle adding users logic here
+          console.log('Users to add:', users);
+          setIsAddUserModalOpen(false);
+        }}
+      />
+
       {isDesktop ? (
         <MembersTableComponent members={currentMembers} />
       ) : (
