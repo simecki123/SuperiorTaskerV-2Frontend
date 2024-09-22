@@ -2,9 +2,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Heading, VStack, Text, HStack, Button } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useState } from "react";
+import DeleteProjectModal from "../../modals/DeleteProjectConfirmation";
 
 export default function GroupProjectsCardComponent({ projects }: any) {
+  const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<any>(null);
   const t = useTranslations('group-page')
 
   return (
@@ -19,11 +22,28 @@ export default function GroupProjectsCardComponent({ projects }: any) {
           <HStack mt={4} justifyContent="flex-end">
             <Button 
               colorScheme="red" 
+              variant="outline" 
               size="sm"
-              onClick={() => console.log(`Deleting project ${project.id}`)}
+              _hover={{ bg: "red.100" }} 
+              borderRadius="md"
+              onClick={() => {
+                setProjectToDelete(project);
+                setIsDeleteProjectModalOpen(true);
+              }}
             >
               {t('delete-project')}
             </Button>
+            <DeleteProjectModal
+              isOpen={isDeleteProjectModalOpen}
+              onClose={() => setIsDeleteProjectModalOpen(false)}
+              onConfirm={() => {
+                // Handle delete project logic here
+                console.log('Deleting project:', projectToDelete);
+                setIsDeleteProjectModalOpen(false);
+                setProjectToDelete(null);
+              }}
+              projectName={projectToDelete ? projectToDelete.title : ''}
+            />
           </HStack>
         </Box>
       ))}

@@ -143,7 +143,15 @@
         "add-selected-users": "Dodaj odabrane korisnike",
         "remove-member-confirmation": "Potvrda za izbacivanje korisnika iz grupe",
         "remove-member-message": "Jeste li sigurni da želite izbaciti ovog korisnika iz grupe",
-        "confirm-remove": "Izbaci korisnika"
+        "confirm-remove": "Izbaci korisnika",
+        "project-name": "Ime projekta",
+        "enter-project-name": "Unsesite ime novog projekta",
+        "project-description": "Opis projekta",
+        "enter-project-description": "Unesite opis za novi projekt",
+        "create-project": "Stvori Novi Projekt",
+        "delete-project-confirmation": "Potvrda za brisanje projekta",
+        "delete-project-message": "Jeste li sigurni da želite izbrisati ovaj projekt",
+        "confirm-delete": "Izbriši projekt"
     }
     
 

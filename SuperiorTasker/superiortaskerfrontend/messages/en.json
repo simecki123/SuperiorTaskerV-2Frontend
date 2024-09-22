@@ -144,7 +144,15 @@
         "add-selected-users": "Add selected users",
         "remove-member-confirmation": "Remove member confirmation",
         "remove-member-message": "Are you sure that you want to remove this member from the group",
-        "confirm-remove": "Remove member"
+        "confirm-remove": "Remove member",
+        "project-name": "Project name",
+        "enter-project-name": "Enter your new project name",
+        "project-description": "Project description",
+        "enter-project-description": "Enter your new project description",
+        "create-project": "Create New Project",
+        "delete-project-confirmation": "Confirmation to delete project",
+        "delete-project-message": "Are you sure you want to delete project",
+        "confirm-delete": "Delete Project"
         
     }
 

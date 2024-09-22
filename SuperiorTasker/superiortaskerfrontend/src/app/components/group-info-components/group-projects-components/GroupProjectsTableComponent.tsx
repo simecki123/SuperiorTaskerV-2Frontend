@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react"
+import React, { useState } from "react"
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import DeleteProjectModal from "../../modals/DeleteProjectConfirmation";
 
 export default function GroupProjectsTableComponent({ projects }: any) {
+  const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<any>(null);
   const t = useTranslations('group-page')
   return (
     <Table variant="simple">
@@ -27,16 +30,30 @@ export default function GroupProjectsTableComponent({ projects }: any) {
             <Td>{project.endDate}</Td>
             <Td>{project.completion}</Td>
             <Td>
-              <Button 
-                colorScheme="red" 
-                variant="outline" 
-                size="sm"
-                _hover={{ bg: "red.100" }} 
-                borderRadius="md"
-                onClick={() => console.log(`Deleting project ${project.id}`)}
-              >
-                {t('delete-project')}
-              </Button>
+            <Button 
+              colorScheme="red" 
+              variant="outline" 
+              size="sm"
+              _hover={{ bg: "red.100" }} 
+              borderRadius="md"
+              onClick={() => {
+                setProjectToDelete(project);
+                setIsDeleteProjectModalOpen(true);
+              }}
+            >
+              {t('delete-project')}
+            </Button>
+            <DeleteProjectModal
+              isOpen={isDeleteProjectModalOpen}
+              onClose={() => setIsDeleteProjectModalOpen(false)}
+              onConfirm={() => {
+                // Handle delete project logic here
+                console.log('Deleting project:', projectToDelete);
+                setIsDeleteProjectModalOpen(false);
+                setProjectToDelete(null);
+              }}
+              projectName={projectToDelete ? projectToDelete.title : ''}
+            />
             </Td>
           </Tr>
         ))}
