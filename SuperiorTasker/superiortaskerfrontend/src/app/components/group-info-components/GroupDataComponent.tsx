@@ -3,8 +3,14 @@
 import React from "react";
 import { Image, Text, HStack, Button, VStack } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import UpdateGroupModal from "../modals/UpdateGroupModal";
+import LeaveGroupModal from "../modals/LeaveGroupMoadal";
+
 
 export default function GroupDataComponent({ group }: any) {
+
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = React.useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
 
   const t = useTranslations('group-page')
 
@@ -42,9 +48,45 @@ export default function GroupDataComponent({ group }: any) {
         mb={4} 
         _hover={{ bg: "blue.600" }} 
         borderRadius="md"
+        onClick={() => setIsUpdateModalOpen(true)}
       >
         {t('edit-group')}
       </Button>
+      <Button 
+        colorScheme="blue" 
+        variant="solid" 
+        size="md" 
+        mb={4} 
+        _hover={{ bg: "blue.600" }} 
+        borderRadius="md"
+        onClick={() => setIsLeaveModalOpen(true)}
+      >
+        {t('leave-group')}
+      </Button>
+
+      <LeaveGroupModal
+        isOpen={isLeaveModalOpen}
+        onClose={() => setIsLeaveModalOpen(false)}
+        onConfirm={() => {
+          // Handle leave group logic here
+          setIsLeaveModalOpen(false);
+        }}
+        groupName={group.name}
+      />
+
+      <UpdateGroupModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        onSubmit={(data) => {
+          // Handle update group logic here
+          console.log('Updated group data:', data);
+          setIsUpdateModalOpen(false);
+        }}
+        initialData={{
+          name: group.name,
+          description: group.description,
+        }}
+      />
     </HStack>
   );
 }

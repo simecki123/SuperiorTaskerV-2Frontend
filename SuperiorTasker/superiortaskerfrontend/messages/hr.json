@@ -127,7 +127,18 @@
         "status": "Status",
         "actions": "Akcije",
         "delete-task": "Obriši zadatak",
-        "type-your-message-here": "Upišite vašu poruku ovdje..."
+        "type-your-message-here": "Upišite vašu poruku ovdje...",
+        "leave-group": "Napusti grupu",
+        "update-group": "Promijeni podatke",
+        "group-name":"Ime grupe",
+        "enter-group-name": "Unesite novo ime grupe",
+        "group-description":"Opis grupe",
+        "enter-group-description": "Unesite opis grupe",
+        "cancel":"Odustani",
+        "save-changes": "Spremi Promjene",
+        "leave-group-confirmation": "Napusti Grupu",
+        "leave-group-message": "Jeste li sigurni da želite napustiti grupu",
+        "confirm-leave": "Napust Grupu"
     }
     
 

@@ -128,7 +128,18 @@
         "status":"Status",
         "actions":"Actions",
         "delete-task":"Delete Task",
-        "type-your-message-here": "Type your message here..."
+        "type-your-message-here": "Type your message here...",
+        "leave-group": "Leave Group",
+        "update-group": "Update Group",
+        "group-name":"Group name",
+        "enter-group-name": "Enter new group name",
+        "group-description":"Group description",
+        "enter-group-description": "Enter group description",
+        "cancel":"Cancel",
+        "save-changes": "Save changes",
+        "leave-group-confirmation": "Leave group",
+        "leave-group-message": "Are you sure you want to leave group",
+        "confirm-leave": "Leave group"
         
     }
 
