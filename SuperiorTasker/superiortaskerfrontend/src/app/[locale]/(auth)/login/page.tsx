@@ -9,7 +9,7 @@ export default function Login() {
 
   const t = useTranslations('loginpage'); // Correct the key to 'loginpage'
   
-
+ 
   return (
     <Box
       minH="100vh"
