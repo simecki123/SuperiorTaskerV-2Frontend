@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import ProfileDataComponent from "@/app/components/profile-page-components/ProfileDataComponent";
 import UsersImportantStatsComponent from "@/app/components/profile-page-components/user-data-options/UsersImportantStatsComponent";
+import { auth } from "@/commons/auth";
 
-const user = {
-  id: "123",
-  firstName: "John",
-  lastName: "Doe",
-  profileImage: "https://geo-media.beatport.com/image_size/1400x1400/a62f2539-e1f7-4d38-b6f8-ca5ea6a20371.jpg",
-};
+
 
 const mockTasks = [
   { id: 1, title: "Implement login feature", description: "Create a secure login system", projectName: "Auth Service", status: "in_progress" },
@@ -74,7 +71,11 @@ const mockGroups = [
 ];
 
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+
+  const session: any = await auth();
+  const user: any = session?.user;
+
   return (
     <Box maxW="container.xl" mx="auto" px={4} py={8}>
       <ProfileDataComponent user={user} />

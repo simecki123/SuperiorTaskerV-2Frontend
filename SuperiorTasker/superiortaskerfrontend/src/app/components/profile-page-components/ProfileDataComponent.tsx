@@ -1,28 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Image, Text, HStack, Box } from "@chakra-ui/react";
+import { Avatar, Text, HStack, Box, Button, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import EditProfileModal from "../modals/EditProfileModal";
 
 export default function ProfileDataComponent({ user }: any) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <HStack
-      spacing={6}  // Space between the image and the text
-      align="center"  // Align items vertically centered
-      mb={8}
-    >
-      <Image
-        borderRadius="full"
-        boxSize="120px"
-        src={user.profileImage}
-        fallbackSrc="/public/fallback-user.png"
-        alt={`${user.firstName} ${user.lastName}`}
-      />
-      <Box>
-        <Text fontSize="2xl" fontWeight="bold">
-          {user.firstName} {user.lastName}
-        </Text>
-        {/* Optionally, add more user info here */}
-      </Box>
-    </HStack>
+    <>
+      <HStack
+        spacing={6}  // Space between the image and the text
+        align="center"  // Align items vertically centered
+        mb={8}
+      >
+        <Avatar
+          name={`${user.firstName} ${user.lastName}`}  // This will display initials if no image
+          src={user.profileImage}  // User's image
+          size="2xl"  // Size of the avatar
+        />
+        <Box>
+          <Text fontSize="2xl" fontWeight="bold">
+            {user.firstName} {user.lastName}
+          </Text>
+          <Text fontStyle={user.description ? "normal" : "italic"} color="gray.500">
+            {user.description || "Description goes here..."}
+          </Text>
+        </Box>
+
+        <Button onClick={onOpen}>Edit profile</Button>
+      </HStack>
+
+      {/* Modal for editing profile */}
+      <EditProfileModal isOpen={isOpen} onClose={onClose} user={user} />
+    </>
   );
 }
