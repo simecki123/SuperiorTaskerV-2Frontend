@@ -1,12 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from "@chakra-ui/react";
 import SideBarGroups from "@/app/components/sidebar-components/SideBarGroups";
 import SignOutButton from "@/app/components/fotter-components/SignOutButton";
+import { auth } from "@/commons/auth";
+import { redirect } from "next/navigation";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const activeUser = {
-    "userProfileId": "1",
-    "accessToken": "accessToken1"
-  };
+export default async function Layout({ children }: { children: React.ReactNode }) {
+
+  //old mock user
+  const session = await auth();
+  const activeUser: any = session?.user;
+  console.log(activeUser);
+  if (!activeUser) {
+    redirect("/login");
+  }
 
   return (
     <Box className="flex h-screen items-stretch">

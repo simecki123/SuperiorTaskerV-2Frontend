@@ -1,7 +1,11 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  
   providers: [
     Credentials({
       credentials: {
@@ -9,8 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        console.log(`${process.env.BACKEND_URL}/api/auth/login`);
-        const res = await fetch(`${process.env.BACKEND_URL}/api/auth/login`, {
+        const res = await fetch(`http://localhost:8080/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -22,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         const token = await res.json();
         const user = await fetch(
-          `${process.env.BACKEND_URL}/api/auth/fetchMe`,
+          `http://localhost:8080/api/auth/fetchMe`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -34,7 +37,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!user.ok) {
           throw new Error("Fetch on user failed");
         }
-        // eslint-disable-next-line prefer-const
         let returnUser = await user.json();
         returnUser.accessToken = token?.accessToken;
         return returnUser;
@@ -46,7 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     maxAge: 60 * 60 * 24,
   },
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async signIn({ user, account, profile, email, credentials }) {
       return true;
     },
@@ -59,7 +60,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: any }) {
       if (token.user) {
         session.user = token.user;

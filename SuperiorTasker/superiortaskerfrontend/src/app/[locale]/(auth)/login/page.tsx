@@ -1,14 +1,26 @@
-/* eslint-disable jsx-a11y/alt-text */
+"use client";
+
 import { Box, Button, Divider, Heading, Image, Link, Text } from "@chakra-ui/react"
 import React from "react"
 import NextLink from "next/link";
 import LoginForm from "@/app/components/login-components/LoginForm";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const t = useTranslations('loginpage');
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  const t = useTranslations('loginpage'); // Correct the key to 'loginpage'
-  
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (session) {
+    router.push("/profile");
+    return null;
+  }
  
   return (
     <Box
@@ -56,4 +68,4 @@ export default function Login() {
       </Box>
     </Box>
   )
-};
+}
