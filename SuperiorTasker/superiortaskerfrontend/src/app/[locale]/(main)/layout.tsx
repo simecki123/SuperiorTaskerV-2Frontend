@@ -10,7 +10,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   //old mock user
   const session = await auth();
   const activeUser: any = session?.user;
-  console.log(activeUser);
+  console.log("Aktivni usercic: ", activeUser);
   if (!activeUser) {
     redirect("/login");
   }
@@ -18,7 +18,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <Box className="flex h-screen items-stretch">
       <Box>
-        <SideBarGroups accessToken={activeUser.accessToken} />
+        <SideBarGroups activeUser={activeUser}/>
       </Box>
       <Box className="grow">{children}</Box>
       <Box className="fixed top-4 right-4 flex items-center space-x-6">

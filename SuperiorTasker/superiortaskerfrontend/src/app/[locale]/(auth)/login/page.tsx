@@ -1,25 +1,18 @@
-"use client";
 
 import { Box, Button, Divider, Heading, Image, Link, Text } from "@chakra-ui/react"
 import React from "react"
 import NextLink from "next/link";
 import LoginForm from "@/app/components/login-components/LoginForm";
-import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { auth } from "@/commons/auth";
+import { getTranslations } from "next-intl/server";
 
-export default function Login() {
-  const t = useTranslations('loginpage');
-  const { data: session, status } = useSession();
-  const router = useRouter();
+export default async function LoginPage() {
+  const t = await getTranslations('loginpage');
+  const session = await auth();
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
-  if (session) {
-    router.push("/profile");
-    return null;
+  if(!!session?.user) {
+    redirect("/profile");
   }
  
   return (

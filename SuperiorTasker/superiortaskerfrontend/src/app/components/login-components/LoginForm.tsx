@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import { handleLogin } from "@/app/server-actions/login";
 import { Button, Input, Text, FormControl, FormErrorMessage, useToast, VStack } from "@chakra-ui/react"
 import { useTranslations } from "next-intl";

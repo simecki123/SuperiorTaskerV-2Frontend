@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const res = await fetch(`http://localhost:8080/api/auth/login`, {
+        const res = await fetch(`${process.env.BACKEND_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -24,9 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Login failed");
         }
         const token = await res.json();
-        const user = await fetch(
-          `http://localhost:8080/api/auth/fetchMe`,
-          {
+        const user = await fetch(`${process.env.BACKEND_URL}/api/auth/fetchMe`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token?.accessToken}`,
@@ -84,5 +82,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/login",
+    signOut: "/"
   },
 });
