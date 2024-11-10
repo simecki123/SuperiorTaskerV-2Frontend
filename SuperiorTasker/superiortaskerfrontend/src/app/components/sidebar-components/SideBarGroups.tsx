@@ -78,7 +78,7 @@ export default function SideBarGroups({ activeUser }: { activeUser: User }) {
         onClick={onGroupModalOpen}
       />
 
-      <ProfileButton />
+      <ProfileButton activeUser={activeUser} />
 
       {/* Only render modals if there's an active group */}
       {activeGroup && (

@@ -10,15 +10,11 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation';
+import { User } from '@/app/interfaces/types';
 
-const user = {
-  id: "123",
-  firstName: "John",
-  lastName: "Doe",
-  profileImage: "/api/placeholder/100/100",
-};
 
-export default function ProfileButton() {
+
+export default function ProfileButton({ activeUser }: {activeUser: User}) {
   const router = useRouter();
   const bgColor = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.800", "white");
@@ -40,8 +36,8 @@ export default function ProfileButton() {
         >
           <Avatar
             size="md"
-            src={user.profileImage}
-            name={`${user.firstName} ${user.lastName}`}
+            src={activeUser.profileUri}
+            name={`${activeUser.firstName} ${activeUser.lastName}`}
             border="2px"
             borderColor={borderColor}
           />
@@ -55,7 +51,7 @@ export default function ProfileButton() {
       >
         <PopoverBody>
           <Text fontWeight="bold" color={textColor}>
-            {`${user.firstName} ${user.lastName}`}
+            {`${activeUser.firstName} ${activeUser.lastName}`}
           </Text>
           <Text fontSize="sm" color="blue.500">
             View Profile

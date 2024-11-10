@@ -43,7 +43,8 @@ export function useGroups(activeUser: User, state: State) {
           }
           return group;
         });
-
+        
+        console.log("Groups: ", validatedGroups);
         setGroups(validatedGroups);
       } catch (err) {
         console.error("Error fetching groups:", err);

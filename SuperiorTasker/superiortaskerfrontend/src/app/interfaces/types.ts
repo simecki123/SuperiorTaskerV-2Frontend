@@ -21,7 +21,12 @@ export interface RegisterUserRequest {
   
   export interface User {
     id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    profileUri: string;
     accessToken: string;
+    
   }
   
   export interface State {
