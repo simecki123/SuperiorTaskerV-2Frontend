@@ -35,7 +35,7 @@ export default function ProfileButton({ activeUser }: {activeUser: User}) {
           _hover={{ transform: "scale(1.05)" }}
         >
           <Avatar
-            size="md"
+            boxSize={14}
             src={activeUser.profileUri}
             name={`${activeUser.firstName} ${activeUser.lastName}`}
             border="2px"

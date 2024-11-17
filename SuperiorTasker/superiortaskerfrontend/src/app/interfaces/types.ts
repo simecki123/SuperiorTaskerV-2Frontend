@@ -25,6 +25,7 @@ export interface RegisterUserRequest {
     firstName: string;
     lastName: string;
     profileUri: string;
+    description: string;
     accessToken: string;
     
   }
@@ -32,4 +33,23 @@ export interface RegisterUserRequest {
   export interface State {
     message: string | null;
     errors: any | null;
+  }
+
+  export interface Message {
+    id: number;
+    sender: string;
+    content: string;
+    timestamp: string;
+    read: boolean;
+  }
+
+  export interface Task {
+    "id": string;
+    "userId": string;
+    "groupId": string;
+    "name": string;
+    "description": string;
+    "taskStatus": string;
+    "startDate": string;
+    "endDate": string;
   }

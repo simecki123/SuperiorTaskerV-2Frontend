@@ -51,9 +51,12 @@
     },
 
     "all-tasks-table": {
+        "image": "Slika",
         "title": "Naslov",
         "description": "Opis",
         "project": "Projekt",
+        "start-date": "Početni Datum",
+        "end-date": "Datum završetka",
         "status": "Status",
         "done": "Završen",
         "in-progress": "U tijeku"

@@ -3,14 +3,9 @@ import React, { useState } from "react";
 import { VStack, Box, Text, Badge, useBreakpointValue, Flex } from "@chakra-ui/react";
 import Pagination from "./all-tasks-components/Pagination";
 import { useTranslations } from "next-intl";
+import { Message } from "@/app/interfaces/types";
 
-interface Message {
-  id: number;
-  sender: string;
-  content: string;
-  timestamp: string;
-  read: boolean;
-}
+
 
 const ITEMS_PER_PAGE = 2; // Number of messages per page
 

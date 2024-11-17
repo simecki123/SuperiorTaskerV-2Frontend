@@ -3,8 +3,9 @@
 import { Avatar, Text, HStack, Box, Button, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import EditProfileModal from "../modals/EditProfileModal";
+import { User } from "@/app/interfaces/types";
 
-export default function ProfileDataComponent({ user }: any) {
+export default function ProfileDataComponent({ user }: {user: User}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -16,7 +17,7 @@ export default function ProfileDataComponent({ user }: any) {
       >
         <Avatar
           name={`${user.firstName} ${user.lastName}`}  // This will display initials if no image
-          src={user.profileImage}  // User's image
+          src={user.profileUri}  // User's image
           size="2xl"  // Size of the avatar
         />
         <Box>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Box, Grid, VStack, useColorModeValue, Text } from "@chakra-ui/react";
@@ -8,11 +9,24 @@ import UserMessagesComponent from "./UserMessagesComponent";
 import MyGroupsComponent from "./MyGroupsComponent";
 import MenuCard from "../MenuCard";
 import UserStatistics from "./UserStatistics";
+import { State, User } from "@/app/interfaces/types";
+import { useGroups } from "@/commons/custom-hooks/useGroupHook";
+import { useMessagess } from "@/commons/custom-hooks/useMessagessHook";
+
+const groupState: State = {
+  message: null,
+  errors: null,
+};
+const messageState: State = {
+  message: null,
+  errors: null,
+};
 
 
-
-export default function UsersImportantStatsComponent({ mockTasks, mockMessages, mockGroups }: any) {
+export default function UsersImportantStatsComponent({user}: {user: User}) {
   const t = useTranslations('menu-items');
+  const { groups} = useGroups(user, groupState);
+  const {messagess} = useMessagess(user, messageState);
   const menuItems = [
     { name: "All Tasks", title: `${t('all-tasks')}`, component: AllTasksComponent },
     { name: "Messages", title: `${t('messages')}`,  component: UserMessagesComponent },
@@ -23,18 +37,18 @@ export default function UsersImportantStatsComponent({ mockTasks, mockMessages, 
 
   const renderSelectedComponent = () => {
     if (selectedComponent === "All Tasks") {
-      return <AllTasksComponent tasks={mockTasks} />;
+      return <AllTasksComponent user={user}/>;
     }
     if (selectedComponent === "Messages") {
-      return <UserMessagesComponent messages={mockMessages} />;
+      return <UserMessagesComponent messages={messagess} />;
     }
     if (selectedComponent === "My Groups") {
-        return <MyGroupsComponent groups={mockGroups} />;
+        return <MyGroupsComponent user={user} />;
     }
 
     const Component = menuItems.find((item) => item.name === selectedComponent)?.component;
     if (Component) {
-      return <Component messages={[]} />;
+      return <Component messages={[]} user={user} />;
     }
 
     return <Text>No component selected</Text>;

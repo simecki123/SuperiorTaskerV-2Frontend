@@ -55,6 +55,8 @@
         "title": "Title",
         "description": "Description",
         "project": "Project",
+        "start-date": "Start Date",
+        "end-date": "End Date",
         "status": "Status",
         "done": "Done",
         "in-progress": "In Progress"
@@ -66,6 +68,7 @@
     },
 
     "my-groups-table": {
+        "image": "Image",
         "title": "Title",
         "description": "Description",
         "project":"Project",
