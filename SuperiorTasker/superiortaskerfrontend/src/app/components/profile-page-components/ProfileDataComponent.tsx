@@ -1,24 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Avatar, Text, HStack, Box, Button, useDisclosure } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import EditProfileModal from "../modals/EditProfileModal";
 import { User } from "@/app/interfaces/types";
 
-export default function ProfileDataComponent({ user }: {user: User}) {
+interface ProfileDataComponentProps {
+  user: User;
+  accessToken: string;
+}
+
+export default function ProfileDataComponent({ 
+  user: initialUser, 
+  accessToken 
+}: ProfileDataComponentProps) {
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [user, setUser] = useState(initialUser);
 
   return (
     <>
-      <HStack
-        spacing={6}  // Space between the image and the text
-        align="center"  // Align items vertically centered
-        mb={8}
-      >
+      <HStack spacing={6} align="center" mb={8}>
         <Avatar
-          name={`${user.firstName} ${user.lastName}`}  // This will display initials if no image
-          src={user.profileUri}  // User's image
-          size="2xl"  // Size of the avatar
+          name={`${user.firstName} ${user.lastName}`}
+          src={user.profileUri}
+          size="2xl"
         />
         <Box>
           <Text fontSize="2xl" fontWeight="bold">
@@ -32,8 +37,12 @@ export default function ProfileDataComponent({ user }: {user: User}) {
         <Button onClick={onOpen}>Edit profile</Button>
       </HStack>
 
-      {/* Modal for editing profile */}
-      <EditProfileModal isOpen={isOpen} onClose={onClose} user={user} />
+      <EditProfileModal 
+        isOpen={isOpen} 
+        onClose={onClose} 
+        user={{...user, accessToken}} 
+        setUser={setUser}
+      />
     </>
   );
 }

@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+"use client";
+import React, { useState, useTransition } from "react";
 import {
   Button,
   Input,
@@ -10,19 +11,36 @@ import {
   Text,
   Textarea,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 
-export default function EditProfileModalForm({ user, onClose }: any) {
+import { User } from "@/app/interfaces/types";
+import { handleUserUpdate } from "@/app/server-actions/handleUserUpdate";
+import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
+
+interface EditProfileModalFormProps {
+  user: User;
+  onClose: () => void;
+  setUser: (user: User) => void;
+}
+
+export default function EditProfileModalForm({ user, onClose, setUser }: EditProfileModalFormProps) {
+  const toast = useToast();
+  const [isPending, startTransition] = useTransition();
+  const { setUser: setZustandUser } = useUserStore();
+  
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     description: user?.description || "",
-    profileImage: null,  // for storing the new profile image
+    profileImage: null as File | null,
   });
 
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>(user?.profileUri || "");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -35,17 +53,57 @@ export default function EditProfileModalForm({ user, onClose }: any) {
     }
   };
 
-  const handleSubmit = () => {
-    // Handle form submission (API call here)
-    console.log(formData);
-    onClose();  // Close modal after submission
+  const handleSubmit = async () => {
+    const form = new FormData();
+    form.append("firstName", formData.firstName);
+    form.append("lastName", formData.lastName);
+    form.append("description", formData.description);
+    form.append("accessToken", user.accessToken); // This will now come from the injected accessToken
+    if (formData.profileImage) {
+      form.append("file", formData.profileImage);
+    }
+  
+    startTransition(async () => {
+      const result = await handleUserUpdate(null, form);
+  
+      if (result.errors) {
+        toast({
+          title: "Error",
+          description: result.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+  
+      console.log("NewUser ",result)
+      setUser({
+        ...user,
+        ...result.data,
+      });
+      
+      setZustandUser({
+        ...user,
+        ...result.data,
+      });
+      
+      toast({
+        title: "Success",
+        description: result.message,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+    });
   };
 
   const bgColor = useColorModeValue("gray.100", "gray.700");
   const borderColor = useColorModeValue("gray.300", "gray.600");
 
   return (
-    <form>
+    <form onSubmit={(e) => e.preventDefault()}>
       <VStack spacing={6} align="stretch">
         <FormControl>
           <FormLabel>First Name</FormLabel>
@@ -77,7 +135,6 @@ export default function EditProfileModalForm({ user, onClose }: any) {
           />
         </FormControl>
 
-        {/* Profile Image Upload */}
         <FormControl>
           <FormLabel>Profile Image</FormLabel>
           <Box
@@ -124,7 +181,12 @@ export default function EditProfileModalForm({ user, onClose }: any) {
           </Box>
         </FormControl>
 
-        <Button colorScheme="blue" onClick={handleSubmit} width="full">
+        <Button
+          colorScheme="blue"
+          onClick={handleSubmit}
+          width="full"
+          isLoading={isPending}
+        >
           Save Changes
         </Button>
       </VStack>

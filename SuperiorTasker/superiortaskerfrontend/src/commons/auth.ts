@@ -1,8 +1,11 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { UserProfileEditResponse } from "@/app/interfaces/types";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { cookies } from 'next/headers'
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   
@@ -85,3 +88,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signOut: "/"
   },
 });
+
+

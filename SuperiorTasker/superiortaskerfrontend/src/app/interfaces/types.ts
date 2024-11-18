@@ -27,7 +27,15 @@ export interface RegisterUserRequest {
     profileUri: string;
     description: string;
     accessToken: string;
-    
+    groupMembershipData: [];
+  }
+
+  export interface UserProfileEditResponse {
+    id: string;
+    firstName: string;
+    lastName: string;
+    description: string;
+    profileUri: string;
   }
   
   export interface State {

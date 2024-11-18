@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { handleGroupCreate } from "@/app/server-actions/handleGroupCreate";
 import { AddIcon } from "@chakra-ui/icons";
@@ -10,13 +11,14 @@ import ProfileButton from "../profile-page-components/ProfileButton";
 import { Group, User, State } from "../../interfaces/types";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import { fetchGroupsFromServer } from "@/app/server-actions/fetchGroups";
+import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
 
 const initialState: State = {
   message: null,
   errors: null,
 };
 
-export default function SideBarGroups({ activeUser }: { activeUser: User }) {
+export default function SideBarGroups({ activeUser, initialUser }: { activeUser: User, initialUser: User }) {
   const [state, formAction] = useFormState(handleGroupCreate, initialState);
   const [groups, setGroups] = useState<Group[]>([]);
   const [activeGroup, setActiveGroup] = useState<Group | null>(null);
@@ -25,6 +27,7 @@ export default function SideBarGroups({ activeUser }: { activeUser: User }) {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [groupLoading, setGroupLoading] = useState(false);
   const [groupError, setGroupError] = useState<string | null>(null);
+  const { user: zustandUser, setUser: setZustandUser } = useUserStore();
 
   const {
     isOpen: isDrawerOpen,
@@ -38,35 +41,31 @@ export default function SideBarGroups({ activeUser }: { activeUser: User }) {
     onClose: onGroupModalClose,
   } = useDisclosure();
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const loadTasks = async () => {
-      if (!activeUser?.id) return;
-      
-      setGroupLoading(true);
-      setGroupError(null);
-
-      try {
-        const currentGroups = await fetchGroupsFromServer(activeUser, currentPage);
-        const nextGroups = await fetchGroupsFromServer(activeUser, currentPage+1);
+    useEffect(() => {
+      const loadGroups = async () => {
+        const currentUser = zustandUser || initialUser;
         
-        setGroups(currentGroups);
-        setHasNextPage(nextGroups.length > 0); 
-      } catch (err) {
-        setGroupError(err instanceof Error ? err.message : "An unknown error occurred");
-        setGroups([]);
-      } finally {
-        setGroupLoading(false);
-      }
-    };
-
-    loadTasks();
-
-    return () => {
-      controller.abort();
-    };
-  }, [currentPage, activeUser, activeUser?.id]);
+        if (!currentUser?.id) return;
+        
+        setGroupLoading(true);
+        setGroupError(null);
+  
+        try {
+          const currentGroups = await fetchGroupsFromServer(activeUser, currentPage);
+          const nextGroups = await fetchGroupsFromServer(activeUser, currentPage+1);
+          
+          setGroups(currentGroups);
+          setHasNextPage(nextGroups.length > 0); 
+        } catch (err) {
+          setGroupError(err instanceof Error ? err.message : "An unknown error occurred");
+          setGroups([]);
+        } finally {
+          setGroupLoading(false);
+        }
+      };
+  
+      loadGroups();
+    }, [currentPage, zustandUser, activeUser, initialUser]);
 
   if (groupLoading) {
     return (
@@ -100,7 +99,7 @@ export default function SideBarGroups({ activeUser }: { activeUser: User }) {
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={activeUser} />
+        <ProfileButton activeUser={zustandUser || initialUser} />
       </VStack>
     );
   }
@@ -151,7 +150,7 @@ export default function SideBarGroups({ activeUser }: { activeUser: User }) {
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={activeUser} />
+        <ProfileButton activeUser={zustandUser || activeUser} />
       </VStack>
 
       {/* Modals */}
