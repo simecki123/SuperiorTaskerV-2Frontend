@@ -44,11 +44,18 @@ export interface RegisterUserRequest {
   }
 
   export interface Message {
-    id: number;
-    sender: string;
-    content: string;
-    timestamp: string;
-    read: boolean;
+    id: string;
+    groupId: string;
+    message: string;
+    messageStatus: 'READ' | 'UNREAD';
+    userProfileId: string;
+    firstName: string;
+    lastName: string;
+    photoUri: string;
+    createdAt: string;
+    sender?: string;
+    content?: string;
+    read?: boolean;
   }
 
   export interface Task {

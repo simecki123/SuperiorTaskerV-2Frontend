@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use server"
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import ProfileDataComponent from "@/app/components/profile-page-components/ProfileDataComponent";

@@ -11,7 +11,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
   //old mock user
   const session = await auth();
   const activeUser: any = session?.user;
-  const fetchedUser = await fetchMe(activeUser.accessToken);
+  let fetchedUser;
+  if(activeUser) {
+    fetchedUser = await fetchMe(activeUser.accessToken);
+  }
 
   console.log("Aktivni usercic: ", activeUser);
   if (!activeUser) {

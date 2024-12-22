@@ -66,7 +66,7 @@ export default function MyGroupsComponent({ user }: {user: User}) {
 
   return (
     <Box>
-      {isDesktop ? <GroupTable groups={groups} /> : <GroupCard tasks={groups} />}
+      {isDesktop ? <GroupTable groups={groups} /> : <GroupCard groups={groups} />}
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

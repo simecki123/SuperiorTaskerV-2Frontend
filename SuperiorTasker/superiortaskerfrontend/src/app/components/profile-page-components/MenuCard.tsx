@@ -1,41 +1,49 @@
-"use client";
 import React from "react";
-import { Box, VStack, Text, useColorModeValue } from "@chakra-ui/react";
-
+import { Box, Text, Badge } from "@chakra-ui/react";
 
 interface MenuCardProps {
   name: string;
-  isSelected: boolean;
   title: string;
+  isSelected: boolean;
   onClick: () => void;
+  unreadCount?: number;
 }
 
-export default function MenuCard({  title, isSelected, onClick }: MenuCardProps) {
-  const bgColor = useColorModeValue("white", "gray.800");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-  const selectedBg = useColorModeValue("blue.50", "blue.900");
-  const selectedBorder = "blue.500";
-
+export default function MenuCard({ 
+  name, 
+  title, 
+  isSelected, 
+  onClick, 
+  unreadCount = 0 
+}: MenuCardProps) {
   return (
     <Box
-      as="button"
-      p={4}
-      borderWidth={1}
-      borderRadius="lg"
-      bg={isSelected ? selectedBg : bgColor}
-      borderColor={isSelected ? selectedBorder : borderColor}
-      boxShadow={isSelected ? "md" : "sm"}
+      position="relative"
       onClick={onClick}
+      borderWidth={2}
+      borderColor={isSelected ? "blue.500" : "gray.200"}
+      borderRadius="md"
+      p={4}
+      textAlign="center"
+      cursor="pointer"
       transition="all 0.2s"
-      _hover={{
-        transform: "translateY(-2px)",
-        boxShadow: "lg",
+      _hover={{ 
+        bg: "gray.100",
+        transform: "scale(1.05)"
       }}
-      height="100%"
     >
-      <VStack spacing={2}>
-        <Text fontWeight="medium">{title}</Text>
-      </VStack>
+      <Text fontWeight={isSelected ? "bold" : "normal"}>{title}</Text>
+      {unreadCount > 0 && (
+        <Badge 
+          position="absolute" 
+          top="-10px" 
+          right="-10px" 
+          colorScheme="red"
+          borderRadius="full"
+        >
+          {unreadCount}
+        </Badge>
+      )}
     </Box>
   );
 }
