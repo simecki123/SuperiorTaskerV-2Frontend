@@ -27,7 +27,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
   const [hasNextPage, setHasNextPage] = useState(true);
   const [groupLoading, setGroupLoading] = useState(false);
   const [groupError, setGroupError] = useState<string | null>(null);
-  const { user: zustandUser, setUser: setZustandUser } = useUserStore();
+  const { user: updatedUser, setUser: setUpdatedUser } = useUserStore();
 
   const {
     isOpen: isDrawerOpen,
@@ -43,7 +43,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
 
     useEffect(() => {
       const loadGroups = async () => {
-        const currentUser = zustandUser || initialUser;
+        const currentUser = updatedUser || initialUser;
         
         if (!currentUser?.id) return;
         
@@ -65,7 +65,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
       };
   
       loadGroups();
-    }, [currentPage, zustandUser, activeUser, initialUser]);
+    }, [currentPage, updatedUser, activeUser, initialUser]);
 
   if (groupLoading) {
     return (
@@ -99,7 +99,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={zustandUser || initialUser} />
+        <ProfileButton activeUser={updatedUser || initialUser} /> 
       </VStack>
     );
   }
@@ -111,7 +111,6 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
       w="full"
       p={2}
     >
-      {/* Groups Section */}
       <VStack spacing={2} w="full" align="center">
         {groups.map((group) => (
           <Image
@@ -130,7 +129,6 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
         ))}
       </VStack>
 
-      {/* Pagination Section */}
       <Box w="full">
         <Pagination 
           currentPage={currentPage}
@@ -139,7 +137,6 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
         />
       </Box>
 
-      {/* Actions Section */}
       <VStack spacing={2} w="full" align="center">
         <IconButton
           aria-label="Add Group"
@@ -150,14 +147,12 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={zustandUser || activeUser} />
+        <ProfileButton activeUser={updatedUser || activeUser} />
       </VStack>
 
-      {/* Modals */}
-      {activeGroup && (
-        <>
-          <CreateGroupModal 
+      <CreateGroupModal 
             state={state}
+            user={updatedUser || activeUser}
             formAction={formAction}
             joinState={joinState}
             joinFormAction={joinFormAction}
@@ -165,12 +160,12 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
             onClose={onGroupModalClose} 
           />
 
+      {activeGroup && (
           <SideBarGroupDrawer
             group={activeGroup}
             isOpen={isDrawerOpen}
             onClose={onDrawerClose}
           />
-        </>
       )}
     </VStack>
   );

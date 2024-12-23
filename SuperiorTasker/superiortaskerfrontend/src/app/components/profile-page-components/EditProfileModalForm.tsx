@@ -27,7 +27,7 @@ interface EditProfileModalFormProps {
 export default function EditProfileModalForm({ user, onClose, setUser }: EditProfileModalFormProps) {
   const toast = useToast();
   const [isPending, startTransition] = useTransition();
-  const { setUser: setZustandUser } = useUserStore();
+  const { setUser: setUpdatedUser } = useUserStore();
   
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
@@ -83,7 +83,7 @@ export default function EditProfileModalForm({ user, onClose, setUser }: EditPro
         ...result.data,
       });
       
-      setZustandUser({
+      setUpdatedUser({
         ...user,
         ...result.data,
       });

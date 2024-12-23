@@ -13,12 +13,22 @@ import {
   Text,
   Icon,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
-import  FiUpload  from "@/../public/fallback-group.png";
 import { useTranslations } from "next-intl";
+import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
+import { User } from "@/app/interfaces/types";
 
-export default function CreateGroupForm({ onClose, state, formAction }: any) {
+type CreateGroupFormParams = {
+  user: User,
+  onClose: any,
+  state: any,
+  formAction: any
+}
+
+export default function CreateGroupForm({ user, onClose, state, formAction }: CreateGroupFormParams) {
   const t = useTranslations('create-group-modal');
+  const toast = useToast();
   const [groupName, setGroupName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -32,13 +42,54 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
     }
   };
 
+  const handleFormSubmit = async (formData: FormData) => {
+    try {
+      formData.set("name", groupName);
+      formData.set("description", description);
+      if (image) {
+        formData.set("file", image);
+      }
+  
+      const result = await formAction(formData);
+      
+      if (result?.errors) {
+        toast({
+          title: "Error",
+          description: result.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+  
+      
+      toast({
+        title: "Success",
+        description: "Group created successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create group",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.error("Error submitting form:", error);
+    }
+  };
+
   const bgColor = useColorModeValue("gray.100", "gray.700");
   const borderColor = useColorModeValue("gray.300", "gray.600");
 
   return (
-    <form action={formAction}>
+    <form action={handleFormSubmit}>
       <VStack spacing={6} align="stretch">
-        {/* Image Upload */}
         <FormControl>
           <FormLabel>{t('group-image')}</FormLabel>
           <Box
@@ -87,7 +138,6 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
           />
         </FormControl>
 
-        {/* Group Description Input */}
         <FormControl>
           <FormLabel>{t('group-description')}</FormLabel>
           <Textarea
@@ -98,7 +148,6 @@ export default function CreateGroupForm({ onClose, state, formAction }: any) {
           />
         </FormControl>
 
-        {/* Submit Button */}
         <Button
           type="submit"
           colorScheme="blue"

@@ -20,10 +20,6 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
 
   const t = useTranslations('side-bar-group-drawer');
 
-  if (!group) {
-    return null;
-  }
-
   const { name, id, description } = group;
 
   return (
@@ -34,7 +30,7 @@ export default function SideBarGroupDrawer({ isOpen, onClose, group }: any) {
         borderTopRightRadius="lg"
         borderBottomRightRadius="lg"
       >
-        <DrawerCloseButton color="white" _hover={{ color: "gray.400" }} />
+        <DrawerCloseButton _hover={{ color: "gray.400" }} />
         <DrawerHeader
           borderBottomWidth="1px"
           borderBottomColor="gray.700"

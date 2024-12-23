@@ -15,8 +15,6 @@ export async function fetchGroupsFromServer(user: User, page: number): Promise<G
               "Content-Type": "application/json",
               Authorization: `Bearer ${user.accessToken}`,
             },
-            // Add caching options
-            cache: 'force-cache',
             
           }
         );

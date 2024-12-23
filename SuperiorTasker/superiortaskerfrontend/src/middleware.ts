@@ -12,8 +12,6 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
- 
-
   // Handle locale and all other routes using intl middleware
   return intlMiddleware(request);
 }

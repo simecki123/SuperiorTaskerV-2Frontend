@@ -4,15 +4,27 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOve
 import React from "react";
 import CreateGroupForm from "../create-group-form/CreateGroupForm";
 import { useTranslations } from "next-intl";
+import { User } from "@/app/interfaces/types";
+
+type GroupModalParams = {
+  isOpen: any,
+  onClose: any,
+  user: User,
+  state: any,
+  formAction: any,
+  joinState: any,
+  joinFormAction: any,
+}
 
 export default function CreateGroupModal({
   isOpen,
   onClose,
+  user,
   state,
   formAction,
   joinState,
   joinFormAction,
-}: any) {
+}: GroupModalParams) {
 
   const t = useTranslations('create-group-modal');
 
@@ -24,6 +36,7 @@ export default function CreateGroupModal({
         <ModalCloseButton />
         <ModalBody>
           <CreateGroupForm
+            user={user}
             onClose={onClose}
             state={state}
             formAction={formAction}
