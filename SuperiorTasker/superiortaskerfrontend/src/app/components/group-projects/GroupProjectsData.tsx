@@ -11,6 +11,7 @@ import { Project, ProjectBodySearch, User } from "@/app/interfaces/types";
 import { fetchProjectsFromServer } from "@/app/server-actions/fetchProjectsFromServer";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
+import GroupProjectsFilters from "./GroupProjectsFilters";
 
 type GroupProjectsDataProps= {
   user: User,
@@ -26,8 +27,8 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsData
   // Use searchParams to initialize state
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '0'));
   const [searchByText, setSearchByText] = useState((searchParams.get('search') || '').replace(/\+/g, ' '));
-  const [searchByStartDate, setSearchByStartDate] = useState(searchParams.get('startCompletion') || '');
-  const [searchByEndDate, setSearchByEndDate] = useState(searchParams.get('endCompletion') || '');
+  const [startCompletion, setStartCompletion] = useState(searchParams.get('startCompletion') || '' );
+  const [endCompletion, setEndCompletion] = useState(searchParams.get('endCompletion') || '');
   const [includeCompleted, setIncludeCompleted] = useState(searchParams.get('includeComplete') === 'true');
   const [includeNotStarted, setIncludeNotStarted] = useState(searchParams.get('includeNotStarted') === 'true');
 
@@ -57,8 +58,8 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsData
       const searchConditions: ProjectBodySearch = {
           userId: user.id,
           groupId,
-          startCompletion: searchByStartDate,
-          endCompletion: searchByEndDate,
+          startCompletion: startCompletion,
+          endCompletion: endCompletion,
           includeComplete: includeCompleted,
           includeNotStarted: includeNotStarted,
           search: searchByText
@@ -67,8 +68,8 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsData
       // Update URL parameters
       updateURLParams({
           search: searchByText || null,
-          startCompletion: searchByStartDate || null,
-          endCompletion: searchByEndDate || null,
+          startCompletion: startCompletion || null,
+          endCompletion: endCompletion || null,
           includeComplete: includeCompleted ? 'true' : null,
           includeNotStarted: includeNotStarted ? 'true' : null,
           page: currentPage.toString()
@@ -98,8 +99,8 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsData
     currentPage, 
     groupId,
     searchByText,
-    searchByStartDate, 
-    searchByEndDate,
+    startCompletion, 
+    endCompletion,
     includeCompleted,
     includeNotStarted
 ]);
@@ -113,6 +114,17 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsData
               handleSearchProjects={handleSearchProjects} 
               setSearchByText={setSearchByText}
               initialSearch={searchByText}
+          />
+          <GroupProjectsFilters
+              handleSearchProjects={handleSearchProjects}
+              innitialStartCompletion={startCompletion}
+              setStartCompletion={setStartCompletion}
+              initialEndCompletion={endCompletion}
+              setEndCompletion={setEndCompletion}
+              innitialIncludeCompleted={includeCompleted}
+              setIncludeCompleted={setIncludeCompleted}
+              innitialIncludeNotStarted={includeNotStarted}
+              setIncludeNotStarted={setIncludeNotStarted}
           />
           {loading ? (
               <Spinner /> // Add loading indicator

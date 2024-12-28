@@ -84,7 +84,13 @@
         "description":"Description",
         "start-date": "Start Date",
         "end-date": "End Date",
-        "completion": "Completion"
+        "completion": "Completion",
+        "filters": "Advanced Search",
+        "completion-range": "Completion Range",
+        "include-completed": "Include Completed Projects",
+        "yes": "Yes",
+        "no": "No",
+        "include-not-started": "Include Recently started Projects"
     },
 
     "project-tasks": {

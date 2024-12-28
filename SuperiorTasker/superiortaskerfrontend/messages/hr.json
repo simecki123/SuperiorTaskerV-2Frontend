@@ -83,7 +83,13 @@
         "description":"Opis",
         "start-date": "Početni Datum",
         "end-date": "Završni datum",
-        "completion": "Postotak završenosti"
+        "completion": "Postotak Završenosti",
+        "filters": "Napredno Pretraživanje",
+        "completion-range": "Raspon Završenosti Projekta",
+        "include-completed": "Uključi Završene Projekte",
+        "yes": "Da",
+        "no": "Ne",
+        "include-not-started": "Uključi Nedavno Započete Projekte"
     },
 
     "project-tasks": {
