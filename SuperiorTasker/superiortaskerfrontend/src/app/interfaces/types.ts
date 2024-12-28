@@ -68,3 +68,31 @@ export interface RegisterUserRequest {
     "startDate": string;
     "endDate": string;
   }
+
+  export interface Project {
+    "id": string;
+    "name": string;
+    "description": string
+    "groupId": string;
+    "userId": string;
+    "startDate": string;
+    "endDate": string;
+    "completion": number;
+  }
+
+  export interface ProjectBodySearch {
+    "userId": string;
+    "groupId": string;
+    "startCompletion": string;
+    "endCompletion": string;
+    "includeComplete": boolean;
+    "includeNotStarted": boolean;
+    "search": string;
+  }
+
+  export interface GrouProjectsTableParams {
+    "projects": Project[];
+    "hasNextPage": boolean;
+    "currentPage": number;
+    "setCurrentPage": () => void;
+  }

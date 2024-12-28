@@ -1,23 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { VStack, Box, Heading, Text, Badge, HStack } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation"; // Import useRouter and useSearchParams
-import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
+import { Project } from "@/app/interfaces/types";
 
-export default function ProjectCards({ projects }: any) {
+export default function ProjectCards({projects}: {projects: Project[] } ) {
   const t = useTranslations('projects-page');
   const router = useRouter();
   const searchParams = useSearchParams(); // Use to get groupId from current URL
   const groupId = searchParams.get("groupId"); // Extract groupId from the current page URL
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  const indexOfLastProject = currentPage * itemsPerPage;
-  const indexOfFirstProject = indexOfLastProject - itemsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
 
   const getCompletionColor = (completion: any) => {
     const percentage = parseInt(completion);
@@ -27,13 +21,13 @@ export default function ProjectCards({ projects }: any) {
     return "green";
   };
 
-  const handleClick = (projectId: number) => {
+  const handleClick = (projectId: string) => {
     router.push(`/project-tasks?groupId=${groupId}&projectId=${projectId}`);
   };
 
   return (
     <VStack spacing={4} align="stretch">
-      {currentProjects.map((project: any) => (
+      {projects.map((project: Project) => (
         <Box
           key={project.id}
           p={5}
@@ -41,10 +35,10 @@ export default function ProjectCards({ projects }: any) {
           borderWidth="1px"
           borderRadius="md"
           cursor="pointer"
-          onClick={() => handleClick(project.id)} // Make the card clickable
-          _hover={{ bg: "gray.100", shadow: "lg" }} // Add hover effect
+          onClick={() => handleClick(project.id)} 
+          _hover={{ bg: "gray.100", shadow: "lg" }} 
         >
-          <Heading fontSize="xl">{project.title}</Heading>
+          <Heading fontSize="xl">{project.name}</Heading>
           <Text mt={2}>{project.description}</Text>
           <HStack mt={2} justify="space-between">
             <Text fontWeight="bold">{t('start-date')}: {project.startDate}</Text>
@@ -55,12 +49,7 @@ export default function ProjectCards({ projects }: any) {
           </Badge>
         </Box>
       ))}
-      <Pagination 
-        itemsPerPage={itemsPerPage} 
-        totalItems={projects.length} 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      
     </VStack>
   );
 }

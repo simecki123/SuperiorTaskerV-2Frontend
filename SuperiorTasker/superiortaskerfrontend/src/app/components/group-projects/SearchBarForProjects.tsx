@@ -4,12 +4,21 @@ import { Box, Input, Button, InputGroup, InputRightElement } from "@chakra-ui/re
 import { SearchIcon } from "@chakra-ui/icons"
 import { useTranslations } from "next-intl"
 
-export default function SearchbarForProjects() {
+interface SearchbarForProjectsProps {
+    handleSearchProjects: () => void;
+    setSearchByText: (text: string) => void;
+    initialSearch: string
+}
+
+export default function SearchbarForProjects({handleSearchProjects, setSearchByText, initialSearch} : SearchbarForProjectsProps ) {
     const t = useTranslations('projects-page');
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(initialSearch);
 
     const handleSearch = () => {
         // Implement search functionality here
+        setSearchByText(searchTerm);
+        handleSearchProjects();
+        //add /search=searchTerm in params
         console.log("Searching for:", searchTerm);
     };
 

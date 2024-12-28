@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
+import {  Project } from "@/app/interfaces/types";
 
-export default function GroupProjectsTable({ projects }: any) { 
+
+export default function GroupProjectsTable( {projects}: {projects: Project[] } ) { 
   const t = useTranslations('projects-page');
   const router = useRouter();
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  
 
   const getCompletionColor = (completion: any) => {
     const percentage = parseInt(completion);
@@ -23,12 +23,11 @@ export default function GroupProjectsTable({ projects }: any) {
     return "green";
   };
 
-  // Get current projects
-  const indexOfLastProject = currentPage * itemsPerPage;
-  const indexOfFirstProject = indexOfLastProject - itemsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
 
-  const handleRowClick = (projectId: number) => {
+  const handleRowClick = (projectId: string) => {
     router.push(`/project-tasks?groupId=${groupId}&projectId=${projectId}`);
   };
 
@@ -46,17 +45,17 @@ export default function GroupProjectsTable({ projects }: any) {
             </Tr>
           </Thead>
           <Tbody>
-            {currentProjects.map((project: any) => (
+            {projects.map((project: Project) => (
               <Tr 
                 key={project.id} 
                 cursor="pointer" 
                 onClick={() => handleRowClick(project.id)} // Make the row clickable
                 _hover={{ bg: "xblue.100" }} // Add hover effect
               >
-                <Td fontWeight="bold">{project.title}</Td>
+                <Td fontWeight="bold">{project.name}</Td>
                 <Td>{project.description}</Td>
-                <Td>{project.startDate}</Td>
-                <Td>{project.endDate}</Td>
+                <Td>{formatDate(project.startDate)}</Td>
+                <Td>{formatDate(project.endDate)}</Td>
                 <Td>
                   <Badge colorScheme={getCompletionColor(project.completion)} borderRadius="full" px={2}>
                     {project.completion}
@@ -67,12 +66,7 @@ export default function GroupProjectsTable({ projects }: any) {
           </Tbody>
         </Table>
       </Box>
-      <Pagination 
-        itemsPerPage={itemsPerPage} 
-        totalItems={projects.length} 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      
     </Box>
   );
 }
