@@ -7,18 +7,15 @@ import GroupProjectsTable from "@/app/components/group-projects/GroupProjectsTab
 import ProjectCards from "@/app/components/group-projects/ProjectCards";
 import SearchbarForProjects from "@/app/components/group-projects/SearchBarForProjects";
 import { useTranslations } from "next-intl";
-import { Project, ProjectBodySearch, User } from "@/app/interfaces/types";
+import { GroupProjectsAndTasksDataProps, Project, ProjectBodySearch } from "@/app/interfaces/types";
 import { fetchProjectsFromServer } from "@/app/server-actions/fetchProjectsFromServer";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupProjectsFilters from "./GroupProjectsFilters";
 
-type GroupProjectsDataProps= {
-  user: User,
-  accessToken: string,
-}
 
-export default function GroupProjectsData({user, accessToken}: GroupProjectsDataProps) {
+
+export default function GroupProjectsData({user, accessToken}: GroupProjectsAndTasksDataProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations('projects-page');

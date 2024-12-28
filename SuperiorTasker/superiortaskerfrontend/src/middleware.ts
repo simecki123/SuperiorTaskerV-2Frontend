@@ -25,6 +25,7 @@ export const config = {
     "/tasks",
     "/projects",
     "/group",
+    "/project-tasks",
     "/(hr|en)/:path*"
   ],
 };

@@ -107,7 +107,14 @@
         "save": "Save",
         "cancel": "Cancel",
         "my-tasks": "My Tasks",
-        "all-tasks":"All Tasks"
+        "all-tasks":"All Tasks",
+        "start-date":"Start Date",
+        "end-date":"End Date",
+        "search-tasks": "Search Tasks",
+        "filters":"Advanced Search",
+        "include-completed":"Include Completed Tasks",
+        "completed": "Completed",
+        "default": "Remove Filter"
 
     },
 

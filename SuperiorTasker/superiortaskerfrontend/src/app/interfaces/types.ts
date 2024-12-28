@@ -96,3 +96,16 @@ export interface RegisterUserRequest {
     "currentPage": number;
     "setCurrentPage": () => void;
   }
+
+  export interface GroupProjectsAndTasksDataProps {
+    user: User,
+    accessToken: string,
+  }
+
+  export interface TaskBodySearch {
+    "userId": string;
+    "groupId": string;
+    "projectId": string;
+    "status": string;
+    "search": string;
+  }

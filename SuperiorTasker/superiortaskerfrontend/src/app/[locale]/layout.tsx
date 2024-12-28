@@ -23,7 +23,7 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1.0"
         ></meta>
       </head>
-      <body className="h-screen">
+      <body suppressHydrationWarning className="h-screen">
         <NextIntlClientProvider messages={messages}>
           <Providers>
             {children}

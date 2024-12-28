@@ -106,7 +106,14 @@
         "save": "Spremi",
         "cancel": "Odustani",
         "my-tasks": "Moji Zadaci",
-        "all-tasks":"Svi zadaci"
+        "all-tasks":"Svi zadaci",
+        "start-date":"Datum početka",
+        "end-date":"Datum završetka",
+        "search-tasks": "Pretraži zadatke",
+        "filters":"Napredno Pretraživanje",
+        "include-completed":"Uključi Završene Zadatke",
+        "completed": "Završeno",
+        "default": "Makni filter"
 
     },
 
