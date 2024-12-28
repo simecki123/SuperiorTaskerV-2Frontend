@@ -58,7 +58,7 @@ export default function GroupProjectsTable( {projects}: {projects: Project[] } )
                 <Td>{formatDate(project.endDate)}</Td>
                 <Td>
                   <Badge colorScheme={getCompletionColor(project.completion)} borderRadius="full" px={2}>
-                    {project.completion}
+                    {project.completion} %
                   </Badge>
                 </Td>
               </Tr>

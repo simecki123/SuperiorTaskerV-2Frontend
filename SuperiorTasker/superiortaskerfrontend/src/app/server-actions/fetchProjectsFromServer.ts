@@ -25,6 +25,7 @@ export async function fetchProjectsFromServer(body: ProjectBodySearch, user: Use
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`,
                 },
+                cache: 'no-store', 
             }
         );
 
