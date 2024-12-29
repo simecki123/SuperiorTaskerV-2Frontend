@@ -1,6 +1,5 @@
 // commons/zustandFiles/groupStore.ts
 import { create } from 'zustand';
-import { Group } from '@/app/interfaces/types';
 
 interface GroupStore {
   updatedGroup: boolean;
