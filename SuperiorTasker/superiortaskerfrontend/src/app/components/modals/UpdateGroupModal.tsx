@@ -12,16 +12,20 @@ import {
   FormLabel,
   Input,
   Textarea,
+  Text,
+  Image,
+  Box,
 } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 
 interface UpdateGroupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { name: string; description: string }) => void;
+  onSubmit: (data: { name: string; description: string; file?: File }) => void;
   initialData: {
     name: string;
     description: string;
+    photoUri: string;
   };
 }
 
@@ -34,10 +38,20 @@ const UpdateGroupModal: React.FC<UpdateGroupModalProps> = ({
   const t = useTranslations('group-page');
   const [name, setName] = React.useState(initialData.name);
   const [description, setDescription] = React.useState(initialData.description);
+  const [file, setFile] = React.useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = React.useState<string>(initialData.photoUri);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ name, description });
+    onSubmit({ name, description, file: file || undefined });
     onClose();
   };
 
@@ -64,6 +78,36 @@ const UpdateGroupModal: React.FC<UpdateGroupModalProps> = ({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder={t('enter-group-description')}
               />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>{t('group-image')}</FormLabel>
+              <Box
+                borderWidth={2}
+                borderStyle="dashed"
+                borderRadius="md"
+                p={4}
+                textAlign="center"
+                cursor="pointer"
+                onClick={() => document.getElementById('file-input')?.click()}
+              >
+                <Input
+                  id="file-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  hidden
+                />
+                {previewUrl ? (
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    maxH="200px"
+                    mx="auto"
+                  />
+                ) : (
+                  <Text>{t('click-to-upload')}</Text>
+                )}
+              </Box>
             </FormControl>
           </ModalBody>
           <ModalFooter>

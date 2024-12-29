@@ -16,7 +16,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
 import { User } from "@/app/interfaces/types";
 
 type CreateGroupFormParams = {

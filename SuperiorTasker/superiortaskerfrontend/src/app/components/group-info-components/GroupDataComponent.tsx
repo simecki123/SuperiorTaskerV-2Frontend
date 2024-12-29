@@ -1,37 +1,145 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React from "react";
-import { Image, Text, HStack, Button, VStack } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Image, Text, HStack, Button, VStack, useToast } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import UpdateGroupModal from "../modals/UpdateGroupModal";
 import LeaveGroupModal from "../modals/LeaveGroupMoadal";
+import { Group, User } from "@/app/interfaces/types";
+import { useSearchParams, useRouter } from "next/navigation";
+import { fetchGroupById } from "@/app/server-actions/fetchGroupById";
+import { handleUpdateGroup } from "@/app/server-actions/handleUpdateGroup";
+import { handleLeaveGroup } from "@/app/server-actions/handleLeaveGroup";
+import { useGroupStore } from "@/commons/zustandFiles/GroupUpdateStore";
 
+interface GroupDataComponentProps {
+  user: User;
+  accessToken: string;
+}
 
-export default function GroupDataComponent({ group }: any) {
+export default function GroupDataComponent({ user, accessToken }: GroupDataComponentProps) {
+  const t = useTranslations('group-page');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const toast = useToast();
+  const groupId = searchParams.get('groupId') || '0';
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [group, setGroup] = useState<Group | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
-  const [isLeaveModalOpen, setIsLeaveModalOpen] = React.useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
+  useEffect(() => {
+    const loadGroup = async () => {
+      try {
+        const fetchedGroup = await fetchGroupById(user,accessToken, groupId);
+        setGroup(fetchedGroup);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load group data",
+          status: "error",
+          duration: 3000,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const t = useTranslations('group-page')
+    loadGroup();
+  }, [groupId, user, toast]);
+  
+  const isUserAdmin = user.groupMembershipData.some(
+    membership => membership.groupId === groupId && membership.role === "ADMIN"
+  );
+
+  if (isLoading || !group) {
+    return <div>Loading...</div>;
+  }
+
+  const updateGroupMethod = async (data: { name: string; description: string; file?: File }) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('description', data.description);
+    if (data.file) {
+      formData.append('file', data.file);
+    }
+  
+    const result = await handleUpdateGroup(groupId, accessToken, formData);
+    
+    if (result.success && result.data) {
+      setGroup(result.data);
+      useGroupStore.getState().updateGroup(true); 
+      toast({
+        title: "Success",
+        description: result.message,
+        status: "success",
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: result.message,
+        status: "error",
+        duration: 3000,
+      });
+    }
+    setIsUpdateModalOpen(false);
+  };
+
+  const leaveGroupMethod = async () => {
+    if (isUserAdmin) {
+      toast({
+        title: "Cannot Leave Group",
+        description: "Admins cannot leave the group. Please transfer admin rights to another member first or delete the group.",
+        status: "warning",
+        duration: 5000,
+      });
+      setIsLeaveModalOpen(false);
+      return;
+    }
+  
+    const result = await handleLeaveGroup(user.id, groupId, accessToken);
+    
+    if (result.success) {
+      useGroupStore.getState().updateGroup(true); 
+      toast({
+        title: "Success",
+        description: result.message,
+        status: "success",
+        duration: 3000,
+      });
+      router.push('/profile');
+    } else {
+      toast({
+        title: "Error",
+        description: result.message,
+        status: "error",
+        duration: 3000,
+      });
+    }
+    setIsLeaveModalOpen(false);
+  };
+
+  
 
   return (
     <HStack
-      spacing={{ base: 4, md: 6 }} // Responsive spacing
+      spacing={{ base: 4, md: 6 }}
       align="center"
       mb={8}
-      flexDirection={{ base: "column", md: "row" }} // Stack items vertically on small screens
-      textAlign={{ base: "center", md: "left" }} // Center text on small screens, left-align on larger ones
+      flexDirection={{ base: "column", md: "row" }}
+      textAlign={{ base: "center", md: "left" }}
     >
       <Image
         borderRadius="full"
-        boxSize={{ base: "80px", sm: "100px", md: "120px" }} // Responsive image size
-        src={group.groupImage}
+        boxSize={{ base: "80px", sm: "100px", md: "120px" }}
+        src={group.photoUri}
         fallbackSrc="/public/fallback-user.png"
         alt={`${group.name}`}
       />
       <VStack
-        spacing={2} // Space between the name and description
-        alignItems={{ base: "center", md: "flex-start" }} // Align text to center on small, start on medium+
+        spacing={2}
+        alignItems={{ base: "center", md: "flex-start" }}
       >
         <Text fontSize={{ base: "xl", sm: "2xl", md: "3xl" }} fontWeight="bold">
           {group.name}
@@ -41,18 +149,22 @@ export default function GroupDataComponent({ group }: any) {
         </Text>
       </VStack>
       
-      <Button 
-        colorScheme="blue" 
-        variant="solid" 
-        size="md" 
-        mb={4} 
-        _hover={{ bg: "blue.600" }} 
-        borderRadius="md"
-        onClick={() => setIsUpdateModalOpen(true)}
-      >
-        {t('edit-group')}
-      </Button>
-      <Button 
+      {isUserAdmin && (
+        <Button 
+          colorScheme="blue" 
+          variant="solid" 
+          size="md" 
+          mb={4} 
+          _hover={{ bg: "blue.600" }} 
+          borderRadius="md"
+          onClick={() => setIsUpdateModalOpen(true)}
+        >
+          {t('edit-group')}
+        </Button>
+      )}
+      
+      {!isUserAdmin && (
+        <Button 
         colorScheme="blue" 
         variant="solid" 
         size="md" 
@@ -63,28 +175,24 @@ export default function GroupDataComponent({ group }: any) {
       >
         {t('leave-group')}
       </Button>
+      )}
+      
 
       <LeaveGroupModal
         isOpen={isLeaveModalOpen}
         onClose={() => setIsLeaveModalOpen(false)}
-        onConfirm={() => {
-          // Handle leave group logic here
-          setIsLeaveModalOpen(false);
-        }}
+        onConfirm={leaveGroupMethod}
         groupName={group.name}
       />
 
       <UpdateGroupModal
         isOpen={isUpdateModalOpen}
         onClose={() => setIsUpdateModalOpen(false)}
-        onSubmit={(data) => {
-          // Handle update group logic here
-          console.log('Updated group data:', data);
-          setIsUpdateModalOpen(false);
-        }}
+        onSubmit={updateGroupMethod}
         initialData={{
           name: group.name,
           description: group.description,
+          photoUri: group.photoUri
         }}
       />
     </HStack>

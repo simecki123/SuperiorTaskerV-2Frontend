@@ -12,6 +12,7 @@ import { Group, User, State } from "../../interfaces/types";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import { fetchGroupsFromServer } from "@/app/server-actions/fetchGroups";
 import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
+import { useGroupStore } from "@/commons/zustandFiles/GroupUpdateStore";
 
 const initialState: State = {
   message: null,
@@ -19,6 +20,7 @@ const initialState: State = {
 };
 
 export default function SideBarGroups({ activeUser, initialUser }: { activeUser: User, initialUser: User }) {
+  const { updatedGroup } = useGroupStore();
   const [state, formAction] = useFormState(handleGroupCreate, initialState);
   const [groups, setGroups] = useState<Group[]>([]);
   const [activeGroup, setActiveGroup] = useState<Group | null>(null);
@@ -41,31 +43,38 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
     onClose: onGroupModalClose,
   } = useDisclosure();
 
-    useEffect(() => {
-      const loadGroups = async () => {
-        const currentUser = updatedUser || initialUser;
-        
-        if (!currentUser?.id) return;
-        
-        setGroupLoading(true);
-        setGroupError(null);
-  
-        try {
-          const currentGroups = await fetchGroupsFromServer(activeUser, currentPage);
-          const nextGroups = await fetchGroupsFromServer(activeUser, currentPage+1);
-          
-          setGroups(currentGroups);
-          setHasNextPage(nextGroups.length > 0); 
-        } catch (err) {
-          setGroupError(err instanceof Error ? err.message : "An unknown error occurred");
-          setGroups([]);
-        } finally {
-          setGroupLoading(false);
-        }
-      };
-  
+  useEffect(() => {
+    console.log("UpdatedGroup ", updatedGroup);
+    if (updatedGroup) {
       loadGroups();
-    }, [currentPage, updatedUser, activeUser, initialUser]);
+    }
+  }, [updatedGroup]);
+
+  useEffect(() => {
+    loadGroups();
+  }, [currentPage, updatedUser, activeUser, initialUser]);
+
+  const loadGroups = async () => {
+    const currentUser = updatedUser || initialUser;
+    
+    if (!currentUser?.id) return;
+    
+    setGroupLoading(true);
+    setGroupError(null);
+
+    try {
+      const currentGroups = await fetchGroupsFromServer(activeUser, currentPage);
+      const nextGroups = await fetchGroupsFromServer(activeUser, currentPage+1);
+      
+      setGroups(currentGroups);
+      setHasNextPage(nextGroups.length > 0); 
+    } catch (err) {
+      setGroupError(err instanceof Error ? err.message : "An unknown error occurred");
+      setGroups([]);
+    } finally {
+      setGroupLoading(false);
+    }
+  };
 
   if (groupLoading) {
     return (

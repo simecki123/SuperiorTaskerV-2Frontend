@@ -27,7 +27,16 @@ export interface RegisterUserRequest {
     profileUri: string;
     description: string;
     accessToken: string;
-    groupMembershipData: [];
+    groupMembershipData: GroupMembershipData[];
+  }
+
+  export interface GroupMembershipData {
+    "id": string,
+    "userId": string,
+    "groupId": string,
+    "role": string,
+    "createdAt": string,
+    "updatedAt": string
   }
 
   export interface UserProfileEditResponse {
