@@ -109,3 +109,9 @@ export interface RegisterUserRequest {
     "status": string;
     "search": string;
   }
+
+  export interface ProjectTaskDataProps {
+    tasks: Task[],
+    onTaskUpdate: (updatedTask: Task) => void,
+    accessToken: string
+  }

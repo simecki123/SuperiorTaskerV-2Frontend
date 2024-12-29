@@ -89,6 +89,14 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
       status,
   ]);
 
+  const handleTaskUpdate = (updatedTask: Task) => {
+    setTasks(prevTasks => 
+        prevTasks.map(task => 
+            task.id === updatedTask.id ? updatedTask : task
+        )
+    );
+};
+
   
 
   return (
@@ -110,10 +118,14 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
           ) : isDesktop ? (
               <ProjectTasksTable
                 tasks={tasks}
+                onTaskUpdate={handleTaskUpdate}
+                accessToken={accessToken}
               />
           ) : (
               <ProjectTaskCards
                 tasks={tasks}
+                onTaskUpdate={handleTaskUpdate}
+                accessToken={accessToken}
               />
           )}
           <Pagination 

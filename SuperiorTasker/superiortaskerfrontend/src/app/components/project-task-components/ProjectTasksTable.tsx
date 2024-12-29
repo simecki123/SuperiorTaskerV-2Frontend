@@ -2,14 +2,17 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import TaskStatusModal from "../modals/TaskStatusModal";
-import { Task } from "@/app/interfaces/types";
+import { ProjectTaskDataProps, Task } from "@/app/interfaces/types";
 
-export default function ProjectTasksTable({ tasks }: {tasks: Task[]}) {
+
+
+export default function ProjectTasksTable({ tasks, onTaskUpdate, accessToken }: ProjectTaskDataProps) {
   const t = useTranslations('project-tasks');
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
   };
+  
   
   return (
     <Box>
@@ -37,7 +40,11 @@ export default function ProjectTasksTable({ tasks }: {tasks: Task[]}) {
                 </Badge>
               </Td>
               <Td>
-                <TaskStatusModal />
+                <TaskStatusModal 
+                  task={task}
+                  onTaskUpdate={onTaskUpdate}
+                  accessToken={accessToken}
+                />
               </Td>
             </Tr>
           ))}
