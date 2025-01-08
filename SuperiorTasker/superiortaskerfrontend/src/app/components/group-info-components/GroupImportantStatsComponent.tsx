@@ -8,32 +8,34 @@ import AllGroupProjectsComponent from "./group-menu-components/AllGroupProjectsC
 import AllGroupTaskComponents from "./group-menu-components/AllGroupTaskComponents";
 import SendMessageComponent from "./group-menu-components/SendMessageComponent";
 import { useTranslations } from "next-intl";
+import { User } from "@/app/interfaces/types";
 
+interface GroupImportantStatsProps {
+  user: User;
+  accessToken: string
+}
 
-export default function GroupImportantStatsComponent({members, group, projects, tasks}: any) {
+export default function GroupImportantStatsComponent({user,accessToken}: GroupImportantStatsProps) {
 
   const t = useTranslations('group-page')
 
-    const menuItems = [
-        { name: "All Members", title: `${t('all-members')}`, component: AllGroupMembersComponent },
-        { name: "All Projects", title: `${t('all-projects')}`,  component: AllGroupProjectsComponent },
-        { name: "All Tasks", title: `${t('all-tasks')}`, component: AllGroupTaskComponents },
-        { name: "Send Message", title: `${t('send-message')}`, component: SendMessageComponent },
-      ];
+  const menuItems = [
+      { name: "All Members", title: `${t('all-members')}`, component: AllGroupMembersComponent },
+      { name: "All Projects", title: `${t('all-projects')}`,  component: AllGroupProjectsComponent },
+      { name: "All Tasks", title: `${t('all-tasks')}`, component: AllGroupTaskComponents },
+      { name: "Send Message", title: `${t('send-message')}`, component: SendMessageComponent },
+    ];
 
-      const [selectedComponent, setSelectedComponent] = useState("All Members");
-      console.log(group)
+    const [selectedComponent, setSelectedComponent] = useState("All Members");
 
   const renderSelectedComponent = () => {
     if (selectedComponent === "All Members") {
-      return <AllGroupMembersComponent members={members} />;
+      return <AllGroupMembersComponent
+        user={user}
+        accessToken={accessToken}
+      />;
     }
-    if (selectedComponent === "All Projects") {
-      return <AllGroupProjectsComponent projects={projects} />;
-    }
-    if (selectedComponent === "All Tasks") {
-        return <AllGroupTaskComponents tasks={tasks} />;
-    }
+    
     if (selectedComponent == "Send Message") {
         return <SendMessageComponent />
     }

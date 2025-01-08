@@ -1,3 +1,5 @@
+import { Interface } from "readline";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterUserRequest {
     email: string;
@@ -11,9 +13,8 @@ export interface RegisterUserRequest {
     password: string;
   }
 
-  //grouptypes
   export interface Group {
-    id: string;  // Now this is required, not optional
+    id: string;  
     name: string;
     description: string;
     photoUri: string;
@@ -31,12 +32,12 @@ export interface RegisterUserRequest {
   }
 
   export interface GroupMembershipData {
-    "id": string,
-    "userId": string,
-    "groupId": string,
-    "role": string,
-    "createdAt": string,
-    "updatedAt": string
+    id: string,
+    userId: string,
+    groupId: string,
+    role: string,
+    createdAt: string,
+    updatedAt: string
   }
 
   export interface UserProfileEditResponse {
@@ -68,42 +69,42 @@ export interface RegisterUserRequest {
   }
 
   export interface Task {
-    "id": string;
-    "userId": string;
-    "groupId": string;
-    "name": string;
-    "description": string;
-    "taskStatus": string;
-    "startDate": string;
-    "endDate": string;
+    id: string;
+    userId: string;
+    groupId: string;
+    name: string;
+    description: string;
+    taskStatus: string;
+    startDate: string;
+    endDate: string;
   }
 
   export interface Project {
-    "id": string;
-    "name": string;
-    "description": string
-    "groupId": string;
-    "userId": string;
-    "startDate": string;
-    "endDate": string;
-    "completion": number;
+    id: string;
+    name: string;
+    description: string
+    groupId: string;
+    userId: string;
+    startDate: string;
+    endDate: string;
+    completion: number;
   }
 
   export interface ProjectBodySearch {
-    "userId": string;
-    "groupId": string;
-    "startCompletion": string;
-    "endCompletion": string;
-    "includeComplete": boolean;
-    "includeNotStarted": boolean;
-    "search": string;
+    userId: string;
+    groupId: string;
+    startCompletion: string;
+    endCompletion: string;
+    includeComplete: boolean;
+    includeNotStarted: boolean;
+    search: string;
   }
 
   export interface GrouProjectsTableParams {
-    "projects": Project[];
-    "hasNextPage": boolean;
-    "currentPage": number;
-    "setCurrentPage": () => void;
+    projects: Project[];
+    hasNextPage: boolean;
+    currentPage: number;
+    setCurrentPage: () => void;
   }
 
   export interface GroupProjectsAndTasksDataProps {
@@ -112,15 +113,32 @@ export interface RegisterUserRequest {
   }
 
   export interface TaskBodySearch {
-    "userId": string;
-    "groupId": string;
-    "projectId": string;
-    "status": string;
-    "search": string;
+    userId: string;
+    groupId: string;
+    projectId: string;
+    status: string;
+    search: string;
   }
 
   export interface ProjectTaskDataProps {
     tasks: Task[],
     onTaskUpdate: (updatedTask: Task) => void,
     accessToken: string
+  }
+
+  export interface GroupMember {
+    userId: string,
+    firstName: string,
+    lastName: string,
+    description: string,
+    role: string,
+    photoUri: string
+  }
+
+  export interface NotYetGroupMember {
+    userId: string,
+    firstName: string,
+    lastName: string,
+    description: string,
+    photoUri: string
   }

@@ -28,7 +28,7 @@ export default function MenuCard({
       cursor="pointer"
       transition="all 0.2s"
       _hover={{ 
-        bg: "gray.100",
+        bg: "gray.500",
         transform: "scale(1.05)"
       }}
     >

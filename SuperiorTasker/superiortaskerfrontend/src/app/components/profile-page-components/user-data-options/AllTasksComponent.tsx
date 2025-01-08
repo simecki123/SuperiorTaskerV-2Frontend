@@ -25,13 +25,11 @@ export default function AllTasksComponent({ user }: { user: User }) {
       setError(null);
 
       try {
-        // Only fetch current page
         const currentTasks = await fetchTasksFromServer(user, currentPage);
         const nextTasks = await fetchTasksFromServer(user, currentPage+1);
         
         setTasks(currentTasks);
-          // Check if we have a full page of results to determine if there's a next page
-        setHasNextPage(nextTasks.length > 0); // Assuming 10 is your page size
+        setHasNextPage(nextTasks.length > 0); 
         
       } catch (err) {
         
@@ -50,9 +48,8 @@ export default function AllTasksComponent({ user }: { user: User }) {
     return () => {
       controller.abort();
     };
-  }, [currentPage, user, user?.id]); // Only depend on currentPage and user.id
+  }, [currentPage, user, user?.id]); 
 
-  // Early returns
   if (loading) {
     return <Text>Loading...</Text>;
   }

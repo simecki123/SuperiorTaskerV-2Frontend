@@ -176,7 +176,14 @@
         "search-projects": "Pretraži projekte",
         "create-task": "Kreiraj zadatak",
         "delete-task-confirmation": "Potvrda brisanja zadatka",
-        "delete-task-message": "Jeste li sigurni da želite izbrisati zadatak"
+        "delete-task-message": "Jeste li sigurni da želite izbrisati zadatak",
+        "no-description": "Nema opisa...",
+        "role": "Rola",
+        "add-users-to-group": "Dodaj korisnike u grupu",
+        "no-users-found": "Nema ponuđenih korisnika",
+        "add-selected": "Dodaj odabrane",
+        "group-image":"Slika grupe",
+        "no-members-available": "Nema dostupnih korisnika"
       }
     
 

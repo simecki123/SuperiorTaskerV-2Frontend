@@ -177,7 +177,14 @@
         "search-projects": "Search projects",
         "create-task": "Create Task",
         "delete-task-confirmation": "Delete Task Confirmation",
-        "delete-task-message": "Are you sure you want to delete the task"
+        "delete-task-message": "Are you sure you want to delete the task",
+        "no-description": "No description...",
+        "role": "Role",
+        "add-users-to-group": "Add Users To Group",
+        "no-users-found": "No users found",
+        "add-selected": "Add Selected",
+        "group-image":"Group image",
+        "no-members-available": "No members available"
       }
     
 

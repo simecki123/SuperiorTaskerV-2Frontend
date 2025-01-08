@@ -18,15 +18,16 @@ export default async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
     "/",
     "/login",
     "/register",
     "/profile",
     "/tasks",
-    "/projects",
+    "/projects", 
     "/group",
-    "/group-info",  
+    "/group-info",
     "/project-tasks",
     "/(hr|en)/:path*"
-  ],
+  ]
 };

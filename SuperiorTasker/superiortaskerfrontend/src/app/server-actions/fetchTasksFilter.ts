@@ -37,15 +37,12 @@ export async function fetchTasksFilter(body: TaskBodySearch, user: User, accessT
             }
           );
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
-          if (!response.ok) {
+        if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data: Task[] = await response.json();
-         console.log('Received data:', data);
+        console.log('Received data:', data);
         return data;
 
     }catch(error){
