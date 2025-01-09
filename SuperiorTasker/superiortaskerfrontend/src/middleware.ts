@@ -6,6 +6,10 @@ const intlMiddleware = createIntlMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  
+  if (pathname.match(/\.(png|jpg|jpeg|gif|svg)$/)) {
+    return NextResponse.next();
+  }
 
   // Redirect to the login page if the user is on root or locale paths
   if (pathname === "/" || pathname === "/en" || pathname === "/hr") {
