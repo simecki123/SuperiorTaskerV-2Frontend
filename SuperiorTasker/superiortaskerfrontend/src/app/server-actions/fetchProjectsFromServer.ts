@@ -1,3 +1,4 @@
+"use server";
 import { Project, ProjectBodySearch, User } from "../interfaces/types";
 
 export async function fetchProjectsFromServer(body: ProjectBodySearch, user: User, accessToken: string, page: number): Promise<Project[]> {
@@ -7,7 +8,7 @@ export async function fetchProjectsFromServer(body: ProjectBodySearch, user: Use
 
     try {
         const params = new URLSearchParams({
-            userId: user.id,
+            userId: body.userId,
             groupId: body.groupId,
             startCompletion: body.startCompletion?.toString() || '',
             endCompletion: body.endCompletion?.toString() || '',

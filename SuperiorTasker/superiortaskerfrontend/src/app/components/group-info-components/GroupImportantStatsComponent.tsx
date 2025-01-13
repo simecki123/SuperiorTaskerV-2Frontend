@@ -36,6 +36,13 @@ export default function GroupImportantStatsComponent({user,accessToken}: GroupIm
       />;
     }
     
+    if (selectedComponent === "All Projects") {
+      return <AllGroupProjectsComponent
+        user={user}
+        accessToken={accessToken}
+      />
+    }
+    
     if (selectedComponent == "Send Message") {
         return <SendMessageComponent />
     }

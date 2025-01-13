@@ -5,14 +5,10 @@ import MembersCardComponent from "../group-members-components/MembersCardCompone
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import { useTranslations } from "next-intl";
 import AddUserModal from "../../modals/AddUserToGroupModal";
-import { GroupMember, User } from "@/app/interfaces/types";
+import { AllGroupMembersProps, GroupMember, User } from "@/app/interfaces/types";
 import { fetchGroupUsersFromServer } from "@/app/server-actions/fetchGroupUsersFromServer";
 import { useSearchParams } from "next/navigation";
 
-interface AllGroupMembersProps {
-  user: User,
-  accessToken: string
-}
 
 export default function AllGroupMembersComponent({ user, accessToken }: AllGroupMembersProps ) {
   const searchParams = useSearchParams();

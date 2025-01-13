@@ -28,13 +28,15 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
   const [endCompletion, setEndCompletion] = useState(searchParams.get('endCompletion') || '');
   const [includeCompleted, setIncludeCompleted] = useState(searchParams.get('includeComplete') === 'true');
   const [includeNotStarted, setIncludeNotStarted] = useState(searchParams.get('includeNotStarted') === 'true');
+  const groupId = searchParams.get('groupId');
+  
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const groupId = searchParams.get('groupId');
+  
 
   // Function to update URL parameters
   const updateURLParams = (newParams: Record<string, string | null>) => {
@@ -89,7 +91,6 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
       }
   };
 
-  // Effect to fetch projects when URL parameters change
   useEffect(() => {
     handleSearchProjects();
 }, [
@@ -130,10 +131,12 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
           ) : isDesktop ? (
               <GroupProjectsTable
                 projects={projects}
+                user={user}
               />
           ) : (
               <ProjectCards 
                 projects={projects}
+                user={user}
               />
           )}
           <Pagination 

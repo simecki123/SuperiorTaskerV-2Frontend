@@ -142,3 +142,22 @@ export interface RegisterUserRequest {
     description: string,
     photoUri: string
   }
+
+  export interface AllGroupMembersProps {
+    user: User,
+    accessToken: string
+  }
+
+  export interface GroupCardAndTableProps {
+    projects: Project[],
+    user: User,
+    isUserAdmin?: boolean,
+    userProjectRelations?: UserProjectRelation[];
+  }
+
+  export interface UserProjectRelation {
+    projectId: string,
+    userId: string,
+    groupId: string
+  }
+

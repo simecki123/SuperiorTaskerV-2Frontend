@@ -4,16 +4,14 @@ import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import {  Project } from "@/app/interfaces/types";
+import { GroupCardAndTableProps, Project } from "@/app/interfaces/types";
 
 
-export default function GroupProjectsTable( {projects}: {projects: Project[] } ) { 
+export default function GroupProjectsTable( {projects, user, isUserAdmin=true, userProjectRelations = []}: GroupCardAndTableProps ) { 
   const t = useTranslations('projects-page');
   const router = useRouter();
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
-
-  
 
   const getCompletionColor = (completion: any) => {
     const percentage = parseInt(completion);
@@ -31,6 +29,11 @@ export default function GroupProjectsTable( {projects}: {projects: Project[] } )
     router.push(`/project-tasks?groupId=${groupId}&projectId=${projectId}`);
   };
 
+  const hasProjectAccess = (projectId: string) => {
+    console.log("userProject Relations ", userProjectRelations)
+    return isUserAdmin || userProjectRelations.some(relation => relation.projectId === projectId);
+  };
+
   return (
     <Box>
       <Box overflowX="auto">
@@ -45,12 +48,14 @@ export default function GroupProjectsTable( {projects}: {projects: Project[] } )
             </Tr>
           </Thead>
           <Tbody>
-            {projects.map((project: Project) => (
+          {projects.map((project: Project) => {
+            const isClickable = hasProjectAccess(project.id);
+            return (
               <Tr 
                 key={project.id} 
-                cursor="pointer" 
-                onClick={() => handleRowClick(project.id)} // Make the row clickable
-                _hover={{ bg: "xblue.100" }} // Add hover effect
+                cursor={isClickable ? "pointer" : "default"} 
+                onClick={() => isClickable && handleRowClick(project.id)}
+                _hover={{ bg: isClickable ? "xblue.100" : "inherit" }}
               >
                 <Td fontWeight="bold">{project.name}</Td>
                 <Td>{project.description}</Td>
@@ -62,8 +67,9 @@ export default function GroupProjectsTable( {projects}: {projects: Project[] } )
                   </Badge>
                 </Td>
               </Tr>
-            ))}
-          </Tbody>
+            );
+          })}
+        </Tbody>
         </Table>
       </Box>
       
