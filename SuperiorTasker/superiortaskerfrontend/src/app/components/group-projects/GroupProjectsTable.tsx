@@ -30,7 +30,6 @@ export default function GroupProjectsTable( {projects, user, isUserAdmin=true, u
   };
 
   const hasProjectAccess = (projectId: string) => {
-    console.log("userProject Relations ", userProjectRelations)
     return isUserAdmin || userProjectRelations.some(relation => relation.projectId === projectId);
   };
 

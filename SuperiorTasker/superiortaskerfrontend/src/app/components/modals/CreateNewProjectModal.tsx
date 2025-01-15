@@ -15,19 +15,15 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import { Project, ProjectData } from "@/app/interfaces/types";
 
 interface CreateProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreateProject: (projectData: ProjectData) => void;
+  onCreateProject: (projectData: ProjectData) => Promise<void>;
 }
 
-interface ProjectData {
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-}
+
 
 const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   isOpen,
@@ -35,6 +31,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onCreateProject,
 }) => {
   const t = useTranslations('group-page');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [projectData, setProjectData] = useState<ProjectData>({
     name: "",
     description: "",
@@ -47,10 +44,27 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
     setProjectData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onCreateProject(projectData);
-    onClose();
+    setIsSubmitting(true);
+    
+    try {
+      await onCreateProject(projectData);
+      setProjectData({
+        name: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Add validation for dates
+  const isEndDateValid = () => {
+    if (!projectData.startDate || !projectData.endDate) return true;
+    return new Date(projectData.endDate) >= new Date(projectData.startDate);
   };
 
   return (
@@ -102,10 +116,17 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} type="submit">
+            <Button
+              colorScheme="blue" mr={3} type="submit"
+              isDisabled={!isEndDateValid()}
+              isLoading={isSubmitting}>
               {t('create-project')}
             </Button>
-            <Button variant="ghost" onClick={onClose}>{t('cancel')}</Button>
+            <Button
+              isDisabled={isSubmitting}
+              variant="ghost" onClick={onClose}>
+                {t('cancel')}
+            </Button>
           </ModalFooter>
         </form>
       </ModalContent>

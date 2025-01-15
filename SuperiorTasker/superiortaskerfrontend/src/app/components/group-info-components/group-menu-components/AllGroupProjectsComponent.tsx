@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState } from "react"
-import { useBreakpointValue, Text, Box, Button } from "@chakra-ui/react";
+import { useBreakpointValue, Text, Box, Button, useToast } from "@chakra-ui/react";
 import GroupProjetsTableComponents from "../group-projects-components/GroupProjectsTableComponent";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupProjectsCardComponent from "../group-projects-components/GroupProjectsCardComponent";
 import { useTranslations } from "next-intl";
 import CreateProjectModal from "../../modals/CreateNewProjectModal";
 import { useSearchParams } from "next/navigation";
-import { AllGroupMembersProps, Project, ProjectBodySearch, UserProjectRelation } from "@/app/interfaces/types";
+import { AllGroupMembersProps, Project, ProjectBodySearch, ProjectData, ProjectRequest, UserProjectRelation } from "@/app/interfaces/types";
 import { fetchProjectsFromServer } from "@/app/server-actions/fetchProjectsFromServer";
 import GroupProjectsTable from "../../group-projects/GroupProjectsTable";
 import ProjectCards from "../../group-projects/ProjectCards";
-import { fetchUserProjectRelations } from "@/app/server-actions/fetchUserProject";
+import { fetchUserProjectRelations } from "@/app/server-actions/fetchUserProjectRelations";
+import { createNewProject } from "@/app/server-actions/createNewProject";
 
 
 
@@ -29,6 +30,7 @@ export default function AllGroupProjectsComponent({ user, accessToken }: AllGrou
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isDesktop = useBreakpointValue({ base: false, md: true });
+  const toast = useToast();
   const groupId = searchParams.get('groupId') || '0';
   const isUserAdmin = user.groupMembershipData.some(
     membership => membership.groupId === groupId && membership.role === "ADMIN"
@@ -59,16 +61,14 @@ export default function AllGroupProjectsComponent({ user, accessToken }: AllGrou
       setHasNextPage(nextPageProjects.length > 0); 
 
       const relationRequests = currentProjects.map(project => ({
-        userId: user.id,
         projectId: project.id,
+        userId: user.id,
         groupId: groupId
       }));
 
-      console.log("UserPrRelationRequests ", relationRequests)
 
       const relations = await fetchUserProjectRelations(relationRequests, accessToken);
       setUserProjectRelations(relations);
-      console.log("UserPrRelationResponse ", relations)
       
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -95,9 +95,51 @@ export default function AllGroupProjectsComponent({ user, accessToken }: AllGrou
     return <Text>Error: {error}</Text>;
   }
 
+  const handleCreateProject = async (projectData: ProjectData) => {
+    try {
+      const projectRequest: ProjectRequest = {
+        userId: user.id,
+        groupId: groupId,
+        name: projectData.name,
+        description: projectData.description,
+        startDate: projectData.startDate,
+        endDate: projectData.endDate
+      };
+      const newProject = await createNewProject(projectRequest, accessToken);
+      
+      setProjects(prevProjects => [newProject, ...prevProjects]);
+      
+      const newRelation = await fetchUserProjectRelations([{
+        projectId: newProject.id,
+        userId: user.id,
+        groupId: groupId
+      }], accessToken);
+      
+      setUserProjectRelations(prev => [...newRelation, ...prev]);
+
+      toast({
+        title: "Project created successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      setIsCreateProjectModalOpen(false);
+    } catch (error) {
+      toast({
+        title: "Error creating project",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box>
-      <Button 
+      {isUserAdmin && (
+        <Button 
         colorScheme="blue"
         variant="solid"
         size="md"
@@ -108,15 +150,14 @@ export default function AllGroupProjectsComponent({ user, accessToken }: AllGrou
       >
         {t('create-new-project')}
       </Button>
-      <CreateProjectModal
+      )}
+      {isUserAdmin && (
+        <CreateProjectModal
         isOpen={isCreateProjectModalOpen}
         onClose={() => setIsCreateProjectModalOpen(false)}
-        onCreateProject={(projectData) => {
-          // Handle creating project logic here
-          console.log('New project data:', projectData);
-          setIsCreateProjectModalOpen(false);
-        }}
+        onCreateProject={handleCreateProject}
       />
+      )}
       {isDesktop ? (
         <GroupProjectsTable 
             projects={projects}

@@ -90,6 +90,22 @@ export interface RegisterUserRequest {
     completion: number;
   }
 
+  export interface ProjectRequest {
+    userId: string,
+    groupId: string,
+    name: string,
+    description: string,
+    startDate: string,
+    endDate: string
+  }
+
+  export interface ProjectData {
+    name: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+  }
+
   export interface ProjectBodySearch {
     userId: string;
     groupId: string;
