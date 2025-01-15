@@ -161,13 +161,15 @@ export default function AllGroupProjectsComponent({ user, accessToken }: AllGrou
       {isDesktop ? (
         <GroupProjectsTable 
             projects={projects}
-            user={user}
+            accessToken={accessToken}
+            setProjects={setProjects}
             isUserAdmin={isUserAdmin} 
             userProjectRelations={userProjectRelations} />
       ) : (
         <ProjectCards 
             projects={projects}
-            user={user}
+            accessToken={accessToken}
+            setProjects={setProjects}
             isUserAdmin={isUserAdmin} 
             userProjectRelations={userProjectRelations} />
       )}

@@ -1,15 +1,21 @@
 "use client";
-import React from "react";
-import { VStack, Box, Heading, Text, Badge, HStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { VStack, Box, Heading, Text, Badge, HStack, useToast, Button } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GroupCardAndTableProps, Project } from "@/app/interfaces/types";
+import { deleteProject } from "@/app/server-actions/deleteProject";
+import RemoveProjectModal from "../modals/RemoveProjectModal";
 
-export default function ProjectCards({projects, user, isUserAdmin=true, userProjectRelations = [] }: GroupCardAndTableProps) {
+export default function ProjectCards({projects,setProjects, accessToken, isUserAdmin=true, userProjectRelations = [] }: GroupCardAndTableProps) {
  const t = useTranslations('projects-page');
  const router = useRouter();
  const searchParams = useSearchParams();
  const groupId = searchParams.get("groupId");
+ const [isRemoveProjectModalOpen, setIsRemoveProjectModalOpen] = useState(false);
+ const [projectToRemove, setProjectToRemove] = useState<Project | null>(null);
+ const [isLoading, setIsLoading] = useState(false);
+ const toast = useToast();
 
  const getCompletionColor = (completion: any) => {
    const percentage = parseInt(completion);
@@ -26,6 +32,38 @@ export default function ProjectCards({projects, user, isUserAdmin=true, userProj
  const hasProjectAccess = (projectId: string) => {
   return isUserAdmin || userProjectRelations.some(relation => relation.projectId === projectId);
 };
+
+const removeProject = async () => {
+  if (!projectToRemove) return;
+  
+  setIsLoading(true);
+  const result = await deleteProject(projectToRemove.id, accessToken);
+  setIsLoading(false);
+  setIsRemoveProjectModalOpen(false);
+
+  if (result.success) {
+    setProjects(prevProjects => 
+      prevProjects.filter(project => project.id !== projectToRemove.id)
+  );
+
+    toast({
+      title: "Success",
+      description: result.message,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+  } else {
+    toast({
+      title: "Error",
+      description: result.message,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+};
+
 
  return (
    <VStack spacing={4} align="stretch">
@@ -51,6 +89,30 @@ export default function ProjectCards({projects, user, isUserAdmin=true, userProj
            <Badge mt={2} colorScheme={getCompletionColor(project.completion)}>
              {t('completion')}: {project.completion}
            </Badge>
+           {isUserAdmin && (
+            <Button 
+              colorScheme="red" 
+              size="sm"
+              isLoading={isLoading} 
+              onClick={(e) => {
+                e.stopPropagation();
+                setProjectToRemove(project);
+                setIsRemoveProjectModalOpen(true);
+
+              }}
+            >
+            {t('delete-project')}
+            </Button>
+              )}
+              <RemoveProjectModal
+                isOpen={isRemoveProjectModalOpen}
+                onClose={() => {
+                  setIsRemoveProjectModalOpen(false);
+                  setProjectToRemove(null);
+                }}
+                onConfirm={removeProject}
+                userName={projectToRemove ? `${projectToRemove.name}` : ''}
+              />
          </Box>
        );
      })}

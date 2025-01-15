@@ -89,7 +89,8 @@
         "include-completed": "Uključi Završene Projekte",
         "yes": "Da",
         "no": "Ne",
-        "include-not-started": "Uključi Nedavno Započete Projekte"
+        "include-not-started": "Uključi Nedavno Započete Projekte",
+        "delete-project": "Izbriši projekt"
     },
 
     "project-tasks": {

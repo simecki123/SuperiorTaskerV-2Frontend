@@ -166,7 +166,8 @@ export interface RegisterUserRequest {
 
   export interface GroupCardAndTableProps {
     projects: Project[],
-    user: User,
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+    accessToken: string,
     isUserAdmin?: boolean,
     userProjectRelations?: UserProjectRelation[];
   }
@@ -175,5 +176,12 @@ export interface RegisterUserRequest {
     projectId: string,
     userId: string,
     groupId: string
+  }
+
+  export interface RemoveUserAndProjectModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    userName: string;
   }
 

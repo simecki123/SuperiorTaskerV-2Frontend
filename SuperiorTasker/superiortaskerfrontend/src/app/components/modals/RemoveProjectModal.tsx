@@ -13,25 +13,23 @@ import {
 import { useTranslations } from "next-intl";
 import { RemoveUserAndProjectModalProps } from "@/app/interfaces/types";
 
-
-
-const RemoveUserModal: React.FC<RemoveUserAndProjectModalProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  userName,
+const RemoveProjectModal: React.FC<RemoveUserAndProjectModalProps> = ({
+    isOpen,
+    onClose,
+    onConfirm,
+    userName,
 }) => {
-  const t = useTranslations('group-page');
+    const t = useTranslations('group-page');
 
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    return(
+      <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t('remove-member-confirmation')}</ModalHeader>
+        <ModalHeader>{t('delete-project-message')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>
-            {t('remove-member-message', { userName })}
+            {t('delete-project-confirmation', { userName })}
           </Text>
         </ModalBody>
         <ModalFooter>
@@ -39,12 +37,12 @@ const RemoveUserModal: React.FC<RemoveUserAndProjectModalProps> = ({
             {t('cancel')}
           </Button>
           <Button colorScheme="red" onClick={onConfirm}>
-            {t('confirm-remove')}
+            {t('confirm-delete')}
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+    );
+}
 
-export default RemoveUserModal;
+export default RemoveProjectModal;

@@ -90,7 +90,8 @@
         "include-completed": "Include Completed Projects",
         "yes": "Yes",
         "no": "No",
-        "include-not-started": "Include Recently started Projects"
+        "include-not-started": "Include Recently started Projects",
+        "delete-project": "Delete Project"
     },
 
     "project-tasks": {

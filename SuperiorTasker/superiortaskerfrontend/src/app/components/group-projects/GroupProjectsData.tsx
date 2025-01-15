@@ -131,12 +131,14 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
           ) : isDesktop ? (
               <GroupProjectsTable
                 projects={projects}
-                user={user}
+                accessToken={accessToken}
+                setProjects={setProjects}
               />
           ) : (
               <ProjectCards 
                 projects={projects}
-                user={user}
+                accessToken={accessToken}
+                setProjects={setProjects}
               />
           )}
           <Pagination 
