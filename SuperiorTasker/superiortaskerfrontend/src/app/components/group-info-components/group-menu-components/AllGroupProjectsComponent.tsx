@@ -16,9 +16,6 @@ import { fetchUserProjectRelations } from "@/app/server-actions/fetchUserProject
 import { createNewProject } from "@/app/server-actions/createNewProject";
 
 
-
-
-
 export default function AllGroupProjectsComponent({ user, accessToken }: AllGroupMembersProps) {
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const t = useTranslations('group-page');

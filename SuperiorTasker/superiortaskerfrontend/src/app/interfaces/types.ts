@@ -1,4 +1,3 @@
-import { Interface } from "readline";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterUserRequest {
@@ -183,5 +182,15 @@ export interface RegisterUserRequest {
     onClose: () => void;
     onConfirm: () => void;
     userName: string;
+  }
+
+  export interface TaskTableComponentProps {
+    user: User;
+    tasks: Task[];
+    onTaskUpdate: (updatedTask: Task) => void,
+    accessToken: string,
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+    isUserAdmin: boolean,
+    groupId: string
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useBreakpointValue, Text, Box, Button } from "@chakra-ui/react";
 import React, { useEffect, useState, useCallback } from "react"
 import MembersTableComponent from "../group-members-components/MembersTableComponent";
@@ -5,7 +6,7 @@ import MembersCardComponent from "../group-members-components/MembersCardCompone
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import { useTranslations } from "next-intl";
 import AddUserModal from "../../modals/AddUserToGroupModal";
-import { AllGroupMembersProps, GroupMember, User } from "@/app/interfaces/types";
+import { AllGroupMembersProps, GroupMember } from "@/app/interfaces/types";
 import { fetchGroupUsersFromServer } from "@/app/server-actions/fetchGroupUsersFromServer";
 import { useSearchParams } from "next/navigation";
 

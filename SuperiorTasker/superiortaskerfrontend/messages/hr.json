@@ -114,7 +114,8 @@
         "filters":"Napredno Pretraživanje",
         "include-completed":"Uključi Završene Zadatke",
         "completed": "Završeno",
-        "default": "Makni filter"
+        "default": "Makni filter",
+        "delete-task":"Izbriši zadatak"
 
     },
 

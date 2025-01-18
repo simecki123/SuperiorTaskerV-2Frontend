@@ -15,7 +15,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import { Project, ProjectData } from "@/app/interfaces/types";
+import { ProjectData } from "@/app/interfaces/types";
 
 interface CreateProjectModalProps {
   isOpen: boolean;

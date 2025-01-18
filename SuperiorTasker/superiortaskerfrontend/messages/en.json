@@ -115,7 +115,8 @@
         "filters":"Advanced Search",
         "include-completed":"Include Completed Tasks",
         "completed": "Completed",
-        "default": "Remove Filter"
+        "default": "Remove Filter",
+        "delete-task":"Izbriši zadatak"
 
     },
 

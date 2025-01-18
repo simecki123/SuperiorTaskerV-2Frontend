@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useEffect, useState } from "react";
@@ -7,10 +8,10 @@ import { GroupProjectsAndTasksDataProps, Task, TaskBodySearch } from "@/app/inte
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchTasksFilter } from "@/app/server-actions/fetchTasksFilter";
 import SearchbarForTasks from "./SearchBarForTasks";
-import ProjectTasksTable from "./ProjectTasksTable";
-import ProjectTaskCards from "./ProjectTaskDataCard";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import ProjectTaskFilter from "./ProjectTaskFilter";
+import GroupTasksTableComponent from "../group-info-components/group-tasks-components/GroupTasksTableComponent";
+import GroupTasksCardComponent from "../group-info-components/group-tasks-components/GroupTasksCardComponent";
 
 export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTasksDataProps) {
   const router = useRouter();
@@ -29,6 +30,9 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isUserAdmin = user.groupMembershipData.some(
+    membership => membership.groupId === groupId && membership.role === "ADMIN"
+  );
 
   // Function to update URL parameters
   const updateURLParams = (newParams: Record<string, string | null>) => {
@@ -95,7 +99,7 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
             task.id === updatedTask.id ? updatedTask : task
         )
     );
-};
+  };
 
   
 
@@ -116,16 +120,25 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
           ) : error ? (
               <Text color="red.500">{error}</Text>
           ) : isDesktop ? (
-              <ProjectTasksTable
+              <GroupTasksTableComponent 
+                user={user}
                 tasks={tasks}
                 onTaskUpdate={handleTaskUpdate}
                 accessToken={accessToken}
+                setTasks={setTasks}
+                isUserAdmin={isUserAdmin}
+                groupId={groupId}
               />
+              
           ) : (
-              <ProjectTaskCards
+              <GroupTasksCardComponent
+                user={user}
                 tasks={tasks}
                 onTaskUpdate={handleTaskUpdate}
                 accessToken={accessToken}
+                setTasks={setTasks}
+                isUserAdmin={isUserAdmin}
+                groupId={groupId}
               />
           )}
           <Pagination 

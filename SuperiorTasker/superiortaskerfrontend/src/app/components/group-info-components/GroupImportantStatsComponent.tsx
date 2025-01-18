@@ -42,6 +42,13 @@ export default function GroupImportantStatsComponent({user,accessToken}: GroupIm
         accessToken={accessToken}
       />
     }
+
+    if (selectedComponent === "All Tasks") {
+      return <AllGroupTaskComponents 
+        user={user}
+        accessToken={accessToken}
+      />
+    }
     
     if (selectedComponent == "Send Message") {
         return <SendMessageComponent />

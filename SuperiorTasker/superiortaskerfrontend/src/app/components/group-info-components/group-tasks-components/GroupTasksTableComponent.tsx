@@ -1,15 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Box } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Box, Badge } from "@chakra-ui/react";
 import TaskStatusModal from "../../modals/TaskStatusModal";
 import { useTranslations } from "next-intl";
 import DeleteTaskModal from "../../modals/DeleteTaskConfirmationModal";
+import { Task, TaskTableComponentProps } from "@/app/interfaces/types";
 
-export default function GroupTasksTableComponent({ tasks }: any) {
+export default function GroupTasksTableComponent({ 
+  user, 
+  tasks, 
+  onTaskUpdate, 
+  accessToken, 
+  setTasks, 
+  isUserAdmin, 
+  groupId 
+}: TaskTableComponentProps) {
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
-  const [taskToDelete, setTaskToDelete] = useState<any>(null);
-  const t = useTranslations('group-page')
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+  const t = useTranslations('project-tasks');
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  const handleTaskDelete = (taskId: string) => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  };
+
+  const canManageTask = (task: Task) => {
+    return isUserAdmin || user.id === task.userId;
+  };
 
   return (
     <Table variant="simple">
@@ -17,50 +37,65 @@ export default function GroupTasksTableComponent({ tasks }: any) {
         <Tr>
           <Th>{t('title')}</Th>
           <Th>{t('description')}</Th>
-          <Th>{t('project')}</Th>
+          <Th>{t('start-date')}</Th>
+          <Th>{t('end-date')}</Th>
           <Th>{t('status')}</Th>
           <Th>{t('actions')}</Th>
         </Tr>
       </Thead>
       <Tbody>
-        {tasks.map((task: any) => (
+        {tasks.map((task: Task) => (
           <Tr key={task.id}>
-            <Td>{task.title}</Td>
+            <Td>{task.name}</Td>
             <Td>{task.description}</Td>
-            <Td>{task.projectName}</Td>
-            <Td>{task.status}</Td>
+            <Td>{formatDate(task.startDate)}</Td>
+            <Td>{formatDate(task.endDate)}</Td>
             <Td>
-              <Box display="flex" alignItems="center" gap={4}> {/* Adds space between elements */}
-                <TaskStatusModal />
-                <Button 
-                  colorScheme="red" 
-                  variant="outline" 
-                  size="sm"
-                  _hover={{ bg: "red.100" }} 
-                  borderRadius="md"
-                  onClick={() => {
-                    setTaskToDelete(task);
-                    setIsDeleteTaskModalOpen(true);
-                  }}
-                >
-                  {t('delete-task')}
-                </Button>
-                <DeleteTaskModal
-                  isOpen={isDeleteTaskModalOpen}
-                  onClose={() => setIsDeleteTaskModalOpen(false)}
-                  onConfirm={() => {
-                    // Handle delete task logic here
-                    console.log('Deleting task:', taskToDelete);
-                    setIsDeleteTaskModalOpen(false);
-                    setTaskToDelete(null);
-                  }}
-                  taskName={taskToDelete ? taskToDelete.name : ''}
-                />
+              <Badge colorScheme={task.taskStatus === "COMPLETED" ? "green" : "yellow"}>
+                {task.taskStatus === "COMPLETED" ? t('done') : t('in-progress')}
+              </Badge>
+            </Td>
+            <Td>
+              <Box display="flex" alignItems="center" gap={4}>
+                {canManageTask(task) && (
+                  <TaskStatusModal 
+                    task={task}
+                    onTaskUpdate={onTaskUpdate}
+                    accessToken={accessToken}
+                  />
+                )}
+                {isUserAdmin && (
+                  <Button 
+                    colorScheme="red" 
+                    variant="outline" 
+                    size="sm"
+                    _hover={{ bg: "red.100" }} 
+                    borderRadius="md"
+                    onClick={() => {
+                      setTaskToDelete(task);
+                      setIsDeleteTaskModalOpen(true);
+                    }}
+                  >
+                    {t('delete-task')}
+                  </Button>
+                )}
               </Box>
             </Td>
           </Tr>
         ))}
       </Tbody>
+      {taskToDelete && (
+        <DeleteTaskModal
+          isOpen={isDeleteTaskModalOpen}
+          onClose={() => {
+            setIsDeleteTaskModalOpen(false);
+            setTaskToDelete(null);
+          }}
+          task={taskToDelete}
+          accessToken={accessToken}
+          onTaskDelete={handleTaskDelete}
+        />
+      )}
     </Table>
   );
 };

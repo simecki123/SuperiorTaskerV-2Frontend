@@ -1,45 +1,89 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react"
-import { useBreakpointValue, Text, Box, Button } from "@chakra-ui/react";
+import React, { useCallback, useEffect, useState } from "react"
+import { useBreakpointValue, Text, Box, Button, useToast } from "@chakra-ui/react";
 import Pagination from "../../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupTasksTableComponent from "../group-tasks-components/GroupTasksTableComponent";
 import GroupTasksCardComponent from "../group-tasks-components/GroupTasksCardComponent";
 import { useTranslations } from "next-intl";
 import CreateTaskModal from "../../modals/CreateNewTaskModal";
+import { AllGroupMembersProps, Task, TaskBodySearch } from "@/app/interfaces/types";
+import { useSearchParams } from "next/navigation";
+import { fetchTasksFromServer } from "@/app/server-actions/fetchTasks";
+import { fetchTasksFilter } from "@/app/server-actions/fetchTasksFilter";
 
 const ITEMS_PER_PAGE = 4;
 
-export default function AllGroupTaskComponents({tasks}: any) {
+export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMembersProps) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-  const [projects, setProjects] = useState<any[]>([
-    {
-      id: "1",
-      name: "Website Redesign",
-      description: "Revamp the company's main website to improve user experience and modernize the design."
-    },
-    {
-      id: "2",
-      name: "Website Redesign",
-      description: "Revamp the company's main website to improve user experience and modernize the design."
-    },
-    {
-      id: "3",
-      name: "Website Redesign",
-      description: "Revamp the company's main website to improve user experience and modernize the design."
-    }
-  ]);
   const t = useTranslations('group-page')
-  const [currentPage, setCurrentPage] = useState(1);
   const isDesktop = useBreakpointValue({ base: false, md: true });
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
+  const groupId = searchParams.get('groupId') || '0';
+  const isUserAdmin = user.groupMembershipData.some(
+    membership => membership.groupId === groupId && membership.role === "ADMIN"
+  );
 
-  if (tasks.length === 0) {
-    return <Text>No projects available.</Text>;
+  const handleSearchTasks = useCallback(async () => {
+    if (!groupId || !user?.id) return;
+
+    const searchConditions: TaskBodySearch = {
+        userId: '',
+        groupId,
+        projectId: '',
+        status: '',
+        search: '',
+    };
+
+    setLoading(true);
+    setError(null);
+
+    try {
+        const currentTasks = await fetchTasksFilter(searchConditions, user, accessToken, currentPage);
+        const nextPageTasks = await fetchTasksFilter(searchConditions, user, accessToken, currentPage + 1);
+
+        setTasks(currentTasks)
+        setHasNextPage(nextPageTasks.length > 0);
+    } catch(error) {
+        setError(error instanceof Error ? error.message : "An unknown error occurred");
+        setTasks([]);
+    } finally {
+        setLoading(false);
+    }
+  }, [currentPage, groupId, user]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    handleSearchTasks();
+    return () => {
+      controller.abort();
+    };
+  }, [handleSearchTasks]); 
+
+  if (loading) {
+    return <Text>Loading...</Text>;
   }
 
-  const indexOfLastTask = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstTask = indexOfLastTask - ITEMS_PER_PAGE;
-  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+  if (error) {
+    return <Text>Error: {error}</Text>;
+  }
+
+  const handleTaskUpdate = (updatedTask: Task) => {
+    setTasks(prevTasks => 
+        prevTasks.map(task => 
+            task.id === updatedTask.id ? updatedTask : task
+        )
+    );
+  };
+
+ 
 
   return (
     <Box>
@@ -62,19 +106,33 @@ export default function AllGroupTaskComponents({tasks}: any) {
           console.log('New task data:', taskData);
           setIsCreateTaskModalOpen(false);
         }}
-        projects={projects}
       />
       {isDesktop ? (
-        <GroupTasksTableComponent tasks={currentTasks} />
+        <GroupTasksTableComponent 
+          user={user}
+          tasks={tasks}
+          onTaskUpdate={handleTaskUpdate}
+          accessToken={accessToken}
+          setTasks={setTasks}
+          isUserAdmin={isUserAdmin}
+          groupId={groupId}  
+        />
       ) : (
-        <GroupTasksCardComponent tasks={currentTasks} />
+        <GroupTasksCardComponent 
+          user={user}
+          tasks={tasks}
+          onTaskUpdate={handleTaskUpdate}
+          accessToken={accessToken}
+          setTasks={setTasks}
+          isUserAdmin={isUserAdmin}
+          groupId={groupId}  
+        />
       )}
-      <Pagination
-        itemsPerPage={ITEMS_PER_PAGE}
-        totalItems={tasks.length}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <Pagination 
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            hasNextPage={hasNextPage}
+          />
     </Box>
   );
 };

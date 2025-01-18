@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import {
   Modal,
@@ -19,12 +20,12 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
+import { Project } from "@/app/interfaces/types";
 
 interface CreateTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCreateTask: (taskData: TaskData) => void;
-  projects: Project[];
 }
 
 interface TaskData {
@@ -34,17 +35,12 @@ interface TaskData {
   projectId: string | null;
 }
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-}
+
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   isOpen,
   onClose,
   onCreateTask,
-  projects,
 }) => {
   const t = useTranslations('group-page');
   const [taskData, setTaskData] = useState<TaskData>({
@@ -54,6 +50,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
     projectId: null,
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

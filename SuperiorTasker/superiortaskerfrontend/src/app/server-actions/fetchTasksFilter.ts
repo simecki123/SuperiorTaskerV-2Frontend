@@ -8,7 +8,7 @@ export async function fetchTasksFilter(body: TaskBodySearch, user: User, accessT
     try{
 
         console.log('Request parameters:', {
-            userId: user.id,
+            userId: body.userId,
             groupId: body.groupId,
             projectId: body.projectId,
             status: body.status,
@@ -17,7 +17,7 @@ export async function fetchTasksFilter(body: TaskBodySearch, user: User, accessT
         });
 
         const params = new URLSearchParams({
-            userId: user.id,
+            userId: body.userId,
             groupId: body.groupId,
             projectId: body.projectId || '',
             status: body.status || '',

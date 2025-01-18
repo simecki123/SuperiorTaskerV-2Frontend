@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { VStack, Box, Heading, Text, Badge, HStack, useToast, Button } from "@chakra-ui/react";
