@@ -68,6 +68,7 @@
     },
 
     "my-groups-table": {
+        "image": "Slika",
         "title": "Naslov",
         "description": "Opis",
         "project":"Projekt",
@@ -185,8 +186,19 @@
         "no-users-found": "Nema ponuđenih korisnika",
         "add-selected": "Dodaj odabrane",
         "group-image":"Slika grupe",
-        "no-members-available": "Nema dostupnih korisnika"
-      }
+        "no-members-available": "Nema dostupnih korisnika",
+        "select-user": "Odaberi korisnika",
+        "project-date-range": "Raspon datuma za odabrani projekt",
+        "task-date-constraints": "Raspon datuma za odabrani zadatak",
+        "no-tasks-available": "Nema dostupnih projekata",
+        "loading": "Učitavanje",
+        "end-date-before-start-date": "Datum kraja je postavljen prije datuma početka",
+        "task-dates-outside-project-range": "Datum zadatka je izvan granica datuma projekta",
+        "warning": "Upozorenje",
+        "task-created-success": "Zadatak je napravljen",
+        "success": "Uspijeh",
+        "task-deleted": "Zadatak je obrisan"
+    }
     
 
     

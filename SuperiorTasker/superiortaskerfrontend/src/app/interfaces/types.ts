@@ -194,3 +194,17 @@ export interface RegisterUserRequest {
     groupId: string
   }
 
+  export interface TaskRequest {
+    userId: string,
+    projectId: string,
+    groupId: string,
+    name: string,
+    description: string,
+    startDate: string,
+    endDate: string
+  }
+
+  export interface GroupTableProps {
+    groups: Group[];
+  }
+

@@ -186,7 +186,18 @@
         "no-users-found": "No users found",
         "add-selected": "Add Selected",
         "group-image":"Group image",
-        "no-members-available": "No members available"
+        "no-members-available": "No members available",
+        "select-user": "Select user",
+        "project-date-range": "Date range for selected project",
+        "task-date-constraints": "Date range for selected task",
+        "no-tasks-available": "No tasks avaialable",
+        "loading": "Loading",
+        "end-date-before-start-date": "End date is before start date",
+        "task-dates-outside-project-range": "Task date is outside project date range",
+        "warning": "Warning",
+        "task-created-success": "Task is created",
+        "success": "Success",
+        "task-deleted": "Task is deleted"
       }
     
 

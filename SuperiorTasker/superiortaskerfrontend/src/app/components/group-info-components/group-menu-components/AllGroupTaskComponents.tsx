@@ -13,7 +13,6 @@ import { useSearchParams } from "next/navigation";
 import { fetchTasksFromServer } from "@/app/server-actions/fetchTasks";
 import { fetchTasksFilter } from "@/app/server-actions/fetchTasksFilter";
 
-const ITEMS_PER_PAGE = 4;
 
 export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMembersProps) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
@@ -67,13 +66,22 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
     };
   }, [handleSearchTasks]); 
 
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
+  const handleTaskCreated = (newTask: Task) => {
+    // Add the new task to the beginning of the list
+    setTasks(prevTasks => [newTask, ...prevTasks]);
+    
+    // Show success toast
+    toast({
+      title: t('task-created'),
+      description: t('task-created-success'),
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+    
+    // Close the modal
+    setIsCreateTaskModalOpen(false);
+  };
 
   const handleTaskUpdate = (updatedTask: Task) => {
     setTasks(prevTasks => 
@@ -83,57 +91,77 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
     );
   };
 
- 
+  if (loading) {
+    return <Text>{t('loading')}</Text>;
+  }
+
+  if (error) {
+    return <Text>{t('error')}: {error}</Text>;
+  }
 
   return (
     <Box>
-      <Button 
-        colorScheme="blue" 
-        variant="solid" 
-        size="md" 
-        mb={4} 
-        _hover={{ bg: "blue.600" }} 
-        borderRadius="md"
-        onClick={() => setIsCreateTaskModalOpen(true)}
-      >
-        {t('create-new-task')}
-      </Button>
+      {isUserAdmin && (
+        <Button 
+          colorScheme="blue" 
+          variant="solid" 
+          size="md" 
+          mb={4} 
+          _hover={{ bg: "blue.600" }} 
+          borderRadius="md"
+          onClick={() => setIsCreateTaskModalOpen(true)}
+        >
+          {t('create-new-task')}
+        </Button>
+      )}
+
       <CreateTaskModal
         isOpen={isCreateTaskModalOpen}
         onClose={() => setIsCreateTaskModalOpen(false)}
-        onCreateTask={(taskData) => {
-          // Handle creating task logic here
-          console.log('New task data:', taskData);
-          setIsCreateTaskModalOpen(false);
-        }}
+        user={user}
+        accessToken={accessToken}
+        groupId={groupId}
+        onTaskCreated={handleTaskCreated}
       />
-      {isDesktop ? (
-        <GroupTasksTableComponent 
-          user={user}
-          tasks={tasks}
-          onTaskUpdate={handleTaskUpdate}
-          accessToken={accessToken}
-          setTasks={setTasks}
-          isUserAdmin={isUserAdmin}
-          groupId={groupId}  
-        />
+
+      {tasks.length === 0 ? (
+        <Box textAlign="center" py={4}>
+          <Text fontSize="lg" color="gray.600">
+            {t('no-tasks-available')}
+          </Text>
+        </Box>
       ) : (
-        <GroupTasksCardComponent 
-          user={user}
-          tasks={tasks}
-          onTaskUpdate={handleTaskUpdate}
-          accessToken={accessToken}
-          setTasks={setTasks}
-          isUserAdmin={isUserAdmin}
-          groupId={groupId}  
-        />
+        <>
+          {isDesktop ? (
+            <GroupTasksTableComponent 
+              user={user}
+              tasks={tasks}
+              onTaskUpdate={handleTaskUpdate}
+              accessToken={accessToken}
+              setTasks={setTasks}
+              isUserAdmin={isUserAdmin}
+              groupId={groupId}  
+            />
+          ) : (
+            <GroupTasksCardComponent 
+              user={user}
+              tasks={tasks}
+              onTaskUpdate={handleTaskUpdate}
+              accessToken={accessToken}
+              setTasks={setTasks}
+              isUserAdmin={isUserAdmin}
+              groupId={groupId}  
+            />
+          )}
+          <Box mt={4}>
+            <Pagination 
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              hasNextPage={hasNextPage}
+            />
+          </Box>
+        </>
       )}
-      <Pagination 
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            hasNextPage={hasNextPage}
-          />
     </Box>
   );
-};
-
+}
