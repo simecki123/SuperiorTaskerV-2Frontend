@@ -197,7 +197,12 @@
         "warning": "Upozorenje",
         "task-created-success": "Zadatak je napravljen",
         "success": "Uspijeh",
-        "task-deleted": "Zadatak je obrisan"
+        "task-deleted": "Zadatak je obrisan",
+        "message-empty": "Poruka je prazna",
+        "please-enter-message": "Molimo unsesite poruku",
+        "message-sent": "Poruka je poslana ",
+        "message-sent-successfully": "Poruka je uspiješno poslana",
+        "failed-to-send-message": "Slanje poruke nije uspijelo"
     }
     
 

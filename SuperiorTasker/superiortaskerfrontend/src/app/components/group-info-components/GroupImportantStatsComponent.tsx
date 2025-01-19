@@ -51,7 +51,10 @@ export default function GroupImportantStatsComponent({user,accessToken}: GroupIm
     }
     
     if (selectedComponent == "Send Message") {
-        return <SendMessageComponent />
+        return <SendMessageComponent 
+          user={user}
+          accessToken={accessToken}
+        />
     }
     
 

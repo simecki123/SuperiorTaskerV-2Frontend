@@ -197,7 +197,12 @@
         "warning": "Warning",
         "task-created-success": "Task is created",
         "success": "Success",
-        "task-deleted": "Task is deleted"
+        "task-deleted": "Task is deleted",
+        "message-empty": "Message is empty",
+        "please-enter-message": "Please enter message",
+        "message-sent": "Message is sent",
+        "message-sent-successfully": "Message sent successfully",
+        "failed-to-send-message": "Failed to send message"
       }
     
 
