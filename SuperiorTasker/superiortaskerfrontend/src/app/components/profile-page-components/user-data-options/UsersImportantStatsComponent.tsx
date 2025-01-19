@@ -34,10 +34,8 @@ export default function UsersImportantStatsComponent({user}: {user: User}) {
     if (selectedComponent === "My Groups") {
         return <MyGroupsComponent user={user} />;
     }
-
-    const Component = menuItems.find((item) => item.name === selectedComponent)?.component;
-    if (Component) {
-      return <Component user={user} />;
+    if (selectedComponent === "Stats") {
+      return <UserStatistics user={user} />
     }
 
     return <Text>No component selected</Text>;

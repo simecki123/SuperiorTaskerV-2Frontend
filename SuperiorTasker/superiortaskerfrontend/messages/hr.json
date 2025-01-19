@@ -203,7 +203,24 @@
         "message-sent": "Poruka je poslana ",
         "message-sent-successfully": "Poruka je uspiješno poslana",
         "failed-to-send-message": "Slanje poruke nije uspijelo"
-    }
+    },
+
+    "user-statistics": {
+    "error-fetching-statistics": "Greška pri dohvaćanju statistike",
+    "unknown-error-occurred": "Došlo je do nepoznate greške",
+    "no-stats-available": "Nema dostupne statistike",
+    "finished": "Završeno",
+    "unfinished": "Nezavršeno",
+    "completed": "Dovršeno",
+    "incomplete": "Nedovršeno",
+    "total-tasks": "Ukupno zadataka",
+    "total-projects": "Ukupno projekata",
+    "completed-tasks": "Završeni zadaci",
+    "completed-projects": "Završeni projekti",
+    "dashboard-statistics": "Statistika nadzorne ploče",
+    "tasks-distribution": "Raspodjela zadataka",
+    "projects-status": "Status projekata"
+  }
     
 
     

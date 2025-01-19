@@ -203,7 +203,26 @@
         "message-sent": "Message is sent",
         "message-sent-successfully": "Message sent successfully",
         "failed-to-send-message": "Failed to send message"
-      }
+      },
+
+      
+        "user-statistics": {
+          "error-fetching-statistics": "Error fetching statistics",
+          "unknown-error-occurred": "Unknown error occurred",
+          "no-stats-available": "No statistics available",
+          "finished": "Finished",
+          "unfinished": "Unfinished",
+          "completed": "Completed",
+          "incomplete": "Incomplete",
+          "total-tasks": "Total Tasks",
+          "total-projects": "Total Projects",
+          "completed-tasks": "Completed Tasks",
+          "completed-projects": "Completed Projects",
+          "dashboard-statistics": "Dashboard Statistics",
+          "tasks-distribution": "Tasks Distribution",
+          "projects-status": "Projects Status"
+        }
+      
     
 
     

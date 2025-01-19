@@ -208,3 +208,12 @@ export interface RegisterUserRequest {
     groups: Group[];
   }
 
+  export interface UserStatistics {
+    numberOfTasks: number,
+    numberOfFinishedTasks: number,
+    numberOfUnfinishedTasks: number,
+    numberOfProjects: number,
+    numberOfCompletedProjects: number,
+    numberOfIncompleteProjects: number
+  }
+
