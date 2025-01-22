@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 import GroupDataComponent from "@/app/components/group-info-components/GroupDataComponent"
 import GroupImportantStatsComponent from "@/app/components/group-info-components/GroupImportantStatsComponent"

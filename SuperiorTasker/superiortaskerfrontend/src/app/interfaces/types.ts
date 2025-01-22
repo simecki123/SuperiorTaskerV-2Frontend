@@ -60,10 +60,12 @@ export interface RegisterUserRequest {
     userProfileId: string;
     firstName: string;
     lastName: string;
-    photoUri: string;
+    photoUri?: string;
     createdAt: string;
+    updatedAt: string;
     sender?: string;
     content?: string;
+    timestamp?: string;
     read?: boolean;
   }
 

@@ -5,6 +5,7 @@ import SignOutButton from "@/app/components/fotter-components/SignOutButton";
 import { auth } from "@/commons/auth";
 import { redirect } from "next/navigation";
 import { fetchMe } from "@/app/server-actions/fetchMe";
+import NotificationBell from "@/app/components/NotificationBell/NotificationBell";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
@@ -28,6 +29,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       </Box>
       <Box className="grow">{children}</Box>
       <Box className="fixed top-4 right-4 flex items-center space-x-6">
+        <NotificationBell user={activeUser} />
         <SignOutButton />
       </Box>
     </Box>

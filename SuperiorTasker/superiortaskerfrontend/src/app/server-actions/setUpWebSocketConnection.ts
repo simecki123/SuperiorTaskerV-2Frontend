@@ -1,62 +1,65 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// lib/websocket-service.ts
-"use server";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// app/utils/websocket.ts
+import { Client } from '@stomp/stompjs';
+import { Message } from '../interfaces/types';
+import SockJS from 'sockjs-client';
 
-import { Client } from "@stomp/stompjs";
-import { Message } from "@/app/interfaces/types";
+let stompClient: Client | null = null;
 
-export async function setupWebSocketConnection(
-  onMessageReceived: (message: Message) => void
-) {
-  // This function will be a server action that sets up WebSocket connection logic
-  return new Promise<() => void>((resolve, reject) => {
-    if (typeof window === 'undefined') {
-      reject(new Error("WebSocket can only be set up on the client side"));
-      return;
-    }
+export const connectWebSocket = (userId: string, onMessageReceived: (message: Message) => void) => {
+  if (stompClient) {
+    return stompClient;
+  }
 
-    const client = new Client({
-      brokerURL: `${process.env.NEXT_PUBLIC_WS_BACKEND}/ws`,
-      onConnect: () => {
-        const subscription = client.subscribe(
-          `/topic/messages`,
-          (message: any) => {
-            const bodyObject = JSON.parse(message.body);
-            const groupMessageObject: Message = {
-              id: bodyObject.id,
-              groupId: bodyObject.groupId,
-              message: bodyObject.message,
-              messageStatus: 'UNREAD',
-              userProfileId: bodyObject.userProfileId,
-              firstName: bodyObject.firstName,
-              lastName: bodyObject.lastName,
-              photoUri: bodyObject.photoUri,
-              createdAt: bodyObject.createdAt,
-              sender: `${bodyObject.firstName} ${bodyObject.lastName}`,
-              content: bodyObject.message,
-              read: false
-            };
-
-            onMessageReceived(groupMessageObject);
-          }
-        );
-
-        // Resolve with a cleanup function
-        resolve(() => {
-          subscription.unsubscribe();
-          client.deactivate();
-        });
-      },
-      reconnectDelay: 5000,
-      onDisconnect: () => {
-        console.log("WebSocket Disconnected");
-      },
-      onStompError: (frame) => {
-        console.error("WebSocket Error:", frame.headers["message"], frame.body);
-        reject(new Error("WebSocket connection error"));
-      },
-    });
-
-    client.activate();
+  stompClient = new Client({
+    webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+    debug: function (str) {
+      console.log('STOMP: ' + str);
+    },
   });
-}
+
+  stompClient.onConnect = () => {
+    console.log('Connected to WebSocket for user:', userId);
+    
+    // Subscribe to user-specific topic
+    const subscription = stompClient?.subscribe(`/topic/messages.${userId}`, (message) => {
+      console.log('Received message:', message.body);
+      try {
+        const receivedMessage = JSON.parse(message.body);
+        onMessageReceived(receivedMessage);
+      } catch (error) {
+        console.error('Error parsing message:', error);
+      }
+    });
+    
+    console.log('Subscribed to:', `/topic/messages.${userId}`);
+  };
+
+  stompClient.onDisconnect = () => {
+    console.log('Disconnected from WebSocket');
+  };
+
+  stompClient.onStompError = (frame) => {
+    console.error('STOMP error', frame);
+  };
+
+  stompClient.onWebSocketError = (event) => {
+    console.error('WebSocket error:', event);
+  };
+
+  console.log('Activating WebSocket connection...');
+  stompClient.activate();
+
+  return stompClient;
+};
+
+export const disconnectWebSocket = () => {
+  if (stompClient) {
+    console.log('Deactivating WebSocket connection...');
+    stompClient.deactivate();
+    stompClient = null;
+  }
+};

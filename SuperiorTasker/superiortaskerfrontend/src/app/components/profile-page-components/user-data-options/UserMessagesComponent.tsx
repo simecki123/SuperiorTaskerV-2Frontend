@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState, useEffect } from "react";
@@ -6,10 +7,8 @@ import Pagination from "./all-tasks-components/Pagination";
 import { useTranslations } from "next-intl";
 import { Message, User } from "@/app/interfaces/types";
 import { fetchMessagess } from "@/app/server-actions/fetchMessagess";
-import { setupWebSocketConnection } from "@/app/server-actions/setUpWebSocketConnection";
 import { updateMessageOnServer } from "@/app/server-actions/updateMessage";
-
-const ITEMS_PER_PAGE = 4;
+import { connectWebSocket, disconnectWebSocket } from "@/app/server-actions/setUpWebSocketConnection";
 
 export default function UserMessagesComponent({ 
   user 
@@ -25,9 +24,25 @@ export default function UserMessagesComponent({
   const cardSize = useBreakpointValue({ base: "sm", md: "lg" });
   const toast = useToast();
 
-  
+  const handleNewMessage = (message: Message) => {
+    // Add new message to the list if it's on the first page
+    if (currentPage === 0) {
+      setMessages(prevMessages => [message, ...prevMessages]);
+    }
+  };
 
-  
+  useEffect(() => {
+    if (user?.id) {
+      // Connect to WebSocket
+      connectWebSocket(user.id, handleNewMessage);
+
+      // Cleanup on unmount
+      return () => {
+        disconnectWebSocket();
+      };
+    }
+  }, [user?.id]);
+
   const loadMessages = async (page: number) => {
     if (!user?.id) return;
     
@@ -47,12 +62,10 @@ export default function UserMessagesComponent({
     }
   };
 
-  // Fetch messages when component loads or pagination changes
   useEffect(() => {
     loadMessages(currentPage);
-  }, [currentPage, user, user?.id]);
+  }, [currentPage, user?.id]);
 
-  
   if (loading) {
     return <Text>Loading...</Text>;
   }
@@ -66,13 +79,13 @@ export default function UserMessagesComponent({
   }
 
   const updateMessage = async (message: Message) => {
-    if (!message.read) {
+    if (message.messageStatus === 'UNREAD') {
       try {
         const updatedMessage = await updateMessageOnServer(user, message.id);
 
         setMessages((prevMessages) =>
           prevMessages.map((msg) =>
-            msg.id === message.id ? { ...msg, read: true } : msg
+            msg.id === message.id ? { ...msg, messageStatus: 'READ' } : msg
           )
         );
   
@@ -97,34 +110,33 @@ export default function UserMessagesComponent({
     }
   };
   
-  
   return (
     <VStack spacing={4} align="stretch">
       {messages.map((message) => (
         <Box
-        key={message.id}
-        p={cardSize === "lg" ? 6 : 4}
-        shadow="md"
-        borderWidth="1px"
-        borderRadius="md"
-        bg={message.read ? undefined : "xblue.100"} 
-        onClick={() => updateMessage(message)}
-      >
-        <Flex justifyContent="space-between" alignItems="center" mb={2}>
-          <Text fontWeight="bold" fontSize={cardSize === "lg" ? "xl" : "lg"}>
-            {message.sender}
+          key={message.id}
+          p={cardSize === "lg" ? 6 : 4}
+          shadow="md"
+          borderWidth="1px"
+          borderRadius="md"
+          bg={message.messageStatus === 'UNREAD' ? "xblue.100" : undefined} 
+          onClick={() => updateMessage(message)}
+        >
+          <Flex justifyContent="space-between" alignItems="center" mb={2}>
+            <Text fontWeight="bold" fontSize={cardSize === "lg" ? "xl" : "lg"}>
+              {`${message.firstName} ${message.lastName}`}
+            </Text>
+            <Badge colorScheme={message.messageStatus === 'READ' ? "green" : "red"}>
+              {message.messageStatus === 'READ' ? `${t('read')}` : `${t('unread')}`}
+            </Badge>
+          </Flex>
+          <Text fontSize={cardSize === "lg" ? "md" : "sm"} mb={2}>
+            {message.message}
           </Text>
-          <Badge colorScheme={message.read ? "green" : "red"}>
-            {message.read ? `${t('read')}` : `${t('unread')}`}
-          </Badge>
-        </Flex>
-        <Text fontSize={cardSize === "lg" ? "md" : "sm"} mb={2}>
-          {message.content}
-        </Text>
-        <Text fontSize="xs" color="gray.500">
-          {message.createdAt}
-        </Text>
-      </Box>      
+          <Text fontSize="xs" color="gray.500">
+            {message.createdAt}
+          </Text>
+        </Box>      
       ))}
       <Pagination
         currentPage={currentPage}
