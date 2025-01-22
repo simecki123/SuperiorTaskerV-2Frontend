@@ -91,7 +91,9 @@
         "yes": "Da",
         "no": "Ne",
         "include-not-started": "Uključi Nedavno Započete Projekte",
-        "delete-project": "Izbriši projekt"
+        "delete-project": "Izbriši projekt",
+        "actions": "Akcije",
+        "edit": "Uredi projekt"
     },
 
     "project-tasks": {
@@ -202,7 +204,8 @@
         "please-enter-message": "Molimo unsesite poruku",
         "message-sent": "Poruka je poslana ",
         "message-sent-successfully": "Poruka je uspiješno poslana",
-        "failed-to-send-message": "Slanje poruke nije uspijelo"
+        "failed-to-send-message": "Slanje poruke nije uspijelo",
+        "update-project": "Uredi projekt"
     },
 
     "user-statistics": {

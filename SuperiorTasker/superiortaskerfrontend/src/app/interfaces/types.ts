@@ -186,6 +186,13 @@ export interface RegisterUserRequest {
     userName: string;
   }
 
+  export interface UpdateProjectModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    project: Project;
+    onUpdateProject: (projectData: ProjectData) => Promise<void>;
+  }
+
   export interface TaskTableComponentProps {
     user: User;
     tasks: Task[];

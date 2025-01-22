@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box, Button, useToast } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Badge, Box, Button, useToast, HStack } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GroupCardAndTableProps, Project } from "@/app/interfaces/types";
+import { GroupCardAndTableProps, Project, ProjectData, ProjectRequest } from "@/app/interfaces/types";
 import { deleteProject } from "@/app/server-actions/deleteProject";
 import RemoveProjectModal from "../modals/RemoveProjectModal";
+import { updateProject } from "@/app/server-actions/updateProject";
+import UpdateProjectModal from "../modals/UpdateProjectModal";
 
 
 export default function GroupProjectsTable( {projects, setProjects, accessToken, isUserAdmin=true, userProjectRelations = []}: GroupCardAndTableProps ) { 
@@ -15,7 +17,9 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
   const [isRemoveProjectModalOpen, setIsRemoveProjectModalOpen] = useState(false);
+  const [isUpdateProjectModalOpen, setIsUpdateProjectModalOpen] = useState(false);
   const [projectToRemove, setProjectToRemove] = useState<Project | null>(null);
+  const [projectToUpdate, setProjectToUpdate] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
@@ -70,6 +74,51 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
     }
   };
 
+  const handleUpdateProject = async (projectData: ProjectData) => {
+    if (!projectToUpdate) return;
+
+    setIsLoading(true);
+    try {
+      const projectRequest: ProjectRequest = {
+        userId: projectToUpdate.userId,
+        groupId: projectToUpdate.groupId,
+        name: projectData.name,
+        description: projectData.description,
+        startDate: projectData.startDate,
+        endDate: projectData.endDate
+      };
+
+      const updatedProject = await updateProject(projectRequest,projectToUpdate.id, accessToken);
+      
+      setProjects(prevProjects => 
+        prevProjects.map(project => 
+          project.id === projectToUpdate.id ? updatedProject : project
+        )
+      );
+
+      setIsUpdateProjectModalOpen(false);
+      setProjectToUpdate(null);
+
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to update project",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Box>
       <Box overflowX="auto">
@@ -81,7 +130,7 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
               <Th>{t('start-date')}</Th>
               <Th>{t('end-date')}</Th>
               <Th>{t('completion')}</Th>
-              <Th>{t('delete-project')}</Th>
+              <Th>{t('actions')}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -105,20 +154,44 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
                 </Td>
                 <Td>
                 {isUserAdmin && (
-                <Button 
-                  colorScheme="red" 
-                  size="sm"
-                  isLoading={isLoading} 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setProjectToRemove(project);
-                    setIsRemoveProjectModalOpen(true);
-                  }}
-                >
-                  {t('delete-project')}
-                </Button>
-              )}
+                  <HStack spacing={2}>
+                    <Button 
+                      colorScheme="blue" 
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProjectToUpdate(project);
+                        setIsUpdateProjectModalOpen(true);
+                      }}
+                    >
+                      {t('edit')}
+                    </Button>
+                    <Button 
+                      colorScheme="red" 
+                      size="sm"
+                      isLoading={isLoading} 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProjectToRemove(project);
+                        setIsRemoveProjectModalOpen(true);
+                      }}
+                    >
+                      {t('delete-project')}
+                    </Button>
+                  </HStack>
+                )}
               </Td>
+              {projectToUpdate && (
+                <UpdateProjectModal
+                  isOpen={isUpdateProjectModalOpen}
+                  onClose={() => {
+                    setIsUpdateProjectModalOpen(false);
+                    setProjectToUpdate(null);
+                  }}
+                  project={projectToUpdate}
+                  onUpdateProject={handleUpdateProject}
+                />
+              )}
               <RemoveProjectModal
                 isOpen={isRemoveProjectModalOpen}
                 onClose={() => {

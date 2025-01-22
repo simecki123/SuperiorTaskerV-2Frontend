@@ -9,7 +9,6 @@ import NotificationBell from "@/app/components/NotificationBell/NotificationBell
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
-  //old mock user
   const session = await auth();
   const activeUser: any = session?.user;
   let fetchedUser;

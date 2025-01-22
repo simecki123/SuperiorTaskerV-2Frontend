@@ -91,7 +91,10 @@
         "yes": "Yes",
         "no": "No",
         "include-not-started": "Include Recently started Projects",
-        "delete-project": "Delete Project"
+        "delete-project": "Delete Project",
+        "actions": "Actions",
+        "edit": "Edit project"
+
     },
 
     "project-tasks": {
@@ -202,7 +205,8 @@
         "please-enter-message": "Please enter message",
         "message-sent": "Message is sent",
         "message-sent-successfully": "Message sent successfully",
-        "failed-to-send-message": "Failed to send message"
+        "failed-to-send-message": "Failed to send message",
+        "update-project": "Update project"
       },
 
       
