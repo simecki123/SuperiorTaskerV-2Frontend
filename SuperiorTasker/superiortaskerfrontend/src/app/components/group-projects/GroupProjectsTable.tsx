@@ -158,6 +158,7 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
                     <Button 
                       colorScheme="blue" 
                       size="sm"
+                      isLoading={isLoading}
                       onClick={(e) => {
                         e.stopPropagation();
                         setProjectToUpdate(project);
