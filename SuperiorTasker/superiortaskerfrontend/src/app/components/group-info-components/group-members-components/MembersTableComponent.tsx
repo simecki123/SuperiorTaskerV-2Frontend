@@ -55,7 +55,7 @@ export default function MembersTableComponent({ user, members, setMembers, isUse
   
 
   return (
-    <Table variant="simple">
+    <Table colorScheme="teal" variant="simple">
       <Thead>
         <Tr>
           <Th>{t('profile-picture')}</Th>
@@ -92,8 +92,11 @@ export default function MembersTableComponent({ user, members, setMembers, isUse
             <Td>
               {isUserAdmin && (
                 <Button 
-                  colorScheme="red" 
+                  colorScheme="red"
+                  variant="outline"
                   size="sm"
+                  _hover={{ bg: "red.100"}}
+                  borderRadius="md"
                   isLoading={isLoading} 
                   onClick={() => {
                     setUserToRemove(member);

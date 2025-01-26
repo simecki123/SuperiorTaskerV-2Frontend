@@ -141,7 +141,7 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
                 key={project.id} 
                 cursor={isClickable ? "pointer" : "default"} 
                 onClick={() => isClickable && handleRowClick(project.id)}
-                _hover={{ bg: isClickable ? "xblue.100" : "inherit" }}
+                _hover={{ bg: isClickable ? "teal.500" : "inherit" }}
               >
                 <Td fontWeight="bold">{project.name}</Td>
                 <Td>{project.description}</Td>
@@ -157,7 +157,10 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
                   <HStack spacing={2}>
                     <Button 
                       colorScheme="blue" 
+                      variant="outline" 
                       size="sm"
+                      _hover={{ bg: "blue.100" }} 
+                      borderRadius="md"
                       isLoading={isLoading}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -169,7 +172,10 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
                     </Button>
                     <Button 
                       colorScheme="red" 
+                      variant="outline" 
                       size="sm"
+                      _hover={{ bg: "red.100" }} 
+                      borderRadius="md"
                       isLoading={isLoading} 
                       onClick={(e) => {
                         e.stopPropagation();

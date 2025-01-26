@@ -5,7 +5,7 @@ export async function updateTaskStatus(userId: string, accessToken: string, task
 
     try {
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tasks/update-task?taskId=${taskId}&taskStatus=${status}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tasks/update-task-status?taskId=${taskId}&taskStatus=${status}`,
             {
                 method: "PATCH",
                 headers: {

@@ -119,7 +119,9 @@
         "include-completed":"Include Completed Tasks",
         "completed": "Completed",
         "default": "Remove Filter",
-        "delete-task":"Izbriši zadatak"
+        "delete-task":"Izbriši zadatak",
+        "update-task": "Update Task",
+        "status-updated": "Status updated"
 
     },
 
@@ -206,7 +208,14 @@
         "message-sent": "Message is sent",
         "message-sent-successfully": "Message sent successfully",
         "failed-to-send-message": "Failed to send message",
-        "update-project": "Update project"
+        "update-project": "Update project",
+        "update-task": "Update task",
+        "task-updated": "Task updated",
+        "task-updated-success": "Task updated successfully", 
+        "error": "Error",
+        "project-fetch-error": "Error fetching project data",
+        "done":"Done",
+        "in-progress":"In Progress"
       },
 
       

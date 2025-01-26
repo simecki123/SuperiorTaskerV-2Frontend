@@ -73,6 +73,7 @@ export interface RegisterUserRequest {
     id: string;
     userId: string;
     groupId: string;
+    projectId: string
     name: string;
     description: string;
     taskStatus: string;
@@ -193,6 +194,15 @@ export interface RegisterUserRequest {
     onUpdateProject: (projectData: ProjectData) => Promise<void>;
   }
 
+  export interface UpdateTaskModalProps {
+    user: User
+    isOpen: boolean;
+    onClose: () => void;
+    task: Task;
+    onUpdateTask: (taskRquest: TaskRequest, task: Task) => Promise<void>;
+    accessToken: string
+  }
+
   export interface TaskTableComponentProps {
     user: User;
     tasks: Task[];
@@ -200,7 +210,14 @@ export interface RegisterUserRequest {
     accessToken: string,
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
     isUserAdmin: boolean,
-    groupId: string
+    handleUpdateTask: (taskToUpdate: TaskRequest, task: Task) => Promise <void>;
+    groupId?: string
+  }
+
+  export interface TaskStatusModalProps {
+    task: Task;
+    onTaskUpdate: (updatedTask: Task) => void;
+    accessToken: string;
   }
 
   export interface TaskRequest {

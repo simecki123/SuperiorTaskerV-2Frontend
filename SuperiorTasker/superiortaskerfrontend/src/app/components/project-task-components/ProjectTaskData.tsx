@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useEffect, useState } from "react";
-import { Heading, Spinner, VStack, useBreakpointValue, Text } from "@chakra-ui/react";
+import { Heading, Spinner, VStack, useBreakpointValue, Text, useToast } from "@chakra-ui/react";
 import { useTranslations } from "next-intl";
-import { GroupProjectsAndTasksDataProps, Task, TaskBodySearch } from "@/app/interfaces/types";
+import { GroupProjectsAndTasksDataProps, Task, TaskBodySearch, TaskRequest } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchTasksFilter } from "@/app/server-actions/fetchTasksFilter";
 import SearchbarForTasks from "./SearchBarForTasks";
@@ -12,6 +12,7 @@ import Pagination from "../profile-page-components/user-data-options/all-tasks-c
 import ProjectTaskFilter from "./ProjectTaskFilter";
 import GroupTasksTableComponent from "../group-info-components/group-tasks-components/GroupTasksTableComponent";
 import GroupTasksCardComponent from "../group-info-components/group-tasks-components/GroupTasksCardComponent";
+import { updateTask } from "@/app/server-actions/updateTask";
 
 export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTasksDataProps) {
   const router = useRouter();
@@ -25,6 +26,8 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
   const projectId = searchParams.get('projectId') || '';
   const [status, setStatus] = useState(searchParams.get('status') || '');
   const groupId = searchParams.get('groupId') || '0';
+  const toast = useToast();
+  const [isloading, setIsLoading] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -93,13 +96,53 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
       status,
   ]);
 
-  const handleTaskUpdate = (updatedTask: Task) => {
+  const handleTaskStatusUpdate = (updatedTask: Task) => {
     setTasks(prevTasks => 
-        prevTasks.map(task => 
-            task.id === updatedTask.id ? updatedTask : task
-        )
+      prevTasks.map(task => 
+        task.id === updatedTask.id ? updatedTask : task
+      )
     );
   };
+
+  const handleSetUpdatedTask = (updatedTask: Task) => {
+    setTasks(prevTasks => {
+      if (updatedTask.userId !== user.id) {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== updatedTask.id));
+      }
+      return prevTasks.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+      );
+  });
+  };
+
+  const handleTaskUpdate = async (taskToUpdate: TaskRequest, task: Task)=> {
+    setIsLoading(true);
+    try {
+    
+      const updatedTask = await updateTask(taskToUpdate,task.id, accessToken);
+      
+      handleSetUpdatedTask(updatedTask);
+
+    
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to update project",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   
 
@@ -123,10 +166,11 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
               <GroupTasksTableComponent 
                 user={user}
                 tasks={tasks}
-                onTaskUpdate={handleTaskUpdate}
+                onTaskUpdate={handleTaskStatusUpdate}
                 accessToken={accessToken}
                 setTasks={setTasks}
                 isUserAdmin={isUserAdmin}
+                handleUpdateTask={handleTaskUpdate}
                 groupId={groupId}
               />
               
@@ -134,10 +178,11 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
               <GroupTasksCardComponent
                 user={user}
                 tasks={tasks}
-                onTaskUpdate={handleTaskUpdate}
+                onTaskUpdate={handleTaskStatusUpdate}
                 accessToken={accessToken}
                 setTasks={setTasks}
                 isUserAdmin={isUserAdmin}
+                handleUpdateTask={handleTaskUpdate}
                 groupId={groupId}
               />
           )}
@@ -149,3 +194,7 @@ export default function ProjectTaskData({user, accessToken}: GroupProjectsAndTas
     </VStack>
   );
 }
+function toast(arg0: { title: string; description: string; status: string; duration: number; isClosable: boolean; }) {
+  throw new Error("Function not implemented.");
+}
+

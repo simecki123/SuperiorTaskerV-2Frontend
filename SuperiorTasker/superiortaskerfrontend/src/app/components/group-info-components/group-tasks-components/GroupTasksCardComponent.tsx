@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Heading, VStack, Text, HStack, Button, Badge } from "@chakra-ui/react";
 import React, { useState } from "react";
 import TaskStatusModal from "../../modals/TaskStatusModal";
-import { useTranslations } from "next-intl";
+import UpdateTaskModal from "../../modals/UpdateTaskModal";
 import DeleteTaskModal from "../../modals/DeleteTaskConfirmationModal";
+import { useTranslations } from "next-intl";
 import { Task, TaskTableComponentProps } from "@/app/interfaces/types";
 
 export default function GroupTasksCardComponent({ 
@@ -13,11 +13,14 @@ export default function GroupTasksCardComponent({
   accessToken, 
   setTasks, 
   isUserAdmin, 
-  groupId 
+  handleUpdateTask 
 }: TaskTableComponentProps) {
-  const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
-  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const t = useTranslations('group-page');
+  const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
+  const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+  const [taskToUpdate, setTaskToUpdate] = useState<Task | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTaskDelete = (taskId: string) => {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
@@ -38,12 +41,8 @@ export default function GroupTasksCardComponent({
           <Heading fontSize="lg">{task.name}</Heading>
           <Text mt={2}>{task.description}</Text>
           <HStack mt={2} spacing={4}>
-            <Text fontWeight="bold">
-              {t('start-date')}: {formatDate(task.startDate)}
-            </Text>
-            <Text fontWeight="bold">
-              {t('end-date')}: {formatDate(task.endDate)}
-            </Text>
+            <Text fontWeight="bold">{t('start-date')}: {formatDate(task.startDate)}</Text>
+            <Text fontWeight="bold">{t('end-date')}: {formatDate(task.endDate)}</Text>
           </HStack>
           <Box mt={2}>
             <Badge colorScheme={task.taskStatus === "COMPLETED" ? "green" : "yellow"}>
@@ -59,19 +58,35 @@ export default function GroupTasksCardComponent({
               />
             )}
             {isUserAdmin && (
-              <Button 
-                colorScheme="red" 
-                variant="outline" 
-                size="sm"
-                _hover={{ bg: "red.100" }} 
-                borderRadius="md"
-                onClick={() => {
-                  setTaskToDelete(task);
-                  setIsDeleteTaskModalOpen(true);
-                }}
-              >
-                {t('delete-task')}
-              </Button>
+              <>
+                <Button 
+                  colorScheme="red" 
+                  variant="outline" 
+                  size="sm"
+                  _hover={{ bg: "red.100" }} 
+                  borderRadius="md"
+                  onClick={() => {
+                    setTaskToDelete(task);
+                    setIsDeleteTaskModalOpen(true);
+                  }}
+                >
+                  {t('delete-task')}
+                </Button>
+                <Button
+                  colorScheme="blue"
+                  variant="outline"
+                  size="sm"
+                  _hover={{ bg: "blue.100"}}
+                  borderRadius="md"
+                  isLoading={isLoading}
+                  onClick={() => {
+                    setTaskToUpdate(task);
+                    setIsUpdateTaskModalOpen(true);
+                  }}
+                >
+                  {t('update-task')}
+                </Button>
+              </>
             )}
           </HStack>
         </Box>
@@ -89,6 +104,20 @@ export default function GroupTasksCardComponent({
           onTaskDelete={handleTaskDelete}
         />
       )}
+
+      {taskToUpdate && (
+        <UpdateTaskModal
+          user={user}
+          isOpen={isUpdateTaskModalOpen}
+          onClose={() => {
+            setIsUpdateTaskModalOpen(false);
+            setTaskToUpdate(null);
+          }}
+          task={taskToUpdate}
+          onUpdateTask={handleUpdateTask}
+          accessToken={accessToken}
+        />
+      )}
     </VStack>
   );
-};
+}

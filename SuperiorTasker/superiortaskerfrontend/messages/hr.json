@@ -118,8 +118,13 @@
         "include-completed":"Uključi Završene Zadatke",
         "completed": "Završeno",
         "default": "Makni filter",
-        "delete-task":"Izbriši zadatak"
-
+        "delete-task":"Izbriši zadatak",
+        "update-task": "Uredi zadatak",
+        "task-updated": "Zadatak ažuriran",
+        "task-updated-success": "Zadatak uspješno ažuriran",
+        "error": "Greška",
+        "project-fetch-error": "Greška pri dohvaćanju podataka projekta",
+        "status-updated": "Status promijenjen"
     },
 
     "group-page": {
@@ -205,7 +210,9 @@
         "message-sent": "Poruka je poslana ",
         "message-sent-successfully": "Poruka je uspiješno poslana",
         "failed-to-send-message": "Slanje poruke nije uspijelo",
-        "update-project": "Uredi projekt"
+        "update-project": "Uredi projekt",
+        "done":"Završen",
+        "in-progress":"U tijeku"
     },
 
     "user-statistics": {

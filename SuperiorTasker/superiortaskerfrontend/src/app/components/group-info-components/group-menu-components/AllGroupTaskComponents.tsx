@@ -8,10 +8,10 @@ import GroupTasksTableComponent from "../group-tasks-components/GroupTasksTableC
 import GroupTasksCardComponent from "../group-tasks-components/GroupTasksCardComponent";
 import { useTranslations } from "next-intl";
 import CreateTaskModal from "../../modals/CreateNewTaskModal";
-import { AllGroupMembersProps, Task, TaskBodySearch } from "@/app/interfaces/types";
+import { AllGroupMembersProps, Task, TaskBodySearch, TaskRequest } from "@/app/interfaces/types";
 import { useSearchParams } from "next/navigation";
-import { fetchTasksFromServer } from "@/app/server-actions/fetchTasks";
 import { fetchTasksFilter } from "@/app/server-actions/fetchTasksFilter";
+import { updateTask } from "@/app/server-actions/updateTask";
 
 
 export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMembersProps) {
@@ -22,7 +22,7 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const groupId = searchParams.get('groupId') || '0';
@@ -41,7 +41,7 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
         search: '',
     };
 
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -54,7 +54,7 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
         setError(error instanceof Error ? error.message : "An unknown error occurred");
         setTasks([]);
     } finally {
-        setLoading(false);
+        setIsLoading(false);
     }
   }, [currentPage, groupId, user]);
 
@@ -67,23 +67,11 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
   }, [handleSearchTasks]); 
 
   const handleTaskCreated = (newTask: Task) => {
-    // Add the new task to the beginning of the list
     setTasks(prevTasks => [newTask, ...prevTasks]);
-    
-    // Show success toast
-    toast({
-      title: t('task-created'),
-      description: t('task-created-success'),
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
-    
-    // Close the modal
     setIsCreateTaskModalOpen(false);
   };
 
-  const handleTaskUpdate = (updatedTask: Task) => {
+  const handleSetUpdatedTask = (updatedTask: Task) => {
     setTasks(prevTasks => 
         prevTasks.map(task => 
             task.id === updatedTask.id ? updatedTask : task
@@ -91,7 +79,36 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
     );
   };
 
-  if (loading) {
+  const handleTaskUpdate = async (taskToUpdate: TaskRequest, task: Task)=> {
+    setIsLoading(true);
+    try {
+    
+      const updatedTask = await updateTask(taskToUpdate,task.id, accessToken);
+      
+      handleSetUpdatedTask(updatedTask);
+
+    
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to update project",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  if (isloading) {
     return <Text>{t('loading')}</Text>;
   }
 
@@ -136,21 +153,21 @@ export default function AllGroupTaskComponents({ user, accessToken }: AllGroupMe
             <GroupTasksTableComponent 
               user={user}
               tasks={tasks}
-              onTaskUpdate={handleTaskUpdate}
+              onTaskUpdate={handleSetUpdatedTask}
               accessToken={accessToken}
               setTasks={setTasks}
               isUserAdmin={isUserAdmin}
-              groupId={groupId}  
+              handleUpdateTask={handleTaskUpdate}
             />
           ) : (
             <GroupTasksCardComponent 
               user={user}
               tasks={tasks}
-              onTaskUpdate={handleTaskUpdate}
+              onTaskUpdate={handleSearchTasks}
               accessToken={accessToken}
               setTasks={setTasks}
               isUserAdmin={isUserAdmin}
-              groupId={groupId}  
+              handleUpdateTask={handleTaskUpdate}
             />
           )}
           <Box mt={4}>

@@ -20,7 +20,7 @@ import { ProjectData, UpdateProjectModalProps } from "@/app/interfaces/types";
 const UpdateProjectModal: React.FC<UpdateProjectModalProps> = ({
     isOpen,
     onClose,
-    project, // Add project prop
+    project,
     onUpdateProject,
 }) => {
     const t = useTranslations('group-page');
