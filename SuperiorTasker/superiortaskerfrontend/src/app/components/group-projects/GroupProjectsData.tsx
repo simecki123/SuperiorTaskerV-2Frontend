@@ -8,11 +8,12 @@ import GroupProjectsTable from "@/app/components/group-projects/GroupProjectsTab
 import ProjectCards from "@/app/components/group-projects/ProjectCards";
 import SearchbarForProjects from "@/app/components/group-projects/SearchBarForProjects";
 import { useTranslations } from "next-intl";
-import { GroupProjectsAndTasksDataProps, Project, ProjectBodySearch } from "@/app/interfaces/types";
+import { GroupProjectsAndTasksDataProps, Project, ProjectBodySearch, UserProjectRelation } from "@/app/interfaces/types";
 import { fetchProjectsFromServer } from "@/app/server-actions/fetchProjectsFromServer";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "../profile-page-components/user-data-options/all-tasks-components/Pagination";
 import GroupProjectsFilters from "./GroupProjectsFilters";
+import { fetchUserProjectRelations } from "@/app/server-actions/fetchUserProjectRelations";
 
 
 
@@ -30,16 +31,16 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
   const [includeCompleted, setIncludeCompleted] = useState(searchParams.get('includeComplete') === 'true');
   const [includeNotStarted, setIncludeNotStarted] = useState(searchParams.get('includeNotStarted') === 'true');
   const groupId = searchParams.get('groupId');
-  
-
+  const [userProjectRelations, setUserProjectRelations] = useState<UserProjectRelation[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  
+  const isUserAdmin = user.groupMembershipData.some(
+    membership => membership.groupId === groupId && membership.role === "ADMIN"
+  );
 
-  // Function to update URL parameters
   const updateURLParams = (newParams: Record<string, string | null>) => {
       const params = new URLSearchParams(searchParams.toString());
       Object.entries(newParams).forEach(([key, value]) => {
@@ -84,9 +85,20 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
 
           setProjects(currentProjects);
           setHasNextPage(nextPageProjects.length > 0);
+
+          const relationRequests = currentProjects.map(project => ({
+            projectId: project.id,
+            userId: user.id,
+            groupId: groupId
+          }));
+    
+    
+          const relations = await fetchUserProjectRelations(relationRequests, accessToken);
+          setUserProjectRelations(relations);
       } catch(error) {
           setError(error instanceof Error ? error.message : "An unknown error occurred");
           setProjects([]);
+          setUserProjectRelations([]);
       } finally {
           setLoading(false);
       }
@@ -134,12 +146,16 @@ export default function GroupProjectsData({user, accessToken}: GroupProjectsAndT
                 projects={projects}
                 accessToken={accessToken}
                 setProjects={setProjects}
+                isUserAdmin={isUserAdmin}
+                userProjectRelations={userProjectRelations}
               />
           ) : (
               <ProjectCards 
                 projects={projects}
                 accessToken={accessToken}
                 setProjects={setProjects}
+                isUserAdmin={isUserAdmin}
+                userProjectRelations={userProjectRelations}
               />
           )}
           <Pagination 

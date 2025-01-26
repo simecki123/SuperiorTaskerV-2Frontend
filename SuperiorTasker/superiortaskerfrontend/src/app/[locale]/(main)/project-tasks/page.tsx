@@ -13,7 +13,6 @@ export default async function ProjectTasks() {
 
     return(
         <ProjectTaskData
-        
         user={fetchedUser}
         accessToken={session.user.accessToken} />
     );

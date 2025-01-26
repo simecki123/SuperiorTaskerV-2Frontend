@@ -13,6 +13,7 @@ import Pagination from "../profile-page-components/user-data-options/all-tasks-c
 import { fetchGroupsFromServer } from "@/app/server-actions/fetchGroups";
 import { useUserStore } from "@/commons/zustandFiles/userUpdatedStore";
 import { useGroupStore } from "@/commons/zustandFiles/GroupUpdateStore";
+import { fetchMeClient } from "@/app/server-actions/fetchMeClient";
 
 const initialState: State = {
   message: null,
@@ -30,6 +31,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
   const [groupLoading, setGroupLoading] = useState(false);
   const [groupError, setGroupError] = useState<string | null>(null);
   const { user: updatedUser, setUser: setUpdatedUser } = useUserStore();
+  const [currentUser, setCurrentUser] = useState(initialUser);
 
   const {
     isOpen: isDrawerOpen,
@@ -44,6 +46,26 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
   } = useDisclosure();
 
   useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await fetchMeClient(activeUser.accessToken);
+        setCurrentUser(user);
+        setUpdatedUser(user);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (updatedUser) {
+      setCurrentUser(updatedUser);
+    }
+  }, [updatedUser]);
+
+  useEffect(() => {
     console.log("UpdatedGroup ", updatedGroup);
     if (updatedGroup) {
       loadGroups();
@@ -52,12 +74,12 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
 
   useEffect(() => {
     loadGroups();
-  }, [currentPage, updatedUser, activeUser, initialUser]);
+  }, [currentPage, updatedUser, activeUser, currentUser]);
 
   const loadGroups = async () => {
-    const currentUser = updatedUser || initialUser;
+    const thiscurrentUser = updatedUser || initialUser;
     
-    if (!currentUser?.id) return;
+    if (!thiscurrentUser?.id) return;
     
     setGroupLoading(true);
     setGroupError(null);
@@ -108,7 +130,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={updatedUser || initialUser} /> 
+        <ProfileButton activeUser={updatedUser || currentUser} /> 
       </VStack>
     );
   }

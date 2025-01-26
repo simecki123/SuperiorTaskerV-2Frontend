@@ -37,7 +37,6 @@ export default function ProjectTaskFilter({
                     p={4}
                     borderWidth="1px"
                     borderRadius="lg"
-                    bg="white"
                     shadow="sm"
                     align="center"
                 >

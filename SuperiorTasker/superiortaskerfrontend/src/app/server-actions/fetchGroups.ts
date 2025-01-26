@@ -26,7 +26,7 @@ export async function fetchGroupsFromServer(user: User, page: number): Promise<G
 
     return data.map((group) => {
       if (!group.id || !group.name || !group.description || !group.photoUri) {
-        console.warn("Task missing required fields:", group);
+        console.warn("Group missing required fields:", group);
       }
       return group;
     });

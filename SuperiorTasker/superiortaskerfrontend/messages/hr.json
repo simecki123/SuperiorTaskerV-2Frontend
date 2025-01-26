@@ -212,7 +212,8 @@
         "failed-to-send-message": "Slanje poruke nije uspijelo",
         "update-project": "Uredi projekt",
         "done":"Završen",
-        "in-progress":"U tijeku"
+        "in-progress":"U tijeku",
+        "select-user-and-project": "Odaberi korisnika i projekt"
     },
 
     "user-statistics": {

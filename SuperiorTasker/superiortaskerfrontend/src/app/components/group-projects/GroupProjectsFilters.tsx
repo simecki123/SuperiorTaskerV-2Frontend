@@ -109,7 +109,6 @@ export default function GroupProjectsFilters({
                     p={4}
                     borderWidth="1px"
                     borderRadius="lg"
-                    bg="white"
                     shadow="sm"
                 >
                     <Box width="100%">

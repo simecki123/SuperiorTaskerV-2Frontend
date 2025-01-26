@@ -16,7 +16,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
     fetchedUser = await fetchMe(activeUser.accessToken);
   }
 
-  console.log("Aktivni usercic: ", activeUser);
   if (!activeUser) {
     redirect("/login");
   }

@@ -40,6 +40,9 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
   };
 
   const hasProjectAccess = (projectId: string) => {
+    console.log("user project relations ", userProjectRelations);
+    console.log("projectId ", projectId);
+    console.log("is user admin ", isUserAdmin);
     return isUserAdmin || userProjectRelations.some(relation => relation.projectId === projectId);
   };
 
@@ -130,7 +133,9 @@ export default function GroupProjectsTable( {projects, setProjects, accessToken,
               <Th>{t('start-date')}</Th>
               <Th>{t('end-date')}</Th>
               <Th>{t('completion')}</Th>
+              {isUserAdmin && (
               <Th>{t('actions')}</Th>
+              )}
             </Tr>
           </Thead>
           <Tbody>
