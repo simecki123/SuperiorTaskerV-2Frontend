@@ -8,8 +8,6 @@ import { auth } from "@/commons/auth";
 import { User } from "@/app/interfaces/types";
 import { fetchMe } from "@/app/server-actions/fetchMe";
 
-
-
 export default async function ProfilePage() {
 
   const session: any = await auth();

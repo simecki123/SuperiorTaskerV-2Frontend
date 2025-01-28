@@ -22,6 +22,9 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
+  CartesianGrid,
+  XAxis,
+  YAxis,
 } from "recharts";
 import { User, UserStatistics as UserStatsType } from "@/app/interfaces/types";
 import { fetchUserStatistics } from "@/app/server-actions/fetchUsersStatistics";
@@ -145,7 +148,6 @@ export default function UserStatistics({ user }: { user: User }) {
             </PieChart>
           </ResponsiveContainer>
         </Box>
-
         <Box
           p={6}
           bg={bgColor}
@@ -156,15 +158,37 @@ export default function UserStatistics({ user }: { user: User }) {
         >
           <Heading size="md" mb={4}>{t('projects-status')}</Heading>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={projectData}>
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                {projectData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
+                      <Box
+              p={6}
+              bg={bgColor}
+              borderRadius="lg"
+              borderWidth="1px"
+              borderColor={borderColor}
+              h="400px"
+            >
+              <Heading size="md" mb={4}>{t('projects-status')}</Heading>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={projectData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis
+                    allowDecimals={false}
+                    domain={[0, 'auto']}
+                    tickCount={stats.numberOfProjects +1}
+                  />
+                  <Tooltip 
+                    formatter={(value, name, props) => [`${value}`, props.payload.name]}
+                    labelFormatter={(label) => ''}
+                  />
+                  <Legend />
+                  <Bar dataKey="value" name={t('projects')} fill="#8884d8">
+                    {projectData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
           </ResponsiveContainer>
         </Box>
       </Grid>

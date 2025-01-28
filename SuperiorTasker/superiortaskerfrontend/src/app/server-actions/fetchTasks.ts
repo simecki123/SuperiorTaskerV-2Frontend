@@ -15,8 +15,7 @@ export async function fetchTasksFromServer(user: User, page: number): Promise<Ta
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.accessToken}`,
         },
-        // Add caching options
-        cache: 'force-cache',
+        cache: 'no-cache',
         
       }
     );

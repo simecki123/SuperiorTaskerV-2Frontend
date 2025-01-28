@@ -14,14 +14,10 @@ export default function UsersImportantStatsComponent({user}: {user: User}) {
   const [selectedComponent, setSelectedComponent] = useState("All Tasks");
 
   const menuItems = [ 
+    { name: "Messages", title: `${t('messages')}`, component: UserMessagesComponent},
     { name: "All Tasks", title: `${t('all-tasks')}`, component: AllTasksComponent },
-    { 
-      name: "Messages", 
-      title: `${t('messages')}`, 
-      component: UserMessagesComponent,
-    },
     { name: "Stats", title: `${t('stats')}`, component: UserStatistics },
-    { name: "My Groups", title: `${t('my-groups')}`, component: MyGroupsComponent },
+    { name: "My Groups", title: `${t('my-groups')}`, component: MyGroupsComponent }
   ];
 
   const renderSelectedComponent = () => {

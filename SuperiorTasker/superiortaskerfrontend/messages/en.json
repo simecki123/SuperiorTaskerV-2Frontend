@@ -221,6 +221,7 @@
 
       
         "user-statistics": {
+          "projects": "Projects",
           "error-fetching-statistics": "Error fetching statistics",
           "unknown-error-occurred": "Unknown error occurred",
           "no-stats-available": "No statistics available",
