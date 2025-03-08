@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// app/utils/websocket.ts
 import { Client } from '@stomp/stompjs';
 import { Message } from '../interfaces/types';
 import SockJS from 'sockjs-client';

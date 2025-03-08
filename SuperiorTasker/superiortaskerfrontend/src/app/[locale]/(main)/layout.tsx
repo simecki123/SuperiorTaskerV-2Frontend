@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from "@chakra-ui/react";
 import SideBarGroups from "@/app/components/sidebar-components/SideBarGroups";
@@ -6,6 +7,7 @@ import { auth } from "@/commons/auth";
 import { redirect } from "next/navigation";
 import { fetchMe } from "@/app/server-actions/fetchMe";
 import NotificationBell from "@/app/components/NotificationBell/NotificationBell";
+import ExpressNotificationBell from "@/app/components/NotificationBell/ExpressNotificationBell";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
@@ -27,7 +29,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       </Box>
       <Box className="grow">{children}</Box>
       <Box className="fixed top-4 right-4 flex items-center space-x-6">
-        <NotificationBell user={activeUser} />
+        <ExpressNotificationBell user={activeUser} />
         <SignOutButton />
       </Box>
     </Box>

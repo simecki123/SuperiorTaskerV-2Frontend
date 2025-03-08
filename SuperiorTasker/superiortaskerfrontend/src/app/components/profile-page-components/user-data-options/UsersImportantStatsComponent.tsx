@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { Box, Grid, VStack, useColorModeValue, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import AllTasksComponent from "./AllTasksComponent";
-import UserMessagesComponent from "./UserMessagesComponent";
+import UserMessagesComponent from './UserMessagesComponent';
 import MyGroupsComponent from "./MyGroupsComponent";
 import UserStatistics from "./UserStatistics";
 import { User } from "@/app/interfaces/types";
 import MenuCard from "../MenuCard";
+import UserMessagesComponentExpres from "./UserMessagesComponentExpress";
 
 export default function UsersImportantStatsComponent({user}: {user: User}) {
   const t = useTranslations('menu-items');
-  const [selectedComponent, setSelectedComponent] = useState("All Tasks");
+  const [selectedComponent, setSelectedComponent] = useState("Messages");
 
   const menuItems = [ 
-    { name: "Messages", title: `${t('messages')}`, component: UserMessagesComponent},
+    { name: "Messages", title: `${t('messages')}`, component: UserMessagesComponentExpres},
     { name: "All Tasks", title: `${t('all-tasks')}`, component: AllTasksComponent },
     { name: "Stats", title: `${t('stats')}`, component: UserStatistics },
     { name: "My Groups", title: `${t('my-groups')}`, component: MyGroupsComponent }
@@ -25,7 +27,7 @@ export default function UsersImportantStatsComponent({user}: {user: User}) {
       return <AllTasksComponent user={user}/>;
     }
     if (selectedComponent === "Messages") {
-      return <UserMessagesComponent user={user} />;
+      return <UserMessagesComponentExpres user={user} />;
     }
     if (selectedComponent === "My Groups") {
         return <MyGroupsComponent user={user} />;

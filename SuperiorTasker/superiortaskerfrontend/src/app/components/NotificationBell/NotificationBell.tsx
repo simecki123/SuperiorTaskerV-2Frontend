@@ -1,4 +1,3 @@
-// app/components/NotificationBell.tsx
 'use client';
 import { useEffect, useState } from 'react';
 import { Box, useColorModeValue, useToast } from '@chakra-ui/react';
