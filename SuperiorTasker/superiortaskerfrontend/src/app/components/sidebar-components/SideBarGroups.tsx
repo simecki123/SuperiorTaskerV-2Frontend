@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client'
+"use client";
 import { handleGroupCreate } from "@/app/server-actions/handleGroupCreate";
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, useDisclosure, Image, IconButton, Spinner, Text, VStack, Center } from "@chakra-ui/react";
+import {
+  Box,
+  useDisclosure,
+  Image,
+  IconButton,
+  Spinner,
+  Text,
+  VStack,
+  Center,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import SideBarGroupDrawer from "./SideBarGroupDrawer";
@@ -20,12 +29,21 @@ const initialState: State = {
   errors: null,
 };
 
-export default function SideBarGroups({ activeUser, initialUser }: { activeUser: User, initialUser: User }) {
+export default function SideBarGroups({
+  activeUser,
+  initialUser,
+}: {
+  activeUser: User;
+  initialUser: User;
+}) {
   const { updatedGroup } = useGroupStore();
   const [state, formAction] = useFormState(handleGroupCreate, initialState);
   const [groups, setGroups] = useState<Group[]>([]);
   const [activeGroup, setActiveGroup] = useState<Group | null>(null);
-  const [joinState, joinFormAction] = useFormState(handleGroupCreate, initialState);
+  const [joinState, joinFormAction] = useFormState(
+    handleGroupCreate,
+    initialState
+  );
   const [currentPage, setCurrentPage] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [groupLoading, setGroupLoading] = useState(false);
@@ -38,7 +56,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
     onOpen: onDrawerOpen,
     onClose: onDrawerClose,
   } = useDisclosure();
-  
+
   const {
     isOpen: isGroupModalOpen,
     onOpen: onGroupModalOpen,
@@ -52,7 +70,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
         setCurrentUser(user);
         setUpdatedUser(user);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     };
 
@@ -78,20 +96,28 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
 
   const loadGroups = async () => {
     const thiscurrentUser = updatedUser || initialUser;
-    
+
     if (!thiscurrentUser?.id) return;
-    
+
     setGroupLoading(true);
     setGroupError(null);
 
     try {
-      const currentGroups = await fetchGroupsFromServer(activeUser, currentPage);
-      const nextGroups = await fetchGroupsFromServer(activeUser, currentPage+1);
-      
+      const currentGroups = await fetchGroupsFromServer(
+        activeUser,
+        currentPage
+      );
+      const nextGroups = await fetchGroupsFromServer(
+        activeUser,
+        currentPage + 1
+      );
+
       setGroups(currentGroups);
-      setHasNextPage(nextGroups.length > 0); 
+      setHasNextPage(nextGroups.length > 0);
     } catch (err) {
-      setGroupError(err instanceof Error ? err.message : "An unknown error occurred");
+      setGroupError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
       setGroups([]);
     } finally {
       setGroupLoading(false);
@@ -130,18 +156,24 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
           className="hover:opacity-80 transition-opacity"
           onClick={onGroupModalOpen}
         />
-        <ProfileButton activeUser={updatedUser || currentUser} /> 
+        <ProfileButton activeUser={updatedUser || currentUser} />
+
+        {/* Important: Include the modal here too */}
+        <CreateGroupModal
+          state={state}
+          user={updatedUser || activeUser}
+          formAction={formAction}
+          joinState={joinState}
+          joinFormAction={joinFormAction}
+          isOpen={isGroupModalOpen}
+          onClose={onGroupModalClose}
+        />
       </VStack>
     );
   }
 
   return (
-    <VStack 
-      spacing={4} 
-      align="center" 
-      w="full"
-      p={2}
-    >
+    <VStack spacing={4} align="center" w="full" p={2}>
       <VStack spacing={2} w="full" align="center">
         {groups.map((group) => (
           <Image
@@ -161,7 +193,7 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
       </VStack>
 
       <Box w="full">
-        <Pagination 
+        <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           hasNextPage={hasNextPage}
@@ -181,22 +213,22 @@ export default function SideBarGroups({ activeUser, initialUser }: { activeUser:
         <ProfileButton activeUser={updatedUser || activeUser} />
       </VStack>
 
-      <CreateGroupModal 
-            state={state}
-            user={updatedUser || activeUser}
-            formAction={formAction}
-            joinState={joinState}
-            joinFormAction={joinFormAction}
-            isOpen={isGroupModalOpen}
-            onClose={onGroupModalClose} 
-          />
+      <CreateGroupModal
+        state={state}
+        user={updatedUser || activeUser}
+        formAction={formAction}
+        joinState={joinState}
+        joinFormAction={joinFormAction}
+        isOpen={isGroupModalOpen}
+        onClose={onGroupModalClose}
+      />
 
       {activeGroup && (
-          <SideBarGroupDrawer
-            group={activeGroup}
-            isOpen={isDrawerOpen}
-            onClose={onDrawerClose}
-          />
+        <SideBarGroupDrawer
+          group={activeGroup}
+          isOpen={isDrawerOpen}
+          onClose={onDrawerClose}
+        />
       )}
     </VStack>
   );
