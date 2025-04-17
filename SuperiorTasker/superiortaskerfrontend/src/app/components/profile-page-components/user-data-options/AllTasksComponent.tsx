@@ -20,26 +20,23 @@ export default function AllTasksComponent({ user }: { user: User }) {
 
     const loadTasks = async () => {
       if (!user?.id) return;
-      
+
       setLoading(true);
       setError(null);
 
       try {
         const currentTasks = await fetchTasksFromServer(user, currentPage);
-        const nextTasks = await fetchTasksFromServer(user, currentPage+1);
-        
+        const nextTasks = await fetchTasksFromServer(user, currentPage + 1);
+
         setTasks(currentTasks);
-        setHasNextPage(nextTasks.length > 0); 
-        
+        setHasNextPage(nextTasks.length > 0);
       } catch (err) {
-        
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
         setTasks([]);
-        
       } finally {
-        
         setLoading(false);
-        
       }
     };
 
@@ -48,7 +45,7 @@ export default function AllTasksComponent({ user }: { user: User }) {
     return () => {
       controller.abort();
     };
-  }, [currentPage, user, user?.id]); 
+  }, [currentPage, user, user?.id]);
 
   if (loading) {
     return <Text>Loading...</Text>;
